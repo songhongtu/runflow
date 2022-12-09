@@ -17,9 +17,8 @@ public class NoneStartEventActivityBehavior extends FlowNodeActivityBehavior {
 
 
     @Override
-    public void execute(ExecutionEntity execution) {
+    public void execute(ExecutionEntityImpl execution) {
         ExecutionEntityImpl execution1 = (ExecutionEntityImpl)execution;
-        LOGGER.info(execution1.getCurrentFlowElement().getName());
         super.execute(execution1);
     }
 }

@@ -10,11 +10,9 @@ public interface ResourceEntity  extends Entity {
 
     void setBytes(byte[] bytes);
 
-    String getDeploymentId();
 
     void setDeploymentId(String deploymentId);
 
-    Object getPersistentState();
 
     void setGenerated(boolean generated);
 

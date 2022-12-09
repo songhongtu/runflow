@@ -37,16 +37,6 @@ public class  DeployCmd<T> implements Command<Deployment>, Serializable {
 
         deployment.setNew(true);
 
-        // Save the data
-
-        //todo
-//        commandContext.getDeploymentEntityManager().insert(deployment);
-
-//        if (commandContext.getProcessEngineConfiguration().getEventDispatcher().isEnabled()) {
-//            commandContext.getProcessEngineConfiguration().getEventDispatcher().dispatchEvent(ActivitiEventBuilder.createEntityEvent(ActivitiEventType.ENTITY_CREATED, deployment));
-//        }
-
-        // Deployment settings
         Map<String, Object> deploymentSettings = new HashMap<String, Object>();
         deploymentSettings.put(DeploymentSettings.IS_BPMN20_XSD_VALIDATION_ENABLED, deploymentBuilder.isBpmn20XsdValidationEnabled());
         deploymentSettings.put(DeploymentSettings.IS_PROCESS_VALIDATION_ENABLED, deploymentBuilder.isProcessValidationEnabled());
@@ -57,42 +47,11 @@ public class  DeployCmd<T> implements Command<Deployment>, Serializable {
         if (deploymentBuilder.getProcessDefinitionsActivationDate() != null) {
             scheduleProcessDefinitionActivation(commandContext, deployment);
         }
-
-//        if (commandContext.getProcessEngineConfiguration().getEventDispatcher().isEnabled()) {
-//            commandContext.getProcessEngineConfiguration().getEventDispatcher().dispatchEvent(ActivitiEventBuilder.createEntityEvent(ActivitiEventType.ENTITY_INITIALIZED, deployment));
-//        }
         deployment.setParsedDeployment(deploy);
         return deployment;
     }
 
 
-    protected boolean deploymentsDiffer(DeploymentEntity deployment, DeploymentEntity saved) {
-
-        if (deployment.getResources() == null || saved.getResources() == null) {
-            return true;
-        }
-
-        Map<String, ResourceEntity> resources = deployment.getResources();
-        Map<String, ResourceEntity> savedResources = saved.getResources();
-
-        for (String resourceName : resources.keySet()) {
-            ResourceEntity savedResource = savedResources.get(resourceName);
-
-            if (savedResource == null)
-                return true;
-
-            if (!savedResource.isGenerated()) {
-                ResourceEntity resource = resources.get(resourceName);
-
-                byte[] bytes = resource.getBytes();
-                byte[] savedBytes = savedResource.getBytes();
-                if (!Arrays.equals(bytes, savedBytes)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
     protected void scheduleProcessDefinitionActivation(CommandContext commandContext, DeploymentEntity deployment) {
             throw new ActivitiException("不支持");

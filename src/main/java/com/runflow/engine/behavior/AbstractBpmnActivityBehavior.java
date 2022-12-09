@@ -2,6 +2,7 @@ package com.runflow.engine.behavior;
 
 import com.runflow.engine.ActivitiException;
 import com.runflow.engine.ExecutionEntity;
+import com.runflow.engine.ExecutionEntityImpl;
 import com.runflow.engine.context.Context;
 import com.runflow.engine.delegate.ActivityBehavior;
 import com.runflow.engine.delegate.FlowNodeActivityBehavior;
@@ -23,13 +24,10 @@ public class AbstractBpmnActivityBehavior extends FlowNodeActivityBehavior {
     private static final long serialVersionUID = 1L;
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractBpmnActivityBehavior.class);
-    public void leave(ExecutionEntity execution) {
-     super.leave(execution);
+
+    public void leave(ExecutionEntityImpl execution) {
+        super.leave(execution);
     }
-
-
-
-
 
 
 }

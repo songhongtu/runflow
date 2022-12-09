@@ -95,9 +95,6 @@ public class ProcessEngineConfigurationImpl {
 
     public void initCache() {
         processDefinitionCache = new DefaultDeploymentCache<>();
-//        if (sessionFactory == null) {
-//            sessionFactory = new GenericManagerFactory(EntityCache.class, EntityCacheImpl.class);
-//        }
     }
 
 

@@ -26,7 +26,7 @@ public class ContinueProcessOperation extends AbstractOperation {
     protected boolean forceSynchronousOperation;
     protected boolean inCompensation;
 
-    public ContinueProcessOperation(CommandContext commandContext, ExecutionEntity execution,
+    public ContinueProcessOperation(CommandContext commandContext, ExecutionEntityImpl execution,
                                     boolean forceSynchronousOperation, boolean inCompensation) {
 
         super(commandContext, execution);
@@ -34,7 +34,7 @@ public class ContinueProcessOperation extends AbstractOperation {
         this.inCompensation = inCompensation;
     }
 
-    public ContinueProcessOperation(CommandContext commandContext, ExecutionEntity execution) {
+    public ContinueProcessOperation(CommandContext commandContext, ExecutionEntityImpl execution) {
         this(commandContext, execution, false, false);
     }
 
@@ -98,6 +98,8 @@ public class ContinueProcessOperation extends AbstractOperation {
 
     protected void executeActivityBehavior(ActivityBehavior activityBehavior, FlowNode flowNode) {
         try {
+            String name = execution.getCurrentFlowElement().getName();
+            logger.info("线程名称：{} 任务名称："+name,Thread.currentThread().getName());
             activityBehavior.execute(execution);
         } catch (RuntimeException e) {
             logger.error(e.getMessage());

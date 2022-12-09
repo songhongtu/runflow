@@ -19,8 +19,6 @@ public interface ProcessDefinition {
     /** description of this process **/
     String getDescription();
 
-    /** version of this process definition */
-    int getVersion();
 
     /**
      * name of {@link RepositoryService#getResourceAsStream(String, String) the resource} of this process definition.

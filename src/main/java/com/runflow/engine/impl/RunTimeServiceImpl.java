@@ -34,4 +34,12 @@ public class RunTimeServiceImpl extends ServiceImpl implements RepositoryService
         return commandExecutor.execute(new StartProcessInstanceCmd<ExecutionEntityImpl>(key,variables));
     }
 
+
+
+
+
+    public void generaImages(String key){
+        commandExecutor.execute(new GeneraImageCommand(key));
+    }
+
 }

@@ -70,7 +70,9 @@ public class BpmnParse {
 
         BpmnXMLConverter converter = new BpmnXMLConverter();
 
-        bpmnModel = converter.convertToBpmnModel(streamSource, true, false, "utf-8");
+            bpmnModel = converter.convertToBpmnModel(streamSource, true, false, "utf-8");
+
+
 
         ProcessValidator processValidator = null;
         if (processValidator == null) {

@@ -13,33 +13,22 @@ public interface ProcessDefinitionEntity extends ProcessDefinition, Entity {
 
     void setDeploymentId(String deploymentId);
 
-    void setVersion(int version);
 
     void setResourceName(String resourceName);
 
-    void setTenantId(String tenantId);
 
-    Integer getHistoryLevel();
 
-    void setHistoryLevel(Integer historyLevel);
 
     void setCategory(String category);
 
     void setDiagramResourceName(String diagramResourceName);
 
-    boolean getHasStartFormKey();
 
-    void setStartFormKey(boolean hasStartFormKey);
-
-    void setHasStartFormKey(boolean hasStartFormKey);
 
     boolean isGraphicalNotationDefined();
 
     void setGraphicalNotationDefined(boolean isGraphicalNotationDefined);
 
-    int getSuspensionState();
-
-    void setSuspensionState(int suspensionState);
 
     String getEngineVersion();
 

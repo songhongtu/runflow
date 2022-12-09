@@ -43,7 +43,7 @@ public class EndExecutionOperation extends AbstractOperation {
         }
         commandContext.setSerialNumber(null);
         if (execution.getMainThread() != null) {
-            LockSupport.unpark(execution.getMainThread());
+          LockSupport.unpark(execution.getMainThread());
         }
 
 

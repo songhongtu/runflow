@@ -11,14 +11,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 public class ParallelGatewayActivityBehavior extends GatewayActivityBehavior {
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ParallelGatewayActivityBehavior.class);
+    @Override
+    public void execute(ExecutionEntityImpl e1) {
 
-    public void execute(ExecutionEntity e1) {
 
         synchronized (ParallelGatewayActivityBehavior.class) {
 
@@ -41,7 +44,6 @@ public class ParallelGatewayActivityBehavior extends GatewayActivityBehavior {
                 List<ExecutionEntityImpl> joinedExecutions = this.findInactiveExecutionsByActivityIdAndProcessInstanceId(execution);
                 int nbrOfExecutionsCurrentlyJoined = joinedExecutions.size();
                 if (nbrOfExecutionsCurrentlyJoined == nbrOfExecutionsToJoin) {
-                    LOGGER.info(flowElement.getName());
                     if (parallelGateway.getIncomingFlows().size() > 1) {
                         // All (now inactive) children are deleted.
                         Iterator<ExecutionEntityImpl> iterator = joinedExecutions.iterator();

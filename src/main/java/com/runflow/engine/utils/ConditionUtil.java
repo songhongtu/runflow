@@ -24,17 +24,16 @@ public class ConditionUtil {
 
     public static boolean hasTrueCondition(String ex, ExecutionEntityImpl execution) {
 
-        return createExpression(ex, execution);
+        return (boolean) createExpression(ex, execution);
     }
 
 
-    public static boolean createExpression(String expression, ExecutionEntityImpl execution) {
+    public static Object createExpression(String expression, ExecutionEntityImpl execution) {
         ExpressionManager expressionManager = Context.getCommandContext().getProcessEngineConfiguration().getExpressionManager();
         ExpressionFactory expressionFactory = expressionManager.getExpressionFactory();
         ELContext elContext = expressionManager.getElContext(execution);
         ValueExpression valueExpression = expressionFactory.createValueExpression(elContext, expression.trim(), boolean.class);
-        boolean value = (boolean) valueExpression.getValue(elContext);
-        return value;
+        return   valueExpression.getValue(elContext);
     }
 
 

@@ -7,9 +7,11 @@ import com.runflow.engine.behavior.AbstractBpmnActivityBehavior;
 import com.runflow.engine.bpmn.entity.ProcessDefinition;
 import com.runflow.engine.bpmn.entity.impl.ProcessDefinitionCacheEntry;
 import com.runflow.engine.context.Context;
-import org.activiti.bpmn.model.CallActivity;
-import org.activiti.bpmn.model.FlowElement;
-import org.activiti.bpmn.model.MapExceptionEntry;
+import com.runflow.engine.el.ExpressionManager;
+import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
+import com.runflow.engine.utils.CollectionUtil;
+import com.runflow.engine.utils.ConditionUtil;
+import org.activiti.bpmn.model.*;
 import org.activiti.bpmn.model.Process;
 
 import javax.el.Expression;
@@ -33,7 +35,7 @@ public class CallActivityBehavior extends AbstractBpmnActivityBehavior implement
     }
 
     @Override
-    public void execute(ExecutionEntity execution) {
+    public void execute(ExecutionEntityImpl execution) {
 
         String finalProcessDefinitonKey = processDefinitonKey;
 
@@ -52,8 +54,15 @@ public class CallActivityBehavior extends AbstractBpmnActivityBehavior implement
         ExecutionEntityImpl subProcessInstance = executionEntity.createSubprocessInstance(processDefinition, executionEntity, null);
         subProcessInstance.setMainThread(Thread.currentThread());
         subProcessInstance.setSerialNumber(uuid);
-        ExecutionEntity subProcessInitialExecution = executionEntity.createChildExecution(subProcessInstance);
+
+        ExecutionEntityImpl subProcessInitialExecution = executionEntity.createChildExecution(subProcessInstance);
         subProcessInitialExecution.setCurrentFlowElement(initialFlowElement);
+
+        List<IOParameter> inParameters = callActivity.getInParameters();
+
+        ProcessEngineConfigurationImpl processEngineConfiguration = Context.getProcessEngineConfiguration();
+
+
         Context.getAgenda().planContinueProcessOperation(subProcessInitialExecution);
 
     }

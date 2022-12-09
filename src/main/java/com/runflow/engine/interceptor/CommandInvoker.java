@@ -35,7 +35,7 @@ public class CommandInvoker extends AbstractCommandInterceptor {
         if (serialNumber != null && commandContext.getSession().get(commandContext.getSerialNumber()) != null) {
             try {
                 LockSupport.park();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

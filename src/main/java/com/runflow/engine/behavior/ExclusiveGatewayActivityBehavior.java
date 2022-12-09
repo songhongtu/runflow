@@ -20,7 +20,7 @@ public class ExclusiveGatewayActivityBehavior extends GatewayActivityBehavior {
 
 
     @Override
-    public void leave(ExecutionEntity execution) {
+    public void leave(ExecutionEntityImpl execution) {
 
         ExclusiveGateway exclusiveGateway = (ExclusiveGateway) execution.getCurrentFlowElement();
 
@@ -34,13 +34,12 @@ public class ExclusiveGatewayActivityBehavior extends GatewayActivityBehavior {
 
         SequenceFlow emptyOutgoingSequenceFlow = null;
 
-        while (outgoingSequenceFlow==null&& sequenceFlowIterator.hasNext()) {
+        while (outgoingSequenceFlow == null && sequenceFlowIterator.hasNext()) {
             SequenceFlow sequenceFlow = sequenceFlowIterator.next();
             String conditionExpression = sequenceFlow.getConditionExpression();
 
             if (!StringUtils.isEmpty(conditionExpression)) {
                 b = ConditionUtil.hasTrueCondition(conditionExpression, (ExecutionEntityImpl) execution);
-                logger.info(conditionExpression);
                 if (b) {
                     outgoingSequenceFlow = sequenceFlow;
                 }

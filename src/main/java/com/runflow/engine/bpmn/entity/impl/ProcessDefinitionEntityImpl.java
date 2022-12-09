@@ -13,7 +13,6 @@ import java.util.Map;
 
 public class ProcessDefinitionEntityImpl extends AbstractEntity implements ProcessDefinitionEntity {
 
-    private static final long serialVersionUID = 1L;
     protected String id;
 
     protected String name;
@@ -24,22 +23,14 @@ public class ProcessDefinitionEntityImpl extends AbstractEntity implements Proce
     protected String deploymentId;
     protected String resourceName;
     protected String tenantId = ProcessEngineConfigurationImpl.NO_TENANT_ID;
-    protected Integer historyLevel;
     protected String diagramResourceName;
     protected boolean isGraphicalNotationDefined;
-    protected Map<String, Object> variables;
     protected boolean hasStartFormKey;
-    protected boolean isIdentityLinksInitialized;
     protected IOSpecification ioSpecification;
 
     // Backwards compatibility
     protected String engineVersion;
 
-    public Object getPersistentState() {
-        Map<String, Object> persistentState = new HashMap<String, Object>();
-        persistentState.put("category", this.category);
-        return persistentState;
-    }
 
     // getters and setters
     // //////////////////////////////////////////////////////
@@ -81,9 +72,6 @@ public class ProcessDefinitionEntityImpl extends AbstractEntity implements Proce
         return version;
     }
 
-    public void setVersion(int version) {
-        this.version = version;
-    }
 
     public String getResourceName() {
         return resourceName;
@@ -97,25 +85,10 @@ public class ProcessDefinitionEntityImpl extends AbstractEntity implements Proce
         return tenantId;
     }
 
-    public void setTenantId(String tenantId) {
-        this.tenantId = tenantId;
-    }
 
-    public Integer getHistoryLevel() {
-        return historyLevel;
-    }
 
-    public void setHistoryLevel(Integer historyLevel) {
-        this.historyLevel = historyLevel;
-    }
 
-    public Map<String, Object> getVariables() {
-        return variables;
-    }
 
-    public void setVariables(Map<String, Object> variables) {
-        this.variables = variables;
-    }
 
     public String getCategory() {
         return category;
@@ -166,15 +139,6 @@ public class ProcessDefinitionEntityImpl extends AbstractEntity implements Proce
         this.isGraphicalNotationDefined = isGraphicalNotationDefined;
     }
 
-    @Override
-    public int getSuspensionState() {
-        return 0;
-    }
-
-    @Override
-    public void setSuspensionState(int suspensionState) {
-
-    }
 
 
     public String getEngineVersion() {

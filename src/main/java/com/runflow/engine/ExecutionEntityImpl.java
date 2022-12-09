@@ -3,14 +3,10 @@ package com.runflow.engine;
 import com.runflow.engine.behavior.ParallelGatewayActivityBehavior;
 import com.runflow.engine.bpmn.entity.*;
 import com.runflow.engine.context.Context;
-import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
 import de.odysseus.el.util.SimpleContext;
 import org.activiti.bpmn.model.FlowElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.el.ELContext;
-import javax.el.ValueExpression;
 import java.util.*;
 
 public class ExecutionEntityImpl implements ExecutionEntity, Entity {
@@ -23,13 +19,11 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
 
     protected FlowElement currentFlowElement;
     public Map<String, Object> variableInstances; // needs to be null, the logic depends on it for checking if vars were already fetched
-    public List<IdentityLinkEntity> identityLinks;
 
     /**
      * the parent execution
      */
     protected ExecutionEntityImpl parent;
-    public List<TaskEntity> tasks;
     /**
      * nested executions representing scopes or concurrent paths
      */
@@ -362,9 +356,7 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
     public ExecutionEntityImpl createWithEmptyRelationshipCollections() {
         ExecutionEntityImpl execution1 = new ExecutionEntityImpl();
         execution1.executions = new ArrayList<ExecutionEntityImpl>(1);
-        execution1.tasks = new ArrayList<TaskEntity>(1);
         execution1.variableInstances = new HashMap<String, Object>(1);
-        execution1.identityLinks = new ArrayList<IdentityLinkEntity>(1);
         return execution1;
     }
 

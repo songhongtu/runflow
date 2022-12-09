@@ -2,8 +2,6 @@ package com.runflow.engine.cmd;
 
 import com.runflow.engine.ExecutionEntity;
 import com.runflow.engine.ExecutionEntityImpl;
-import com.runflow.engine.bpmn.entity.IdentityLinkEntity;
-import com.runflow.engine.bpmn.entity.TaskEntity;
 import com.runflow.engine.bpmn.entity.impl.DefaultDeploymentCache;
 import com.runflow.engine.bpmn.entity.impl.ProcessDefinitionCacheEntry;
 import com.runflow.engine.context.Context;
@@ -51,9 +49,7 @@ public class StartProcessInstanceCmd<T> implements Command<ExecutionEntityImpl>,
 //        logger.info("线程名称："+Thread.currentThread().getName()+"："+"创建父节点:{}", processInstance.getId());
 
         processInstance.executions = new ArrayList<ExecutionEntityImpl>(1);
-        processInstance.tasks = new ArrayList<TaskEntity>(1);
         processInstance.variableInstances = new HashMap<String, Object>(1);
-        processInstance.identityLinks = new ArrayList<IdentityLinkEntity>(1);
         ExecutionEntityImpl execution = processInstance.createChildExecution(processInstance);
         processInstance.setScope(true);
         execution.setCurrentFlowElement(initialFlowElement);
@@ -74,7 +70,7 @@ public class StartProcessInstanceCmd<T> implements Command<ExecutionEntityImpl>,
 
     public void startProcessInstance(ExecutionEntityImpl processInstance, CommandContext commandContext) {
         commandContext.setSerialNumber(processInstance.getSerialNumber());
-        ExecutionEntity execution = processInstance.getExecutions().get(0); // There will always be one child execution created
+        ExecutionEntityImpl execution = processInstance.getExecutions().get(0); // There will always be one child execution created
         commandContext.getAgenda().planContinueProcessOperation(execution);
     }
 

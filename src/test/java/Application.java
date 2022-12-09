@@ -60,19 +60,37 @@ public class Application {
         repositoryService.createDeployment().name(fileName).addInputStream(fileName, fileInputStream).deploy();
 
         Long b = 0L;
-        while (true) {
-            Thread thread = new Thread(() -> {
-                ExecutionEntityImpl leave = repositoryService.startWorkflow("ParallelGatewayTest01");
-            });
-            thread.start();
-            b++;
-            logger.info("数量：{}", b);
-            logger.info("线程池状态:{}", conf.getExecutorService().getPoolSize());
-            Thread.sleep((long) (100 * Math.random()));
-        }
+//        while (true) {
+//            Thread thread = new Thread(() -> {
+//                ExecutionEntityImpl leave = repositoryService.startWorkflow("ParallelGatewayTest01");
+//            });
+//            thread.start();
+//            b++;
+//            logger.info("数量：{}", b);
+//            logger.info("线程池状态:{}", conf.getExecutorService().getPoolSize());
+//            Thread.sleep((long) (100 * Math.random()));
+//        }
 
 
-//        ExecutionEntityImpl leave = repositoryService.startWorkflow("ParallelGatewayTest01");
+        ExecutionEntityImpl leave = repositoryService.startWorkflow("ParallelGatewayTest01");
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
+
+        ThreadGroup currentGroup =
+                Thread.currentThread().getThreadGroup();
+        int noThreads = currentGroup.activeCount();
+        Thread[] lstThreads = new Thread[noThreads];
+        currentGroup.enumerate(lstThreads);
+        for (int i = 0; i < noThreads; i++)
+            System.out.println("线程号：" + i + " = " + lstThreads[i].getName());
+
+        System.out.println(thread.getState().toString());
     }
 
     @Test
@@ -88,6 +106,39 @@ public class Application {
         repositoryService.createDeployment().name(fileName).addInputStream(fileName, fileInputStream).deploy();
         ExecutionEntityImpl leave = repositoryService.startWorkflow("Process_1");
 
+    }
+
+
+    @Test
+    public void generater() throws FileNotFoundException, InterruptedException {
+        String fileName = "diagram.bpmn";
+        FileInputStream fileInputStream = new FileInputStream("C:\\Users\\songhongtu\\Desktop\\" + fileName);
+        RunTimeServiceImpl repositoryService = conf.getRepositoryService();
+        repositoryService.createDeployment().name(fileName).addInputStream(fileName, fileInputStream).deploy();
+        conf.getRepositoryService().generaImages("Process_1");
+
+    }
+
+@Test
+    public void te() throws InterruptedException {
+
+        Thread daemon = new Thread(() -> {
+            try {
+                Thread.sleep(10000);
+                int sum = 0;
+                for (int i = 0; i < 100; i++) {
+                    sum += i;
+                }
+                System.out.println(sum);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        // 设置守护线程
+        daemon.setDaemon(false);
+        daemon.start();
+//   daemon.join();/
+    System.out.println("主线程结束");
     }
 
 

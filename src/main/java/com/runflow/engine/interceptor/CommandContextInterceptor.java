@@ -1,5 +1,6 @@
 package com.runflow.engine.interceptor;
 
+import com.runflow.engine.ActivitiException;
 import com.runflow.engine.context.Context;
 import com.runflow.engine.impl.Command;
 import com.runflow.engine.impl.CommandConfig;
@@ -15,9 +16,6 @@ public class CommandContextInterceptor extends AbstractCommandInterceptor {
     protected CommandContextFactory commandContextFactory;
     protected ProcessEngineConfigurationImpl processEngineConfiguration;
 
-    public CommandContextInterceptor() {
-    }
-
     public CommandContextInterceptor(CommandContextFactory commandContextFactory, ProcessEngineConfigurationImpl processEngineConfiguration) {
         this.commandContextFactory = commandContextFactory;
         this.processEngineConfiguration = processEngineConfiguration;
@@ -28,13 +26,7 @@ public class CommandContextInterceptor extends AbstractCommandInterceptor {
 
         boolean contextReused = false;
 
-        if (context == null || context.getException() != null) {
-            context = commandContextFactory.createCommandContext(command);
-        } else {
-            log.debug("Valid context found. Reusing it for the current command '{}'", command.getClass().getCanonicalName());
-            contextReused = true;
-            context.setReused(true);
-        }
+        context = commandContextFactory.createCommandContext(command);
 
         try {
 
@@ -45,22 +37,19 @@ public class CommandContextInterceptor extends AbstractCommandInterceptor {
             return next.execute(config, command);
 
         } catch (Exception e) {
-            e.printStackTrace();
             context.exception(e);
         } finally {
             try {
                 if (!contextReused) {
-                   // context.close();
+                    context.close();
                 }
             } finally {
-
                 // Pop from stack
                 Context.removeCommandContext();
                 Context.removeProcessEngineConfiguration();
                 Context.removeBpmnOverrideContext();
             }
         }
-
         return null;
     }
 

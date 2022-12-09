@@ -3,6 +3,7 @@ package com.runflow.engine.impl.agenda;
 import com.runflow.engine.ActivitiException;
 import com.runflow.engine.Agenda;
 import com.runflow.engine.ExecutionEntity;
+import com.runflow.engine.ExecutionEntityImpl;
 import com.runflow.engine.delegate.DefaultActivitiEngineAgenda;
 import com.runflow.engine.impl.CommandContext;
 import org.activiti.bpmn.model.FlowElement;
@@ -12,13 +13,13 @@ public abstract class AbstractOperation implements Runnable {
 
     protected CommandContext commandContext;
     protected Agenda agenda;
-    protected ExecutionEntity execution;
+    protected ExecutionEntityImpl execution;
 
     public AbstractOperation() {
 
     }
 
-    public AbstractOperation(CommandContext commandContext, ExecutionEntity execution) {
+    public AbstractOperation(CommandContext commandContext, ExecutionEntityImpl execution) {
         this.commandContext = commandContext;
         this.execution = execution;
         this.agenda = commandContext.getAgenda();
@@ -81,11 +82,11 @@ public abstract class AbstractOperation implements Runnable {
         this.agenda = agenda;
     }
 
-    public ExecutionEntity getExecution() {
+    public ExecutionEntityImpl getExecution() {
         return execution;
     }
 
-    public void setExecution(ExecutionEntity execution) {
+    public void setExecution(ExecutionEntityImpl execution) {
         this.execution = execution;
     }
 

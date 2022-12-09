@@ -25,11 +25,10 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
         this.userTask = userTask;
     }
 
-    public void execute(ExecutionEntity execution)  {
+    public void execute(ExecutionEntityImpl execution) {
         ExecutionEntityImpl execution1 = (ExecutionEntityImpl) execution;
         String name = execution1.getCurrentFlowElement().getName();
-       // LOGGER.info("id:"+execution.getId()+":"+"线程名称："+Thread.currentThread().getName()+"："+name+":"+"开始");
-        LOGGER.info(name+":"+"开始");
+        // LOGGER.debug("id:"+execution.getId()+":"+"线程名称："+Thread.currentThread().getName()+"："+name+":"+"开始");
         try {
             if (name.equals("员工一")) {
                 Thread.sleep((long) (1000));
@@ -41,14 +40,13 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
                 Thread.sleep((long) (1000));
             }
             if (name.equals("部门经理")) {
-                Thread.sleep((long) (1000 ));
+                Thread.sleep((long) (1000));
             }
         } catch (Exception e) {
             e.printStackTrace();
 
         }
-        LOGGER.info(name+":"+"结束");
-    //    LOGGER.info( "id:"+execution.getId()+":"+  Thread.currentThread().getName()+"："+ name+":"+"结束");
+        //    LOGGER.debug( "id:"+execution.getId()+":"+  Thread.currentThread().getName()+"："+ name+":"+"结束");
 
         leave(execution);
     }

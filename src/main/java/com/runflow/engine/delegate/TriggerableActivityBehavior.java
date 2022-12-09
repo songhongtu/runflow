@@ -1,7 +1,8 @@
 package com.runflow.engine.delegate;
 
+import com.runflow.engine.ExecutionEntityImpl;
+
 public interface TriggerableActivityBehavior extends ActivityBehavior {
 
-    void trigger(DelegateExecution execution, String signalEvent, Object signalData);
 
 }

@@ -55,22 +55,22 @@ public class DefaultActivitiEngineAgenda implements ActivitiEngineAgenda {
     }
 
     @Override
-    public void planContinueProcessOperation(ExecutionEntity execution) {
+    public void planContinueProcessOperation(ExecutionEntityImpl execution) {
         planOperation(new ContinueProcessOperation(commandContext, execution));
     }
 
     @Override
-    public void planTakeOutgoingSequenceFlowsOperation(ExecutionEntity execution, boolean evaluateConditions) {
+    public void planTakeOutgoingSequenceFlowsOperation(ExecutionEntityImpl execution, boolean evaluateConditions) {
         planOperation(new TakeOutgoingSequenceFlowsOperation(commandContext, execution, evaluateConditions));
     }
 
     @Override
-    public void planContinueProcessSynchronousOperation(ExecutionEntity execution) {
+    public void planContinueProcessSynchronousOperation(ExecutionEntityImpl execution) {
         planOperation(new ContinueProcessOperation(commandContext, execution, true, false));
     }
 
     @Override
-    public void planEndExecutionOperation(ExecutionEntity execution) {
+    public void planEndExecutionOperation(ExecutionEntityImpl execution) {
         planOperation(new EndExecutionOperation(commandContext, (ExecutionEntityImpl) execution));
     }
 

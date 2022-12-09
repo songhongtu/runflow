@@ -1,6 +1,7 @@
 package com.runflow.engine.impl;
 
 import com.runflow.engine.ActivitiEngineAgenda;
+import com.runflow.engine.ActivitiException;
 import com.runflow.engine.ExecutionEntity;
 import com.runflow.engine.cache.impl.CurrentHashMapCache;
 import com.runflow.engine.delegate.DefaultActivitiEngineAgenda;
@@ -129,6 +130,20 @@ public class CommandContext {
     public CurrentHashMapCache getSession() {
         CurrentHashMapCache runTimeExecution = this.processEngineConfiguration.getRunTimeExecution();
         return runTimeExecution;
+    }
+
+
+    public void close() {
+        if (exception != null) {
+            if (exception instanceof Error) {
+                throw (Error) exception;
+            } else if (exception instanceof RuntimeException) {
+                throw (RuntimeException) exception;
+            } else {
+                throw new ActivitiException("exception while executing command " + command, exception);
+            }
+        }
+
     }
 
 }

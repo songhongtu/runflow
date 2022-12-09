@@ -23,7 +23,7 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
 
     protected boolean evaluateConditions;
 
-    public TakeOutgoingSequenceFlowsOperation(CommandContext commandContext, ExecutionEntity executionEntity, boolean evaluateConditions) {
+    public TakeOutgoingSequenceFlowsOperation(CommandContext commandContext, ExecutionEntityImpl executionEntity, boolean evaluateConditions) {
         super(commandContext, executionEntity);
         this.evaluateConditions = evaluateConditions;
     }
@@ -121,20 +121,20 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
 
             // Leave, and reuse the incoming sequence flow, make executions for all the others (if applicable)
 
-            List<ExecutionEntity> outgoingExecutions = new ArrayList<ExecutionEntity>(flowNode.getOutgoingFlows().size());
+            List<ExecutionEntityImpl> outgoingExecutions = new ArrayList<ExecutionEntityImpl>(flowNode.getOutgoingFlows().size());
 
             SequenceFlow sequenceFlow = outgoingSequenceFlows.get(0);
 
             // Reuse existing one
             execution.setCurrentFlowElement(sequenceFlow);
             execution.setActive(true);
-            outgoingExecutions.add((ExecutionEntity) execution);
+            outgoingExecutions.add(execution);
 
             // Executions for all the other one
             if (outgoingSequenceFlows.size() > 1) {
                 for (int i = 1; i < outgoingSequenceFlows.size(); i++) {
                     ExecutionEntityImpl parent = (ExecutionEntityImpl) (execution.getParentId() != null ? execution.getParent() : execution);
-                    ExecutionEntity outgoingExecutionEntity = parent.createChildExecution(parent);
+                    ExecutionEntityImpl outgoingExecutionEntity = parent.createChildExecution(parent);
                     SequenceFlow outgoingSequenceFlow = outgoingSequenceFlows.get(i);
                     outgoingExecutionEntity.setCurrentFlowElement(outgoingSequenceFlow);
                     outgoingExecutions.add(outgoingExecutionEntity);
@@ -142,7 +142,7 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
             }
 
             // Leave (only done when all executions have been made, since some queries depend on this)
-            for (ExecutionEntity outgoingExecution : outgoingExecutions) {
+            for (ExecutionEntityImpl outgoingExecution : outgoingExecutions) {
                 Context.getAgenda().planContinueProcessOperation(outgoingExecution);
             }
         }
