@@ -48,7 +48,6 @@ public class Application {
 
     @Test
     public void executeLeave() throws FileNotFoundException {
-
         Map<String, Object> map = new HashMap();
         map.put("conditionUtil", new ConditionUtil());
         map.put("exclusivegateway1", true);
