@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:flowable="http://flowable.org/bpmn" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" targetNamespace="http://www.activiti.org/processdef">
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:activiti="http://activiti.org/bpmn" xmlns:flowable="http://flowable.org/bpmn" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.activiti.org/processdef">
   <process id="ParallelGatewayTest01" name="" isExecutable="true">
     <startEvent id="sid-166AB575-206F-4C06-87AA-6F646B332F7F" name="开始节点">
       <extensionElements>
@@ -12,7 +12,7 @@
       </extensionElements>
     </startEvent>
     <parallelGateway id="sid-52E5C6C4-69CF-462A-9583-72568BE5692D" name="分离网关一" />
-    <userTask id="sid-E4B059DD-FB7E-4181-BED5-588EC77647A1" name="员工一"   activiti:async="true"       flowable:assignee="admin">
+    <userTask id="sid-E4B059DD-FB7E-4181-BED5-588EC77647A1" name="员工一2" activiti:async="true" activiti:skipExpression="${a.incrementAndGet()}" flowable:assignee="admin">
       <extensionElements>
         <flowable:formProperty id="1622206213817_7184" name="子表单" readable="true" writable="true" />
         <flowable:formProperty id="1622206215915_74415" name="单行文本" readable="true" writable="true" />
@@ -20,10 +20,9 @@
         <flowable:formProperty id="1622210618450_95925" name="子表单" readable="true" writable="true" />
         <flowable:formProperty id="1622210621961_25895" name="多行文本" readable="true" writable="true" />
         <flowable:formProperty id="1622210627442_91255" name="多行文本" readable="true" writable="true" />
- 
       </extensionElements>
     </userTask>
-    <userTask id="sid-EA859B8D-3245-4584-98C8-DE0E35319DA5" name="员工二" flowable:assignee="admin">
+    <userTask id="sid-EA859B8D-3245-4584-98C8-DE0E35319DA5" name="员工二" activiti:skipExpression="${b.incrementAndGet()}" flowable:assignee="admin">
       <extensionElements>
         <flowable:formProperty id="1622206213817_7184" name="子表单" readable="true" writable="true" />
         <flowable:formProperty id="1622206215915_74415" name="单行文本" readable="true" writable="true" />
@@ -31,10 +30,9 @@
         <flowable:formProperty id="1622210618450_95925" name="子表单" readable="true" writable="true" />
         <flowable:formProperty id="1622210621961_25895" name="多行文本" readable="true" writable="true" />
         <flowable:formProperty id="1622210627442_91255" name="多行文本" readable="true" writable="true" />
-
       </extensionElements>
     </userTask>
-    <userTask id="sid-C06A652D-3CA7-4000-A2B3-6313E03C679A" name="部门经理" flowable:assignee="admin">
+    <userTask id="sid-C06A652D-3CA7-4000-A2B3-6313E03C679A" name="部门经理" activiti:skipExpression="${d.incrementAndGet()}" flowable:assignee="admin">
       <extensionElements>
         <flowable:formProperty id="1622206213817_7184" name="子表单" readable="true" writable="true" />
         <flowable:formProperty id="1622206215915_74415" name="单行文本" readable="true" writable="true" />
@@ -42,7 +40,6 @@
         <flowable:formProperty id="1622210618450_95925" name="子表单" readable="true" writable="true" />
         <flowable:formProperty id="1622210621961_25895" name="多行文本" readable="true" writable="true" />
         <flowable:formProperty id="1622210627442_91255" name="多行文本" readable="true" writable="true" />
-
       </extensionElements>
     </userTask>
     <parallelGateway id="sid-1434ED04-ADFE-4410-8A68-327500DA4C04" name="聚合网关一" />
@@ -51,7 +48,7 @@
     <sequenceFlow id="sid-F7B8E655-8FC5-4205-93D8-64F39881DE28" sourceRef="sid-E4B059DD-FB7E-4181-BED5-588EC77647A1" targetRef="sid-1434ED04-ADFE-4410-8A68-327500DA4C04" />
     <sequenceFlow id="sid-EEBE283A-BB90-44E1-A6FA-88AA1CE52C39" sourceRef="sid-EA859B8D-3245-4584-98C8-DE0E35319DA5" targetRef="sid-1434ED04-ADFE-4410-8A68-327500DA4C04" />
     <sequenceFlow id="sid-BC06774A-44A2-43FA-BDF4-A5E701B3999A" sourceRef="sid-52E5C6C4-69CF-462A-9583-72568BE5692D" targetRef="sid-E4B059DD-FB7E-4181-BED5-588EC77647A1" />
-    <userTask id="sid-C18060F2-D0AB-4E71-A7B6-6D3654E93FFF" name="主管"  activiti:async="true"   flowable:assignee="admin">
+    <userTask id="sid-C18060F2-D0AB-4E71-A7B6-6D3654E93FFF" name="主管" activiti:async="true" activiti:skipExpression="${c.incrementAndGet()}" flowable:assignee="admin">
       <extensionElements>
         <flowable:formProperty id="1622206213817_7184" name="子表单" readable="true" writable="true" />
         <flowable:formProperty id="1622206215915_74415" name="单行文本" readable="true" writable="true" />
@@ -59,7 +56,6 @@
         <flowable:formProperty id="1622210618450_95925" name="子表单" readable="true" writable="true" />
         <flowable:formProperty id="1622210621961_25895" name="多行文本" readable="true" writable="true" />
         <flowable:formProperty id="1622210627442_91255" name="多行文本" readable="true" writable="true" />
-
       </extensionElements>
     </userTask>
     <sequenceFlow id="sid-7BA5A3D9-7BA9-4A3E-AF0A-E0F05A20FCC2" sourceRef="sid-52E5C6C4-69CF-462A-9583-72568BE5692D" targetRef="sid-C18060F2-D0AB-4E71-A7B6-6D3654E93FFF" />
@@ -67,7 +63,7 @@
     <parallelGateway id="sid-A0A5DB28-FFC6-4B14-ABC5-EE9310E39B53" name="总聚合" />
     <sequenceFlow id="sid-C2EBDC51-ABEC-4B69-9924-0101B7EA9E91" sourceRef="sid-C06A652D-3CA7-4000-A2B3-6313E03C679A" targetRef="sid-A0A5DB28-FFC6-4B14-ABC5-EE9310E39B53" />
     <sequenceFlow id="sid-85C1D7AE-4568-427E-8E6D-AFC79ED41FD9" sourceRef="sid-C18060F2-D0AB-4E71-A7B6-6D3654E93FFF" targetRef="sid-A0A5DB28-FFC6-4B14-ABC5-EE9310E39B53" />
-    <userTask id="sid-CA755ED3-B18F-41D0-BBE5-22D41CFCF024" name="老板" flowable:assignee="admin">
+    <userTask id="sid-CA755ED3-B18F-41D0-BBE5-22D41CFCF024" name="老板" activiti:skipExpression="${e.incrementAndGet()}" flowable:assignee="admin">
       <extensionElements>
         <flowable:formProperty id="1622206213817_7184" name="子表单" readable="true" writable="true" />
         <flowable:formProperty id="1622206215915_74415" name="单行文本" readable="true" writable="true" />
@@ -75,7 +71,6 @@
         <flowable:formProperty id="1622210618450_95925" name="子表单" readable="true" writable="true" />
         <flowable:formProperty id="1622210621961_25895" name="多行文本" readable="true" writable="true" />
         <flowable:formProperty id="1622210627442_91255" name="多行文本" readable="true" writable="true" />
-
       </extensionElements>
     </userTask>
     <sequenceFlow id="sid-FD581601-B9AC-4E1E-8161-8EA8A84844B2" sourceRef="sid-A0A5DB28-FFC6-4B14-ABC5-EE9310E39B53" targetRef="sid-CA755ED3-B18F-41D0-BBE5-22D41CFCF024" />
@@ -83,7 +78,7 @@
     <sequenceFlow id="sid-78026DEB-C4DA-4BF4-9723-C4EE9124E785" sourceRef="sid-CA755ED3-B18F-41D0-BBE5-22D41CFCF024" targetRef="sid-5EC7D180-D117-4F36-809B-E8940DB9FE91" />
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_ParallelGatewayTest01">
-    <bpmndi:BPMNPlane id="BPMNPlane_ParallelGatewayTest01" bpmnElement="ParallelGatewayTest01" >
+    <bpmndi:BPMNPlane id="BPMNPlane_ParallelGatewayTest01" bpmnElement="ParallelGatewayTest01">
       <bpmndi:BPMNEdge id="BPMNEdge_sid-78026DEB-C4DA-4BF4-9723-C4EE9124E785" bpmnElement="sid-78026DEB-C4DA-4BF4-9723-C4EE9124E785" bioc:stroke="#000" bioc:fill="#fff">
         <omgdi:waypoint x="790" y="201" />
         <omgdi:waypoint x="830" y="200" />

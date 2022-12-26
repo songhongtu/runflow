@@ -14,6 +14,7 @@ public class NoneEndEventActivityBehavior extends FlowNodeActivityBehavior {
     private static final long serialVersionUID = 1L;
 
     public void execute(ExecutionEntityImpl execution) {
+        LOGGER.debug("结束节点 id:" + execution.getId() + ":" + "线程名称：" + Thread.currentThread().getName() + "：" + execution.getCurrentFlowElement().getName());
         Context.getAgenda().planTakeOutgoingSequenceFlowsOperation( execution, true);
     }
 

@@ -32,7 +32,7 @@ public class ConditionUtil {
         ExpressionManager expressionManager = Context.getCommandContext().getProcessEngineConfiguration().getExpressionManager();
         ExpressionFactory expressionFactory = expressionManager.getExpressionFactory();
         ELContext elContext = expressionManager.getElContext(execution);
-        ValueExpression valueExpression = expressionFactory.createValueExpression(elContext, expression.trim(), boolean.class);
+        ValueExpression valueExpression = expressionFactory.createValueExpression(elContext, expression.trim(), Object.class);
         return   valueExpression.getValue(elContext);
     }
 
@@ -48,8 +48,7 @@ public class ConditionUtil {
 
 
         ObjectValueExpression valueExpression1 = factory.createValueExpression(new ConditionUtil(), Object.class);
-        elContext.setVariable("cu", valueExpression1);
-        ValueExpression expression1 = factory.createValueExpression(elContext, "${cu.abs(true)}", Object.class);
+        ValueExpression expression1 = factory.createValueExpression(elContext, "${2==2}", Object.class);
         System.out.println("math:sin(pi/2) = " + expression1.getValue(elContext));
 
 

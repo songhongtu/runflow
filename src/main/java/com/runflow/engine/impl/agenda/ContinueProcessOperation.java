@@ -99,7 +99,7 @@ public class ContinueProcessOperation extends AbstractOperation {
     protected void executeActivityBehavior(ActivityBehavior activityBehavior, FlowNode flowNode) {
         try {
             String name = execution.getCurrentFlowElement().getName();
-            logger.info("线程名称：{} 任务名称："+name,Thread.currentThread().getName());
+         //   logger.info("线程名称：{} 任务id：{} 任务名称："+name,Thread.currentThread().getName(),execution.getCurrentActivityId());
             activityBehavior.execute(execution);
         } catch (RuntimeException e) {
             logger.error(e.getMessage());

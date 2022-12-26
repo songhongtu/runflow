@@ -53,6 +53,8 @@ public class ProcessEngineConfigurationImpl {
 
     protected ThreadPoolExecutor executorService;
 
+    protected String resourcePath;
+
 
 
     public ProcessEngineConfigurationImpl() {
@@ -83,6 +85,10 @@ public class ProcessEngineConfigurationImpl {
 
         if (executorService == null) {
             executorService = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+        }
+
+        if(this.getResourcePath()==null){
+            this.setResourcePath("/bpmn");
         }
 
 
@@ -298,5 +304,13 @@ public class ProcessEngineConfigurationImpl {
 
     public void setRunTimeExecution(CurrentHashMapCache runTimeExecution) {
         this.runTimeExecution = runTimeExecution;
+    }
+
+    public String getResourcePath() {
+        return resourcePath;
+    }
+
+    public void setResourcePath(String resourcePath) {
+        this.resourcePath = resourcePath;
     }
 }

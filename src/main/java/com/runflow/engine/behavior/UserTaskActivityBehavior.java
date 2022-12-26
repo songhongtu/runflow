@@ -6,6 +6,10 @@ import com.runflow.engine.ExecutionEntityImpl;
 import com.runflow.engine.context.Context;
 import com.runflow.engine.impl.CommandContext;
 import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
+import com.runflow.engine.utils.ConditionUtil;
+import org.activiti.bpmn.model.CustomProperty;
+import org.activiti.bpmn.model.FlowElement;
+import org.activiti.bpmn.model.ServiceTask;
 import org.activiti.bpmn.model.UserTask;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -28,26 +32,12 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
     public void execute(ExecutionEntityImpl execution) {
         ExecutionEntityImpl execution1 = (ExecutionEntityImpl) execution;
         String name = execution1.getCurrentFlowElement().getName();
-        // LOGGER.debug("id:"+execution.getId()+":"+"线程名称："+Thread.currentThread().getName()+"："+name+":"+"开始");
-        try {
-            if (name.equals("员工一")) {
-                Thread.sleep((long) (1000));
-            }
-            if (name.equals("员工二")) {
-                Thread.sleep((long) (1000));
-            }
-            if (name.equals("主管")) {
-                Thread.sleep((long) (1000));
-            }
-            if (name.equals("部门经理")) {
-                Thread.sleep((long) (1000));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-
+        LOGGER.debug("id:" + execution.getId() + ":" + "线程名称：" + Thread.currentThread().getName() + "：" + name + ":" + "开始");
+        String skipExpression = userTask.getSkipExpression();
+        if (!StringUtils.isEmpty(skipExpression)) {
+            ConditionUtil.createExpression(skipExpression, execution);
         }
-        //    LOGGER.debug( "id:"+execution.getId()+":"+  Thread.currentThread().getName()+"："+ name+":"+"结束");
-
+        LOGGER.debug("id:" + execution.getId() + ":" + Thread.currentThread().getName() + "：" + name + ":" + "结束");
         leave(execution);
     }
 

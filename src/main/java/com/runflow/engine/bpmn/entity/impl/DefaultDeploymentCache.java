@@ -27,7 +27,6 @@ public class DefaultDeploymentCache<T> {
             // 0.75 is the default (see javadocs)
             // true will keep the 'access-order', which is needed to have a real LRU cache
             private static final long serialVersionUID = 1L;
-
             protected boolean removeEldestEntry(Map.Entry<String, T> eldest) {
                 boolean removeEldest = size() > limit;
                 if (removeEldest && logger.isTraceEnabled()) {
@@ -62,6 +61,12 @@ public class DefaultDeploymentCache<T> {
     // For testing purposes only
     public int size() {
         return cache.size();
+    }
+
+
+    public static void main(String[] args) {
+        DefaultDeploymentCache<Object> objectDefaultDeploymentCache = new DefaultDeploymentCache<>(1);
+        objectDefaultDeploymentCache.remove("1");
     }
 
 }

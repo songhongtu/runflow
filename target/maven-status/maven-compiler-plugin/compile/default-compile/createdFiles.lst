@@ -40,6 +40,7 @@ com\runflow\engine\context\Context.class
 com\runflow\engine\ActivitiEngineAgenda.class
 com\runflow\engine\impl\CommandContext.class
 com\runflow\engine\impl\ProcessEngineImpl.class
+com\runflow\engine\FileWatchServiceTask.class
 com\runflow\engine\bpmn\entity\ProcessDefinition.class
 com\runflow\engine\runtime\Execution.class
 com\runflow\engine\interceptor\DebugCommandInvoker.class
@@ -86,6 +87,7 @@ com\runflow\engine\ActivitiEngineAgendaFactory.class
 com\runflow\engine\impl\agenda\TakeOutgoingSequenceFlowsOperation.class
 com\runflow\engine\interceptor\AbstractCommandInterceptor.class
 com\runflow\engine\interceptor\CommandContextFactory.class
+com\runflow\engine\behavior\model\CustomUserTask.class
 com\runflow\engine\cmd\DeploymentSettings.class
 com\runflow\engine\parse\AbstractActivityBpmnParseHandler.class
 com\runflow\engine\parse\handler\EndEventParseHandler.class

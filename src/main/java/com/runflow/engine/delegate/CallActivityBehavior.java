@@ -16,6 +16,7 @@ import org.activiti.bpmn.model.Process;
 
 import javax.el.Expression;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class CallActivityBehavior extends AbstractBpmnActivityBehavior implements SubProcessActivityBehavior {
@@ -59,7 +60,9 @@ public class CallActivityBehavior extends AbstractBpmnActivityBehavior implement
         subProcessInitialExecution.setCurrentFlowElement(initialFlowElement);
 
         List<IOParameter> inParameters = callActivity.getInParameters();
+        Map<String, Object> variableInstances = execution.getVariableInstances();
 
+        subProcessInstance.setVariableInstances(variableInstances);
         ProcessEngineConfigurationImpl processEngineConfiguration = Context.getProcessEngineConfiguration();
 
 

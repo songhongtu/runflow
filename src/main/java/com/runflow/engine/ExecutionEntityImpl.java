@@ -47,7 +47,7 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
 
     // state/type of execution //////////////////////////////////////////////////
 
-    protected boolean isActive = true;
+    protected  boolean isActive = true;
     protected boolean isScope = true;
     protected boolean isEnded;
 
@@ -191,6 +191,12 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
 
     public void setVariableInstances(String variableName, Object value) {
         this.setVariableInstances(variableName, value, this);
+    }
+
+
+
+    public void setVariableInstances(Map<String,Object> map){
+        this.variableInstances = map;
     }
 
     public void setVariableInstances(String variableName, Object value, ExecutionEntityImpl sourceExecution) {
@@ -370,13 +376,8 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
 
 
     public String randomID() {
-        String s = (int) (Math.random() * 10000) + "";
-        List<ExecutionEntityImpl> superParent = this.findAllExection();
-        boolean b = superParent.stream().anyMatch(e -> e.getId()!=null&&e.getId().equals(s));
-        if (b) {
-          return this.randomID();
-        }
-        return s;
+
+        return UUID.randomUUID().toString();
     }
 
 
