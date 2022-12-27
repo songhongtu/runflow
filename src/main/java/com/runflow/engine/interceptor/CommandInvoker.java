@@ -1,6 +1,5 @@
 package com.runflow.engine.interceptor;
 
-import com.runflow.engine.ActivitiException;
 import com.runflow.engine.context.Context;
 import com.runflow.engine.impl.Command;
 import com.runflow.engine.impl.CommandConfig;
@@ -9,7 +8,6 @@ import com.runflow.engine.impl.agenda.AbstractOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.locks.LockSupport;
 
 public class CommandInvoker extends AbstractCommandInterceptor {
@@ -57,10 +55,6 @@ public class CommandInvoker extends AbstractCommandInterceptor {
             // Execute the operation if the operation has no execution (i.e. it's an operation not working on a process instance)
             // or the operation has an execution and it is not ended
             if (operation.getExecution() == null || !operation.getExecution().isEnded()) {
-
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Executing operation {} ", operation.getClass());
-                }
 
                 runnable.run();
 

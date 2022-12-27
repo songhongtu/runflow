@@ -1,13 +1,8 @@
 package com.runflow.engine.parse;
 
-import com.runflow.engine.ActivitiException;
-import com.runflow.engine.bpmn.deployer.ParsedDeployment;
+import com.runflow.engine.RunFlowException;
 import com.runflow.engine.bpmn.entity.DeploymentEntity;
 import com.runflow.engine.bpmn.entity.ProcessDefinitionEntity;
-import com.runflow.engine.bpmn.entity.impl.DefaultDeploymentCache;
-import com.runflow.engine.bpmn.entity.impl.ProcessDefinitionCacheEntry;
-import com.runflow.engine.context.Context;
-import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
 import com.runflow.engine.util.io.InputStreamSource;
 import com.runflow.engine.util.io.StreamSource;
 import org.activiti.bpmn.converter.BpmnXMLConverter;
@@ -19,8 +14,6 @@ import org.activiti.validation.ValidationError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.*;
 
@@ -96,7 +89,7 @@ public class BpmnParse {
 
             // Throw exception if there is any error
             if (errorBuilder.length() > 0) {
-                throw new ActivitiException("Errors while parsing:\n" + errorBuilder.toString());
+                throw new RunFlowException("Errors while parsing:\n" + errorBuilder.toString());
             }
 
             // Write out warnings (if any)
@@ -245,7 +238,7 @@ public class BpmnParse {
 
     protected void setStreamSource(StreamSource streamSource) {
         if (this.streamSource != null) {
-            throw new ActivitiException("invalid: multiple sources " + this.streamSource + " and " + streamSource);
+            throw new RunFlowException("invalid: multiple sources " + this.streamSource + " and " + streamSource);
         }
         this.streamSource = streamSource;
     }

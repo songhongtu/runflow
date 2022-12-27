@@ -1,9 +1,7 @@
 package com.runflow.engine.behavior;
 
-import com.runflow.engine.ActivitiException;
-import com.runflow.engine.ExecutionEntity;
+import com.runflow.engine.RunFlowException;
 import com.runflow.engine.ExecutionEntityImpl;
-import com.runflow.engine.context.Context;
 import com.runflow.engine.parse.handler.EndEventParseHandler;
 import com.runflow.engine.utils.ConditionUtil;
 import org.activiti.bpmn.model.ExclusiveGateway;
@@ -67,7 +65,7 @@ public class ExclusiveGatewayActivityBehavior extends GatewayActivityBehavior {
                     execution.setCurrentFlowElement(emptyOutgoingSequenceFlow);
                 } else {
                     // No sequence flow could be found, not even a default one
-                    throw new ActivitiException("No outgoing sequence flow of the exclusive gateway '" + exclusiveGateway.getId() + "' could be selected for continuing the process");
+                    throw new RunFlowException("No outgoing sequence flow of the exclusive gateway '" + exclusiveGateway.getId() + "' could be selected for continuing the process");
                 }
             }
         }

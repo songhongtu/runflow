@@ -228,7 +228,7 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
 
     protected void ensureParentInitialized() {
         if (parent == null && parentId != null) {
-            throw new ActivitiException("parentId 不存在");
+            throw new RunFlowException("parentId 不存在");
             // parent = (ExecutionEntityImpl) Context.getCommandContext().getExecutionEntityManager().findById(parentId);
         }
     }
@@ -281,7 +281,7 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
     @SuppressWarnings({"unchecked", "rawtypes"})
     protected void ensureExecutionsInitialized() {
         if (executions == null) {
-            throw new ActivitiException("不支持");
+            throw new RunFlowException("不支持");
         }
     }
 

@@ -1,20 +1,16 @@
 package com.runflow.engine.impl.agenda;
 
-import com.runflow.engine.ActivitiException;
-import com.runflow.engine.ExecutionEntity;
+import com.runflow.engine.RunFlowException;
 import com.runflow.engine.ExecutionEntityImpl;
 import com.runflow.engine.context.Context;
 import com.runflow.engine.impl.CommandContext;
-import com.runflow.engine.utils.CollectionUtil;
 import com.runflow.engine.utils.ConditionUtil;
-import com.runflow.engine.utils.SkipExpressionUtil;
 import org.activiti.bpmn.model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
@@ -43,7 +39,7 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
              * the execution there and don't go up in the scopes as we usually do
              * to find the outgoing sequenceflow
              */
-            throw new ActivitiException("不支持");
+            throw new RunFlowException("不支持");
         }
 
         if (currentFlowElement instanceof FlowNode) {
@@ -56,7 +52,7 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
     protected void handleFlowNode(FlowNode flowNode) {
         if (flowNode.getParentContainer() != null
                 && flowNode.getParentContainer() instanceof AdhocSubProcess) {
-            throw new ActivitiException("不支持");
+            throw new RunFlowException("不支持");
         } else {
             leaveFlowNode(flowNode);
         }
@@ -64,10 +60,6 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
 
 
     protected void leaveFlowNode(FlowNode flowNode) {
-
-        logger.debug("Leaving flow node {} with id '{}' by following it's {} outgoing sequenceflow",
-                flowNode.getClass(), flowNode.getId(), flowNode.getOutgoingFlows().size());
-
         // Get default sequence flow (if set)
         String defaultSequenceFlowId = null;
         if (flowNode instanceof Activity) {
@@ -108,23 +100,14 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
         // No outgoing found. Ending the execution
         if (outgoingSequenceFlows.size() == 0) {
             if (flowNode.getOutgoingFlows() == null || flowNode.getOutgoingFlows().size() == 0) {
-                logger.debug("No outgoing sequence flow found for flow node '{}'.", flowNode.getId());
-
-                //todo
                 Context.getAgenda().planEndExecutionOperation(execution);
-
             } else {
-                throw new ActivitiException("No outgoing sequence flow of element '" + flowNode.getId() + "' could be selected for continuing the process");
+                throw new RunFlowException("No outgoing sequence flow of element '" + flowNode.getId() + "' could be selected for continuing the process");
             }
 
         } else {
-
-            // Leave, and reuse the incoming sequence flow, make executions for all the others (if applicable)
-
             List<ExecutionEntityImpl> outgoingExecutions = new ArrayList<ExecutionEntityImpl>(flowNode.getOutgoingFlows().size());
-
             SequenceFlow sequenceFlow = outgoingSequenceFlows.get(0);
-
             // Reuse existing one
             execution.setCurrentFlowElement(sequenceFlow);
             execution.setActive(true);

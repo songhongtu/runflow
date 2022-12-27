@@ -27,7 +27,7 @@ public class Application {
 
     ProcessEngineConfigurationImpl conf = new ProcessEngineConfigurationImpl();
 
-    RunTimeServiceImpl repositoryService = conf.getRepositoryService();
+    RunTimeServiceImpl repositoryService = conf.getRunTimeService();
 
     {
         conf.init();
@@ -62,7 +62,7 @@ public class Application {
     public void executeParallelLeave() throws FileNotFoundException, InterruptedException {
         String fileName = "parallelLeave.bpmn";
         FileInputStream fileInputStream = new FileInputStream("C:\\Users\\songhongtu\\Desktop\\parallelLeave.bpmn");
-        RunTimeServiceImpl repositoryService = conf.getRepositoryService();
+        RunTimeServiceImpl repositoryService = conf.getRunTimeService();
         repositoryService.createDeployment().name(fileName).addInputStream(fileName, fileInputStream).deploy();
         ExecutionEntityImpl leave = repositoryService.startWorkflow("parallelLeave");
 
@@ -160,7 +160,7 @@ public class Application {
 
         String fileName = "ParallelGatewayTest.bpmn";
         FileInputStream fileInputStream = new FileInputStream("C:\\Users\\songhongtu\\Desktop\\ParallelGatewayTest.bpmn");
-        RunTimeServiceImpl repositoryService = conf.getRepositoryService();
+        RunTimeServiceImpl repositoryService = conf.getRunTimeService();
         repositoryService.createDeployment().name(fileName).addInputStream(fileName, fileInputStream).deploy();
         AtomicInteger a = new AtomicInteger(0);
         AtomicInteger b = new AtomicInteger(0);
@@ -208,7 +208,7 @@ public class Application {
         }
         String fileName = "diagram.bpmn";
         FileInputStream fileInputStream = new FileInputStream("C:\\Users\\songhongtu\\Desktop\\" + fileName);
-        RunTimeServiceImpl repositoryService = conf.getRepositoryService();
+        RunTimeServiceImpl repositoryService = conf.getRunTimeService();
         repositoryService.createDeployment().name(fileName).addInputStream(fileName, fileInputStream).deploy();
         ExecutionEntityImpl leave = repositoryService.startWorkflow("Process_1");
 
@@ -219,9 +219,9 @@ public class Application {
     public void generater() throws FileNotFoundException, InterruptedException {
         String fileName = "diagram.bpmn";
         FileInputStream fileInputStream = new FileInputStream("C:\\Users\\songhongtu\\Desktop\\" + fileName);
-        RunTimeServiceImpl repositoryService = conf.getRepositoryService();
+        RunTimeServiceImpl repositoryService = conf.getRunTimeService();
         repositoryService.createDeployment().name(fileName).addInputStream(fileName, fileInputStream).deploy();
-        conf.getRepositoryService().generaImages("Process_1");
+        conf.getRunTimeService().generaImages("Process_1");
 
     }
 

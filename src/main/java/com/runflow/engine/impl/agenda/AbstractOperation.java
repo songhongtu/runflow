@@ -1,10 +1,10 @@
 package com.runflow.engine.impl.agenda;
 
-import com.runflow.engine.ActivitiException;
+import com.runflow.engine.RunFlowException;
 import com.runflow.engine.Agenda;
 import com.runflow.engine.ExecutionEntity;
 import com.runflow.engine.ExecutionEntityImpl;
-import com.runflow.engine.delegate.DefaultActivitiEngineAgenda;
+import com.runflow.engine.delegate.DefaultRunFlowEngineAgenda;
 import com.runflow.engine.impl.CommandContext;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.HasExecutionListeners;
@@ -56,14 +56,14 @@ public abstract class AbstractOperation implements Runnable {
      */
     protected void executeExecutionListeners(HasExecutionListeners elementWithExecutionListeners,
                                              ExecutionEntity executionEntity, String eventType) {
-      throw new ActivitiException("不支持监听器");
+      throw new RunFlowException("不支持监听器");
     }
 
     /**
      * Returns the first parent execution of the provided execution that is a scope.
      */
     protected ExecutionEntity findFirstParentScopeExecution(ExecutionEntity executionEntity) {
-        throw new ActivitiException("不支持持久化");
+        throw new RunFlowException("不支持持久化");
     }
 
     public CommandContext getCommandContext() {
@@ -78,7 +78,7 @@ public abstract class AbstractOperation implements Runnable {
         return agenda;
     }
 
-    public void setAgenda(DefaultActivitiEngineAgenda agenda) {
+    public void setAgenda(DefaultRunFlowEngineAgenda agenda) {
         this.agenda = agenda;
     }
 

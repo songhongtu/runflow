@@ -1,6 +1,6 @@
 package com.runflow.engine.parse.handler;
 
-import com.runflow.engine.ActivitiException;
+import com.runflow.engine.RunFlowException;
 import com.runflow.engine.behavior.NoneStartEventActivityBehavior;
 import com.runflow.engine.parse.AbstractActivityBpmnParseHandler;
 import com.runflow.engine.parse.BpmnParse;
@@ -17,7 +17,7 @@ public class StartEventParseHandler extends AbstractActivityBpmnParseHandler<Sta
     @Override
     protected void executeParse(BpmnParse bpmnParse, StartEvent element) {
         if (element.getSubProcess() != null && element.getSubProcess() instanceof EventSubProcess) {
-                throw new ActivitiException("暂时不支持子流程");
+                throw new RunFlowException("暂时不支持子流程");
         } else if (CollectionUtil.isEmpty(element.getEventDefinitions())) {
             element.setBehavior(new NoneStartEventActivityBehavior());
         }

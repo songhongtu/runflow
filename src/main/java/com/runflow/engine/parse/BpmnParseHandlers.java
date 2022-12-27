@@ -1,6 +1,6 @@
 package com.runflow.engine.parse;
 
-import com.runflow.engine.ActivitiException;
+import com.runflow.engine.RunFlowException;
 import org.activiti.bpmn.model.BaseElement;
 import org.activiti.bpmn.model.DataObject;
 import org.activiti.bpmn.model.FlowElement;
@@ -58,7 +58,7 @@ public class BpmnParseHandlers {
         List<BpmnParseHandler> handlers = parseHandlers.get(element.getClass());
 
         if (handlers == null) {
-            throw new ActivitiException("不支持处理类型："+element.getClass());
+            throw new RunFlowException("不支持处理类型："+element.getClass());
         } else {
             for (BpmnParseHandler handler : handlers) {
                 handler.parse(bpmnParse, element);

@@ -6,9 +6,6 @@ public interface Agenda {
 
     Runnable getNextOperation();
 
-    /**
-     * Generic method to plan a {@link Runnable}.
-     */
     void planOperation(Runnable operation);
 
 }

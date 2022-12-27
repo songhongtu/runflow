@@ -1,6 +1,6 @@
 package com.runflow.engine.impl;
 
-import com.runflow.engine.ActivitiException;
+import com.runflow.engine.RunFlowException;
 import com.runflow.engine.bpmn.entity.Deployment;
 import com.runflow.engine.bpmn.entity.DeploymentEntity;
 import com.runflow.engine.bpmn.entity.ResourceEntity;
@@ -42,7 +42,7 @@ public class DeploymentBuilderImpl  implements DeploymentBuilder, Serializable {
 
     public DeploymentBuilder addInputStream(String resourceName, InputStream inputStream) {
         if (inputStream == null) {
-            throw new ActivitiException("inputStream for resource '" + resourceName + "' is null");
+            throw new RunFlowException("inputStream for resource '" + resourceName + "' is null");
         }
         byte[] bytes = IoUtil.readInputStream(inputStream, resourceName);
         ResourceEntity resource =new ResourceEntityImpl();
@@ -55,21 +55,21 @@ public class DeploymentBuilderImpl  implements DeploymentBuilder, Serializable {
     public DeploymentBuilder addClasspathResource(String resource) {
         InputStream inputStream = ReflectUtil.getResourceAsStream(resource);
         if (inputStream == null) {
-            throw new ActivitiException("resource '" + resource + "' not found");
+            throw new RunFlowException("resource '" + resource + "' not found");
         }
         return addInputStream(resource, inputStream);
     }
 
     public DeploymentBuilder addString(String resourceName, String text) {
         if (text == null) {
-            throw new ActivitiException("text is null");
+            throw new RunFlowException("text is null");
         }
         ResourceEntity resource = new ResourceEntityImpl();
         resource.setName(resourceName);
         try {
             resource.setBytes(text.getBytes(DEFAULT_ENCODING));
         } catch (UnsupportedEncodingException e) {
-            throw new ActivitiException("Unable to get process bytes.", e);
+            throw new RunFlowException("Unable to get process bytes.", e);
         }
         deployment.addResource(resource);
         return this;
@@ -77,7 +77,7 @@ public class DeploymentBuilderImpl  implements DeploymentBuilder, Serializable {
 
     public DeploymentBuilder addBytes(String resourceName, byte[] bytes) {
         if (bytes == null) {
-            throw new ActivitiException("bytes is null");
+            throw new RunFlowException("bytes is null");
         }
         ResourceEntity resource = new ResourceEntityImpl();
         resource.setName(resourceName);
@@ -102,7 +102,7 @@ public class DeploymentBuilderImpl  implements DeploymentBuilder, Serializable {
                 entry = zipInputStream.getNextEntry();
             }
         } catch (Exception e) {
-            throw new ActivitiException("problem reading zip input stream", e);
+            throw new RunFlowException("problem reading zip input stream", e);
         }
         return this;
     }
@@ -113,7 +113,7 @@ public class DeploymentBuilderImpl  implements DeploymentBuilder, Serializable {
             String bpmn20Xml = new String(bpmnXMLConverter.convertToXML(bpmnModel), "UTF-8");
             addString(resourceName, bpmn20Xml);
         } catch (UnsupportedEncodingException e) {
-            throw new ActivitiException("Error while transforming BPMN model to xml: not UTF-8 encoded", e);
+            throw new RunFlowException("Error while transforming BPMN model to xml: not UTF-8 encoded", e);
         }
         return this;
     }

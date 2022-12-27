@@ -1,6 +1,7 @@
 package com.runflow.engine.el;
 
 import com.runflow.engine.ExecutionEntityImpl;
+import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
 import de.odysseus.el.ExpressionFactoryImpl;
 import de.odysseus.el.util.SimpleContext;
 import de.odysseus.el.util.SimpleResolver;
@@ -8,6 +9,12 @@ import de.odysseus.el.util.SimpleResolver;
 import javax.el.*;
 
 public class ExpressionManager {
+    private ProcessEngineConfigurationImpl processEngineConfiguration;
+
+    public ExpressionManager(ProcessEngineConfigurationImpl processEngineConfiguration) {
+        this.processEngineConfiguration = processEngineConfiguration;
+    }
+
     protected ExpressionFactory expressionFactory = new ExpressionFactoryImpl();
 
 
@@ -30,6 +37,9 @@ public class ExpressionManager {
     protected ELResolver createElResolver(ExecutionEntityImpl variableScope) {
         CompositeELResolver elResolver = new CompositeELResolver();
         elResolver.add(new VariableScopeElResolver(variableScope));
+        for (ELResolver resolver : processEngineConfiguration.getResolverList()) {
+            elResolver.add(resolver);
+        }
         elResolver.add(new ArrayELResolver());
         elResolver.add(new ListELResolver());
         elResolver.add(new MapELResolver());

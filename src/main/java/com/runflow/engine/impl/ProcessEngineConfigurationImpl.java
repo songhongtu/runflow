@@ -1,60 +1,51 @@
 package com.runflow.engine.impl;
 
-import com.runflow.engine.ActivitiEngineAgendaFactory;
-import com.runflow.engine.ActivitiException;
-import com.runflow.engine.CommandExecutorImpl;
-import com.runflow.engine.ExecutionEntityImpl;
+import com.runflow.engine.*;
 import com.runflow.engine.bpmn.deployer.BpmnDeployer;
 import com.runflow.engine.bpmn.entity.impl.DefaultDeploymentCache;
 import com.runflow.engine.bpmn.entity.impl.ProcessDefinitionCacheEntry;
-import com.runflow.engine.cache.SessionFactory;
 import com.runflow.engine.cache.impl.CurrentHashMapCache;
+import com.runflow.engine.cmd.StartProcessInstanceCmd;
 import com.runflow.engine.el.ExpressionManager;
 import com.runflow.engine.interceptor.*;
 import com.runflow.engine.parse.BpmnParseHandler;
 import com.runflow.engine.parse.BpmnParseHandlers;
 import com.runflow.engine.parse.BpmnParser;
 import com.runflow.engine.parse.handler.*;
-import de.odysseus.el.util.SimpleContext;
 import org.activiti.image.ProcessDiagramGenerator;
 import org.activiti.image.impl.DefaultProcessDiagramGenerator;
 
-import javax.el.ELContext;
-import javax.el.ExpressionFactory;
-import java.io.FileNotFoundException;
+import javax.el.ELResolver;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public class ProcessEngineConfigurationImpl {
 
-    protected String processEngineName = "6.0.0";
     public static final String NO_TENANT_ID = "";
     protected BpmnParser bpmnParser;
     private CommandExecutorImpl commandExecutor;
     protected CommandInterceptor commandInvoker;
     protected CommandContextFactory commandContextFactory;
-    protected ActivitiEngineAgendaFactory engineAgendaFactory;
-
+    protected RunFlowEngineAgendaFactory engineAgendaFactory;
     protected CommandConfig defaultCommandConfig;
     protected List<CommandInterceptor> commandInterceptors;
-
     protected ProcessDiagramGenerator processDiagramGenerator;
-
     protected ClassLoader classLoader;
     protected BpmnDeployer bpmnDeployer;
-    protected RunTimeServiceImpl repositoryService = new RunTimeServiceImpl();
+    protected RunTimeServiceImpl runTimeService;
     protected DefaultDeploymentCache<ProcessDefinitionCacheEntry> processDefinitionCache;
-
-    protected  ExpressionManager expressionManager;
-    private CurrentHashMapCache<ExecutionEntityImpl> runTimeExecution = new CurrentHashMapCache<>();
-
-    protected ThreadPoolExecutor executorService;
-
+    protected ExpressionManager expressionManager;
+    private CurrentHashMapCache<ExecutionEntityImpl> runTimeExecution;
+    protected ExecutorService executorService;
     protected String resourcePath;
+    protected List<ELResolver> resolverList = new ArrayList<>();
 
+    //第一次是否加载
+    public static volatile boolean isLoad = false;
 
 
     public ProcessEngineConfigurationImpl() {
@@ -73,21 +64,27 @@ public class ProcessEngineConfigurationImpl {
 
 
     public void init() {
-
+        if (runTimeService == null) {
+            runTimeService = new RunTimeServiceImpl();
+        }
+        if (runTimeExecution == null) {
+            runTimeExecution = new CurrentHashMapCache<ExecutionEntityImpl>();
+        }
         initCommandContextFactory();
         initCommandExecutors();
         initCache();
         initServices();
         initBpmnParser();
         initDeployers();
-        processDiagramGenerator = new DefaultProcessDiagramGenerator();
-        initExpression();
-
-        if (executorService == null) {
-            executorService = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+        if (processDiagramGenerator == null) {
+            processDiagramGenerator = new DefaultProcessDiagramGenerator();
         }
 
-        if(this.getResourcePath()==null){
+        initExpression();
+        if (executorService == null) {
+            this.executorService = Executors.newCachedThreadPool();
+        }
+        if (this.getResourcePath() == null) {
             this.setResourcePath("/bpmn");
         }
 
@@ -95,8 +92,7 @@ public class ProcessEngineConfigurationImpl {
     }
 
     public void initExpression() {
-        expressionManager=     new ExpressionManager();
-
+        expressionManager = new ExpressionManager(this);
     }
 
     public void initCache() {
@@ -120,7 +116,7 @@ public class ProcessEngineConfigurationImpl {
 
 
     public void initServices() {
-        initService(repositoryService);
+        initService(runTimeService);
     }
 
     public void initService(Object service) {
@@ -153,9 +149,43 @@ public class ProcessEngineConfigurationImpl {
     }
 
 
+    public ProcessEngineConfigurationImpl customResolver(ELResolver resolver) {
+        this.getResolverList().add(resolver);
+        return this;
+    }
+
+    public void refresh(){
+        isLoad=false;
+    }
+
+
+    //扫描bpmn文件，确保只扫描一次
+    public void scan() {
+        if (!isLoad) {
+            synchronized (StartProcessInstanceCmd.class) {
+                if (!isLoad) {
+                    String path = Application.class.getClassLoader().getResource("").getPath();//注意getResource("")里面是空字符串
+                    File file = new File(path + getResourcePath());
+                    for (File f : file.listFiles()) {
+                        try {
+                            runTimeService.createDeployment().name(f.getName()).addInputStream(f.getName(), new FileInputStream(f)).deploy();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                    isLoad = true;
+
+                }
+            }
+        }
+
+    }
+
+
     public CommandInterceptor initInterceptorChain(List<CommandInterceptor> chain) {
         if (chain == null || chain.isEmpty()) {
-            throw new ActivitiException("invalid command interceptor chain configuration: " + chain);
+            throw new RunFlowException("invalid command interceptor chain configuration: " + chain);
         }
         for (int i = 0; i < chain.size() - 1; i++) {
             chain.get(i).setNext(chain.get(i + 1));
@@ -196,7 +226,6 @@ public class ProcessEngineConfigurationImpl {
     }
 
 
-
     public CommandExecutorImpl getCommandExecutor() {
         return commandExecutor;
     }
@@ -205,11 +234,11 @@ public class ProcessEngineConfigurationImpl {
         this.commandExecutor = commandExecutor;
     }
 
-    public void setEngineAgendaFactory(ActivitiEngineAgendaFactory engineAgendaFactory) {
+    public void setEngineAgendaFactory(RunFlowEngineAgendaFactory engineAgendaFactory) {
         this.engineAgendaFactory = engineAgendaFactory;
     }
 
-    public ActivitiEngineAgendaFactory getEngineAgendaFactory() {
+    public RunFlowEngineAgendaFactory getEngineAgendaFactory() {
         return engineAgendaFactory;
     }
 
@@ -261,20 +290,20 @@ public class ProcessEngineConfigurationImpl {
         this.bpmnParser = bpmnParser;
     }
 
-    public String getProcessEngineName() {
-        return processEngineName;
+    public RunTimeServiceImpl getRunTimeService() {
+        return runTimeService;
     }
 
-    public void setProcessEngineName(String processEngineName) {
-        this.processEngineName = processEngineName;
+    public void setRunTimeService(RunTimeServiceImpl runTimeService) {
+        this.runTimeService = runTimeService;
     }
 
-    public RunTimeServiceImpl getRepositoryService() {
-        return repositoryService;
+    public void setRunTimeExecution(CurrentHashMapCache<ExecutionEntityImpl> runTimeExecution) {
+        this.runTimeExecution = runTimeExecution;
     }
 
-    public void setRepositoryService(RunTimeServiceImpl repositoryService) {
-        this.repositoryService = repositoryService;
+    public void setExecutorService(ExecutorService executorService) {
+        this.executorService = executorService;
     }
 
     public DefaultDeploymentCache<ProcessDefinitionCacheEntry> getProcessDefinitionCache() {
@@ -290,7 +319,7 @@ public class ProcessEngineConfigurationImpl {
         return expressionManager;
     }
 
-    public ThreadPoolExecutor getExecutorService() {
+    public ExecutorService getExecutorService() {
         return executorService;
     }
 
@@ -302,9 +331,6 @@ public class ProcessEngineConfigurationImpl {
         return runTimeExecution;
     }
 
-    public void setRunTimeExecution(CurrentHashMapCache runTimeExecution) {
-        this.runTimeExecution = runTimeExecution;
-    }
 
     public String getResourcePath() {
         return resourcePath;
@@ -312,5 +338,13 @@ public class ProcessEngineConfigurationImpl {
 
     public void setResourcePath(String resourcePath) {
         this.resourcePath = resourcePath;
+    }
+
+    public List<ELResolver> getResolverList() {
+        return resolverList;
+    }
+
+    public void setResolverList(List<ELResolver> resolverList) {
+        this.resolverList = resolverList;
     }
 }

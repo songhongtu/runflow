@@ -1,6 +1,6 @@
 package com.runflow.engine.utils;
 
-import com.runflow.engine.ActivitiException;
+import com.runflow.engine.RunFlowException;
 import com.runflow.engine.ExecutionEntity;
 
 public class SkipExpressionUtil {
@@ -14,7 +14,7 @@ public class SkipExpressionUtil {
 
 
     private static boolean checkSkipExpressionVariable(ExecutionEntity execution) {
-            throw new ActivitiException("不支持");
+            throw new RunFlowException("不支持");
     }
 
 }

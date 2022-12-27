@@ -1,6 +1,5 @@
 package com.runflow.engine.interceptor;
 
-import com.runflow.engine.ActivitiException;
 import com.runflow.engine.context.Context;
 import com.runflow.engine.impl.Command;
 import com.runflow.engine.impl.CommandConfig;

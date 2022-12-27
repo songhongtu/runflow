@@ -1,6 +1,6 @@
 package com.runflow.engine.util.io;
 
-import com.runflow.engine.ActivitiException;
+import com.runflow.engine.RunFlowException;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -26,7 +26,7 @@ public class InputStreamSource implements StreamSource {
             try {
                 bytes = getBytesFromInputStream(inputStream);
             } catch (IOException e) {
-                throw new ActivitiException("Could not read from inputstream", e);
+                throw new RunFlowException("Could not read from inputstream", e);
             }
         }
         return new BufferedInputStream(new ByteArrayInputStream(bytes));
@@ -47,7 +47,7 @@ public class InputStreamSource implements StreamSource {
         }
 
         if (offset < bytes.length) {
-            throw new ActivitiException("Could not completely read inputstream ");
+            throw new RunFlowException("Could not completely read inputstream ");
         }
 
         // Close the input stream and return bytes

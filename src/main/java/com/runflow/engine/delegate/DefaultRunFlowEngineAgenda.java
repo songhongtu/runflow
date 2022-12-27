@@ -1,6 +1,6 @@
 package com.runflow.engine.delegate;
 
-import com.runflow.engine.ActivitiEngineAgenda;
+import com.runflow.engine.RunFlowEngineAgenda;
 import com.runflow.engine.ExecutionEntity;
 import com.runflow.engine.ExecutionEntityImpl;
 import com.runflow.engine.impl.CommandContext;
@@ -13,15 +13,15 @@ import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 
-public class DefaultActivitiEngineAgenda implements ActivitiEngineAgenda {
+public class DefaultRunFlowEngineAgenda implements RunFlowEngineAgenda {
 
 
-    private static final Logger logger = LoggerFactory.getLogger(DefaultActivitiEngineAgenda.class);
+    private static final Logger logger = LoggerFactory.getLogger(DefaultRunFlowEngineAgenda.class);
 
     protected LinkedList<Runnable> operations = new LinkedList<Runnable>();
     protected CommandContext commandContext;
 
-    public DefaultActivitiEngineAgenda(CommandContext commandContext) {
+    public DefaultRunFlowEngineAgenda(CommandContext commandContext) {
         this.commandContext = commandContext;
     }
 
@@ -51,7 +51,6 @@ public class DefaultActivitiEngineAgenda implements ActivitiEngineAgenda {
                 commandContext.addInvolvedExecution(execution);
             }
         }
-        logger.debug("Operation {} added to agenda", operation.getClass());
     }
 
     @Override

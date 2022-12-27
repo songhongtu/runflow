@@ -1,16 +1,12 @@
 package com.runflow.engine.delegate;
 
-import com.runflow.engine.ActivitiException;
-import com.runflow.engine.ExecutionEntity;
+import com.runflow.engine.RunFlowException;
 import com.runflow.engine.ExecutionEntityImpl;
 import com.runflow.engine.behavior.AbstractBpmnActivityBehavior;
 import com.runflow.engine.bpmn.entity.ProcessDefinition;
 import com.runflow.engine.bpmn.entity.impl.ProcessDefinitionCacheEntry;
 import com.runflow.engine.context.Context;
-import com.runflow.engine.el.ExpressionManager;
 import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
-import com.runflow.engine.utils.CollectionUtil;
-import com.runflow.engine.utils.ConditionUtil;
 import org.activiti.bpmn.model.*;
 import org.activiti.bpmn.model.Process;
 
@@ -42,7 +38,7 @@ public class CallActivityBehavior extends AbstractBpmnActivityBehavior implement
 
         ProcessDefinitionCacheEntry processDefinitionCacheEntry = Context.getProcessEngineConfiguration().getProcessDefinitionCache().get(finalProcessDefinitonKey);
         if (processDefinitionCacheEntry == null) {
-            throw new ActivitiException("找不到子流程");
+            throw new RunFlowException("找不到子流程");
         }
 
         String uuid = UUID.randomUUID().toString();

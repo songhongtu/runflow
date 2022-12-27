@@ -1,7 +1,7 @@
 package com.runflow.engine.context;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.runflow.engine.ActivitiEngineAgenda;
+import com.runflow.engine.RunFlowEngineAgenda;
 import com.runflow.engine.impl.CommandContext;
 import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
 
@@ -22,7 +22,7 @@ public  class Context {
         return stack.peek();
     }
 
-    public static ActivitiEngineAgenda getAgenda() {
+    public static RunFlowEngineAgenda getAgenda() {
         return getCommandContext().getAgenda();
     }
 

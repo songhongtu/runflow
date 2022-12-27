@@ -2,7 +2,7 @@ package com.runflow.engine;
 
 import com.runflow.engine.repository.DeploymentBuilder;
 
-public interface RepositoryService {
+public interface RunTimeService {
     /** Starts creating a new deployment */
     DeploymentBuilder createDeployment();
 

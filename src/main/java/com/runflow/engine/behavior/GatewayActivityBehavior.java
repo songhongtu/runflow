@@ -17,7 +17,7 @@ public abstract class GatewayActivityBehavior extends FlowNodeActivityBehavior {
 
     @Override
     public void execute(ExecutionEntityImpl execution) {
-        LOGGER.debug("排它网关 id:" + execution.getId() + ":" + "线程名称：" + Thread.currentThread().getName() + "：" + execution.getCurrentFlowElement().getName());
+        LOGGER.debug("排他网关  名称：{}  id:{}  线程名称:{} ",execution.getCurrentFlowElement().getName(),execution.getId(),Thread.currentThread().getName());
         super.execute(execution);
     }
 }

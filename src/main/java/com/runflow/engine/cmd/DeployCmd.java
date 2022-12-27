@@ -1,15 +1,11 @@
 package com.runflow.engine.cmd;
 
-import com.runflow.engine.ActivitiException;
 import com.runflow.engine.bpmn.deployer.ParsedDeployment;
 import com.runflow.engine.bpmn.entity.Deployment;
 import com.runflow.engine.bpmn.entity.DeploymentEntity;
-import com.runflow.engine.bpmn.entity.ProcessDefinitionEntity;
-import com.runflow.engine.bpmn.entity.ResourceEntity;
 import com.runflow.engine.impl.Command;
 import com.runflow.engine.impl.CommandContext;
 import com.runflow.engine.impl.DeploymentBuilderImpl;
-import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
 
 import java.io.Serializable;
 import java.util.*;
@@ -31,31 +27,19 @@ public class  DeployCmd<T> implements Command<Deployment>, Serializable {
 
     protected Deployment executeDeploy(CommandContext commandContext) {
         DeploymentEntity deployment = deploymentBuilder.getDeployment();
-
         deployment.setDeploymentTime(new Date());
-
-
         deployment.setNew(true);
-
         Map<String, Object> deploymentSettings = new HashMap<String, Object>();
         deploymentSettings.put(DeploymentSettings.IS_BPMN20_XSD_VALIDATION_ENABLED, deploymentBuilder.isBpmn20XsdValidationEnabled());
         deploymentSettings.put(DeploymentSettings.IS_PROCESS_VALIDATION_ENABLED, deploymentBuilder.isProcessValidationEnabled());
-
         // Actually deploy
         ParsedDeployment deploy = commandContext.getProcessEngineConfiguration().getBpmnDeployer().deploy(deployment, deploymentSettings, commandContext.getProcessEngineConfiguration().getBpmnParser());
-
-        if (deploymentBuilder.getProcessDefinitionsActivationDate() != null) {
-            scheduleProcessDefinitionActivation(commandContext, deployment);
-        }
         deployment.setParsedDeployment(deploy);
         return deployment;
     }
 
 
 
-    protected void scheduleProcessDefinitionActivation(CommandContext commandContext, DeploymentEntity deployment) {
-            throw new ActivitiException("不支持");
-    }
 
 
 }

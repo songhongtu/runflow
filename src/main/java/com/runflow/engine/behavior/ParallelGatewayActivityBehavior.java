@@ -1,7 +1,6 @@
 package com.runflow.engine.behavior;
 
-import com.runflow.engine.ActivitiException;
-import com.runflow.engine.ExecutionEntity;
+import com.runflow.engine.RunFlowException;
 import com.runflow.engine.ExecutionEntityImpl;
 import com.runflow.engine.cache.impl.CurrentHashMapCache;
 import com.runflow.engine.context.Context;
@@ -11,13 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.atomic.AtomicMarkableReference;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.AbstractQueuedSynchronizer;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 public class ParallelGatewayActivityBehavior extends GatewayActivityBehavior {
@@ -40,7 +32,7 @@ public class ParallelGatewayActivityBehavior extends GatewayActivityBehavior {
         if (flowElement instanceof ParallelGateway) {
             parallelGateway = (ParallelGateway) flowElement;
         } else {
-            throw new ActivitiException("Programmatic error: parallel gateway behaviour can only be applied" + " to a ParallelGateway instance, but got an instance of " + flowElement);
+            throw new RunFlowException("Programmatic error: parallel gateway behaviour can only be applied" + " to a ParallelGateway instance, but got an instance of " + flowElement);
         }
 
         String parallelGatewayId = parallelGateway.getId();
@@ -51,7 +43,7 @@ public class ParallelGatewayActivityBehavior extends GatewayActivityBehavior {
             List<ExecutionEntityImpl> joinedExecutions = this.findInactiveExecutionsByActivityIdAndProcessInstanceId(execution);
             int nbrOfExecutionsCurrentlyJoined = joinedExecutions.size();
             if (nbrOfExecutionsCurrentlyJoined == nbrOfExecutionsToJoin) {
-                LOGGER.debug("并行网关 id:" + execution.getId() + ":" + "线程名称：" + Thread.currentThread().getName() + "：" + parallelGateway.getName());
+                LOGGER.debug("并行网关  名称：{}  id:{}  线程名称:{} ",execution.getCurrentFlowElement().getName(),execution.getId(),Thread.currentThread().getName());
                 if (parallelGateway.getIncomingFlows().size() > 1) {
                     // All (now inactive) children are deleted.
                     Iterator<ExecutionEntityImpl> iterator = joinedExecutions.iterator();

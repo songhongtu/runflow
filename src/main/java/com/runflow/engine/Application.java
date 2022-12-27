@@ -26,7 +26,7 @@ public class Application {
 
         Application application = new Application();
 
-        RunTimeServiceImpl repositoryService = application.conf.getRepositoryService();
+        RunTimeServiceImpl repositoryService = application.conf.getRunTimeService();
         String path = Application.class.getClassLoader().getResource("").getPath();//注意getResource("")里面是空字符串
 
         File file = new File(path + application.conf.getResourcePath());

@@ -28,6 +28,7 @@ public class StartProcessInstanceCmd<T> implements Command<ExecutionEntityImpl>,
 
     @Override
     public ExecutionEntityImpl execute(CommandContext commandContext) {
+        Context.getProcessEngineConfiguration().scan();
         DefaultDeploymentCache<ProcessDefinitionCacheEntry> processDefinitionCache = commandContext.getProcessEngineConfiguration().getProcessDefinitionCache();
         ProcessDefinitionCacheEntry leave = processDefinitionCache.get(key);
         Process process = leave.getProcess();

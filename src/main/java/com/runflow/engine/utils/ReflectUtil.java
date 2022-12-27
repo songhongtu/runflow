@@ -1,6 +1,6 @@
 package com.runflow.engine.utils;
 
-import com.runflow.engine.ActivitiException;
+import com.runflow.engine.RunFlowException;
 import com.runflow.engine.context.Context;
 import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
 import org.slf4j.Logger;
@@ -11,7 +11,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -79,7 +78,7 @@ public class ReflectUtil {
             method.setAccessible(true);
             return method.invoke(target, args);
         } catch (Exception e) {
-            throw new ActivitiException("couldn't invoke " + methodName + " on " + target, e);
+            throw new RunFlowException("couldn't invoke " + methodName + " on " + target, e);
         }
     }
 
@@ -98,7 +97,7 @@ public class ReflectUtil {
         try {
             field = clazz.getDeclaredField(fieldName);
         } catch (SecurityException e) {
-            throw new ActivitiException("not allowed to access field " + field + " on class " + clazz.getCanonicalName());
+            throw new RunFlowException("not allowed to access field " + field + " on class " + clazz.getCanonicalName());
         } catch (NoSuchFieldException e) {
             // for some reason getDeclaredFields doesn't search superclasses
             // (which getFields() does ... but that gives only public fields)
@@ -115,9 +114,9 @@ public class ReflectUtil {
             field.setAccessible(true);
             field.set(object, value);
         } catch (IllegalArgumentException e) {
-            throw new ActivitiException("Could not set field " + field.toString(), e);
+            throw new RunFlowException("Could not set field " + field.toString(), e);
         } catch (IllegalAccessException e) {
-            throw new ActivitiException("Could not set field " + field.toString(), e);
+            throw new RunFlowException("Could not set field " + field.toString(), e);
         }
     }
 
@@ -140,7 +139,7 @@ public class ReflectUtil {
             }
             return null;
         } catch (SecurityException e) {
-            throw new ActivitiException("Not allowed to access method " + setterName + " on class " + clazz.getCanonicalName());
+            throw new RunFlowException("Not allowed to access method " + setterName + " on class " + clazz.getCanonicalName());
         }
     }
 

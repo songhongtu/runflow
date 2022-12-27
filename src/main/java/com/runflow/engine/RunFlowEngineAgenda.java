@@ -1,6 +1,6 @@
 package com.runflow.engine;
 
-public interface ActivitiEngineAgenda extends Agenda{
+public interface RunFlowEngineAgenda extends Agenda{
     void planContinueProcessOperation(ExecutionEntityImpl execution);
     void planTakeOutgoingSequenceFlowsOperation(ExecutionEntityImpl execution, boolean evaluateConditions);
 

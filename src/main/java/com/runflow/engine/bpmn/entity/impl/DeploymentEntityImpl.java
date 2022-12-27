@@ -1,10 +1,9 @@
 package com.runflow.engine.bpmn.entity.impl;
 
-import com.runflow.engine.ActivitiException;
+import com.runflow.engine.RunFlowException;
 import com.runflow.engine.bpmn.deployer.ParsedDeployment;
 import com.runflow.engine.bpmn.entity.DeploymentEntity;
 import com.runflow.engine.bpmn.entity.ResourceEntity;
-import com.runflow.engine.context.Context;
 import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
 
 import java.io.Serializable;
@@ -48,7 +47,7 @@ public class DeploymentEntityImpl extends AbstractEntityNoRevision implements De
 
     public Map<String, ResourceEntity> getResources() {
         if (resources == null && id != null) {
-                throw new ActivitiException("不支持");
+                throw new RunFlowException("不支持");
         }
         return resources;
     }

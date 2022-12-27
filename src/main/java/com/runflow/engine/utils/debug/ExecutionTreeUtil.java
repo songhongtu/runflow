@@ -1,7 +1,6 @@
 package com.runflow.engine.utils.debug;
 
-import com.runflow.engine.ActivitiException;
-import com.runflow.engine.ExecutionEntity;
+import com.runflow.engine.RunFlowException;
 import com.runflow.engine.ExecutionEntityImpl;
 
 import java.util.*;
@@ -98,7 +97,7 @@ public class ExecutionTreeUtil {
     }
     protected static void fillExecutionTree(ExecutionTree executionTree, Map<String, List<ExecutionEntityImpl>> parentMapping) {
         if (executionTree.getRoot() == null) {
-            throw new ActivitiException("Programmatic error: the list of passed executions in the argument of the method should contain the process instance execution");
+            throw new RunFlowException("Programmatic error: the list of passed executions in the argument of the method should contain the process instance execution");
         }
 
         // Now build the tree, top-down

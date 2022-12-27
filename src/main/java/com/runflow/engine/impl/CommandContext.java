@@ -1,10 +1,10 @@
 package com.runflow.engine.impl;
 
-import com.runflow.engine.ActivitiEngineAgenda;
-import com.runflow.engine.ActivitiException;
+import com.runflow.engine.RunFlowEngineAgenda;
+import com.runflow.engine.RunFlowException;
 import com.runflow.engine.ExecutionEntity;
 import com.runflow.engine.cache.impl.CurrentHashMapCache;
-import com.runflow.engine.delegate.DefaultActivitiEngineAgenda;
+import com.runflow.engine.delegate.DefaultRunFlowEngineAgenda;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +15,7 @@ public class CommandContext {
     private static Logger log = LoggerFactory.getLogger(CommandContext.class);
     protected Command<?> command;
 
-    protected ActivitiEngineAgenda agenda;
+    protected RunFlowEngineAgenda agenda;
 
     protected boolean reused;
     protected Throwable exception;
@@ -71,7 +71,7 @@ public class CommandContext {
     public CommandContext(Command<?> command, ProcessEngineConfigurationImpl processEngineConfiguration) {
         this.command = command;
         this.processEngineConfiguration = processEngineConfiguration;
-        this.agenda = new DefaultActivitiEngineAgenda(this);
+        this.agenda = new DefaultRunFlowEngineAgenda(this);
 //        this.sessionFactory =processEngineConfiguration.getSessionFactory();
     }
 
@@ -114,11 +114,11 @@ public class CommandContext {
         this.command = command;
     }
 
-    public ActivitiEngineAgenda getAgenda() {
+    public RunFlowEngineAgenda getAgenda() {
         return agenda;
     }
 
-    public void setAgenda(ActivitiEngineAgenda agenda) {
+    public void setAgenda(RunFlowEngineAgenda agenda) {
         this.agenda = agenda;
     }
 
@@ -140,7 +140,7 @@ public class CommandContext {
             } else if (exception instanceof RuntimeException) {
                 throw (RuntimeException) exception;
             } else {
-                throw new ActivitiException("exception while executing command " + command, exception);
+                throw new RunFlowException("exception while executing command " + command, exception);
             }
         }
 

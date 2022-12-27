@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public   class   CurrentHashMapCache<V extends ExecutionEntity> extends ConcurrentHashMap<String, List<V>> {
 
 
-    public  List<V> putSingle(V v) {
+    public synchronized   List<V> putSingle(V v) {
         return this.putSingle(v.getSerialNumber(), v);
     }
 
