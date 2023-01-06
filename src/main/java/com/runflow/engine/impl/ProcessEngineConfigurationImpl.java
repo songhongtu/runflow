@@ -12,18 +12,27 @@ import com.runflow.engine.parse.BpmnParseHandler;
 import com.runflow.engine.parse.BpmnParseHandlers;
 import com.runflow.engine.parse.BpmnParser;
 import com.runflow.engine.parse.handler.*;
+import com.runflow.engine.util.io.FileCopyUtils;
+import com.runflow.engine.util.io.IoUtil;
+import org.activiti.bpmn.exceptions.XMLException;
 import org.activiti.image.ProcessDiagramGenerator;
 import org.activiti.image.impl.DefaultProcessDiagramGenerator;
+import org.slf4j.LoggerFactory;
+import sun.misc.IOUtils;
+import sun.nio.ch.IOUtil;
 
 import javax.el.ELResolver;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public class ProcessEngineConfigurationImpl {
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ProcessEngineConfigurationImpl.class);
 
     public static final String NO_TENANT_ID = "";
     protected BpmnParser bpmnParser;
@@ -44,14 +53,11 @@ public class ProcessEngineConfigurationImpl {
     protected String resourcePath;
     protected List<ELResolver> resolverList = new ArrayList<>();
 
+
+    protected Set<String> pathList = new HashSet<>();
+
     //第一次是否加载
-    public static volatile boolean isLoad = false;
-
-
-    public ProcessEngineConfigurationImpl() {
-//        this.init();
-
-    }
+    private static volatile boolean isLoad = false;
 
 
     public ProcessEngineImpl buildProcessEngine() {
@@ -68,7 +74,7 @@ public class ProcessEngineConfigurationImpl {
             runTimeService = new RunTimeServiceImpl();
         }
         if (runTimeExecution == null) {
-            runTimeExecution = new CurrentHashMapCache<ExecutionEntityImpl>();
+            runTimeExecution = new CurrentHashMapCache<>();
         }
         initCommandContextFactory();
         initCommandExecutors();
@@ -154,8 +160,8 @@ public class ProcessEngineConfigurationImpl {
         return this;
     }
 
-    public void refresh(){
-        isLoad=false;
+    public static void refresh() {
+        isLoad = false;
     }
 
 
@@ -164,24 +170,25 @@ public class ProcessEngineConfigurationImpl {
         if (!isLoad) {
             synchronized (StartProcessInstanceCmd.class) {
                 if (!isLoad) {
-                    String path = Application.class.getClassLoader().getResource("").getPath();//注意getResource("")里面是空字符串
-                    File file = new File(path + getResourcePath());
-                    for (File f : file.listFiles()) {
+                    for (String s : pathList) {
+//                        String resourcePath = getResourcePath();
+//                        if (!resourcePath.startsWith("/")) {
+//                            resourcePath = "/" + resourcePath;
+//                        }
                         try {
-                            runTimeService.createDeployment().name(f.getName()).addInputStream(f.getName(), new FileInputStream(f)).deploy();
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                            InputStream resourceAsStream1 = ProcessEngineConfigurationImpl.class.getResourceAsStream(s);
+                            runTimeService.createDeployment().name(s).addInputStream(s, resourceAsStream1).deploy();
+                        } catch (RunFlowException | XMLException e) {
+                            logger.error("文件部署失败{}：{}", s, e.getMessage());
                         }
 
                     }
-                    isLoad = true;
 
                 }
             }
+
         }
-
     }
-
 
     public CommandInterceptor initInterceptorChain(List<CommandInterceptor> chain) {
         if (chain == null || chain.isEmpty()) {
@@ -193,8 +200,8 @@ public class ProcessEngineConfigurationImpl {
         return chain.get(0);
     }
 
-    public Collection<? extends CommandInterceptor> getDefaultCommandInterceptors() {
-        List<CommandInterceptor> interceptors = new ArrayList<CommandInterceptor>();
+    public Collection<CommandInterceptor> getDefaultCommandInterceptors() {
+        List<CommandInterceptor> interceptors = new ArrayList<>();
         interceptors.add(new LogInterceptor());
         interceptors.add(new CommandContextInterceptor(commandContextFactory, this));
 
@@ -214,15 +221,10 @@ public class ProcessEngineConfigurationImpl {
 
     public void initCommandInterceptors() {
         if (commandInterceptors == null) {
-            commandInterceptors = new ArrayList<CommandInterceptor>();
+            commandInterceptors = new ArrayList<>();
             commandInterceptors.addAll(this.getDefaultCommandInterceptors());
             commandInterceptors.add(commandInvoker);
         }
-    }
-
-    public void initHandlers() {
-
-
     }
 
 
@@ -243,7 +245,7 @@ public class ProcessEngineConfigurationImpl {
     }
 
     public List<BpmnParseHandler> getDefaultBpmnParseHandlers() {
-        List<BpmnParseHandler> bpmnParserHandlers = new ArrayList<BpmnParseHandler>();
+        List<BpmnParseHandler> bpmnParserHandlers = new ArrayList<>();
         bpmnParserHandlers.add(new EndEventParseHandler());
         bpmnParserHandlers.add(new ExclusiveGatewayParseHandler());
         bpmnParserHandlers.add(new StartEventParseHandler());
@@ -327,7 +329,7 @@ public class ProcessEngineConfigurationImpl {
         this.executorService = executorService;
     }
 
-    public CurrentHashMapCache getRunTimeExecution() {
+    public CurrentHashMapCache<ExecutionEntityImpl> getRunTimeExecution() {
         return runTimeExecution;
     }
 
@@ -347,4 +349,11 @@ public class ProcessEngineConfigurationImpl {
     public void setResolverList(List<ELResolver> resolverList) {
         this.resolverList = resolverList;
     }
+
+
+    public ProcessEngineConfigurationImpl addPath(String u){
+        pathList.add(u);
+        return this;
+    }
+
 }

@@ -13,7 +13,6 @@ import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
 
 import java.io.InputStream;
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,19 +20,18 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public class DeploymentBuilderImpl  implements DeploymentBuilder, Serializable {
+public class DeploymentBuilderImpl  implements DeploymentBuilder {
 
-    private static final long serialVersionUID = 1L;
     protected static final String DEFAULT_ENCODING = "UTF-8";
 
-    protected transient RunTimeServiceImpl repositoryService;
+    protected  RunTimeServiceImpl repositoryService;
 
     protected DeploymentEntity deployment;
     protected boolean isBpmn20XsdValidationEnabled = true;
     protected boolean isProcessValidationEnabled = true;
     protected boolean isDuplicateFilterEnabled;
     protected Date processDefinitionsActivationDate;
-    protected Map<String, Object> deploymentProperties = new HashMap<String, Object>();
+    protected Map<String, Object> deploymentProperties = new HashMap<>();
 
     public DeploymentBuilderImpl(RunTimeServiceImpl repositoryService) {
         this.repositoryService = repositoryService;
@@ -110,7 +108,7 @@ public class DeploymentBuilderImpl  implements DeploymentBuilder, Serializable {
     public DeploymentBuilder addBpmnModel(String resourceName, BpmnModel bpmnModel) {
         BpmnXMLConverter bpmnXMLConverter = new BpmnXMLConverter();
         try {
-            String bpmn20Xml = new String(bpmnXMLConverter.convertToXML(bpmnModel), "UTF-8");
+            String bpmn20Xml = new String(bpmnXMLConverter.convertToXML(bpmnModel), DEFAULT_ENCODING);
             addString(resourceName, bpmn20Xml);
         } catch (UnsupportedEncodingException e) {
             throw new RunFlowException("Error while transforming BPMN model to xml: not UTF-8 encoded", e);

@@ -38,7 +38,7 @@ public class CallActivityBehavior extends AbstractBpmnActivityBehavior implement
 
         ProcessDefinitionCacheEntry processDefinitionCacheEntry = Context.getProcessEngineConfiguration().getProcessDefinitionCache().get(finalProcessDefinitonKey);
         if (processDefinitionCacheEntry == null) {
-            throw new RunFlowException("找不到子流程");
+            throw new RunFlowException("找不到子流程 key:"+processDefinitonKey);
         }
 
         String uuid = UUID.randomUUID().toString();

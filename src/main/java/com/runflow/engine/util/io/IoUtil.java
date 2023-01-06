@@ -4,6 +4,8 @@ import com.runflow.engine.RunFlowException;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class IoUtil {
 
@@ -58,6 +60,7 @@ public class IoUtil {
         }
     }
 
+
     /**
      * Closes the given stream. The same as calling {@link InputStream#close()}, but errors while closing are silently ignored.
      */
@@ -82,5 +85,40 @@ public class IoUtil {
         } catch (IOException ignore) {
             // Exception is silently ignored
         }
+    }
+
+
+    /**
+     * 流转换成文件
+     *
+     * @param inputStream
+     */
+    public static File inputStreamToFile(InputStream inputStream) {
+
+
+        try {
+
+
+
+            //新建文件
+            File tempFile = File.createTempFile("bmpn", ".tmp");
+            OutputStream os = new FileOutputStream(tempFile);
+            int read = 0;
+            byte[] bytes = new byte[1024 * 1024];
+            //先读后写
+            while ((read = inputStream.read(bytes)) > 0) {
+                byte[] wBytes = new byte[read];
+                System.arraycopy(bytes, 0, wBytes, 0, read);
+                os.write(wBytes);
+            }
+            os.flush();
+            os.close();
+            inputStream.close();
+
+            return tempFile;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

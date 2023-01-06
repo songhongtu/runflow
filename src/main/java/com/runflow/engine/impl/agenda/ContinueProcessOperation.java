@@ -66,7 +66,7 @@ public class ContinueProcessOperation extends AbstractOperation {
         } else {
             CommandExecutorImpl commandExecutor = Context.getProcessEngineConfiguration().getCommandExecutor();
             executorService.execute(() -> {
-                commandExecutor.execute(new ExecuteAsyncJobCmd((ExecutionEntityImpl) execution));
+                commandExecutor.execute(new ExecuteAsyncJobCmd( execution));
             });
         }
     }
@@ -84,24 +84,16 @@ public class ContinueProcessOperation extends AbstractOperation {
         ActivityBehavior activityBehavior = (ActivityBehavior) flowNode.getBehavior();
 
         if (activityBehavior != null) {
-            executeActivityBehavior(activityBehavior, flowNode);
+            executeActivityBehavior(activityBehavior);
         } else {
             logger.debug("No activityBehavior on activity '{}' with execution {}", flowNode.getId(), execution.getId());
 
-            //todo
             Context.getAgenda().planTakeOutgoingSequenceFlowsOperation(execution, true);
         }
     }
 
-    protected void executeActivityBehavior(ActivityBehavior activityBehavior, FlowNode flowNode) {
-        try {
-            String name = execution.getCurrentFlowElement().getName();
-         //   logger.info("线程名称：{} 任务id：{} 任务名称："+name,Thread.currentThread().getName(),execution.getCurrentActivityId());
+    protected void executeActivityBehavior(ActivityBehavior activityBehavior) {
             activityBehavior.execute(execution);
-        } catch (RuntimeException e) {
-            logger.error(e.getMessage());
-            throw e;
-        }
     }
 
     protected void continueThroughSequenceFlow(SequenceFlow sequenceFlow) {

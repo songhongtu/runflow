@@ -47,6 +47,7 @@ C:\Users\songhongtu\IdeaProjects\runflow\src\main\java\com\runflow\engine\Applic
 C:\Users\songhongtu\IdeaProjects\runflow\src\main\java\com\runflow\engine\el\VariableScopeElResolver.java
 C:\Users\songhongtu\IdeaProjects\runflow\src\main\java\com\runflow\engine\bpmn\deployer\ParsedDeployment.java
 C:\Users\songhongtu\IdeaProjects\runflow\src\main\java\com\runflow\engine\interceptor\CommandContextInterceptor.java
+C:\Users\songhongtu\IdeaProjects\runflow\src\main\java\com\runflow\engine\util\io\FileCopyUtils.java
 C:\Users\songhongtu\IdeaProjects\runflow\src\main\java\com\runflow\engine\parse\handler\ProcessParseHandler.java
 C:\Users\songhongtu\IdeaProjects\runflow\src\main\java\com\runflow\engine\utils\debug\ExecutionTreeBfsIterator.java
 C:\Users\songhongtu\IdeaProjects\runflow\src\main\java\com\runflow\engine\RunTimeService.java
@@ -77,6 +78,7 @@ C:\Users\songhongtu\IdeaProjects\runflow\src\main\java\com\runflow\engine\parse\
 C:\Users\songhongtu\IdeaProjects\runflow\src\main\java\com\runflow\engine\interceptor\CommandInterceptor.java
 C:\Users\songhongtu\IdeaProjects\runflow\src\main\java\com\runflow\engine\interceptor\CommandInvoker.java
 C:\Users\songhongtu\IdeaProjects\runflow\src\main\java\com\runflow\engine\utils\CollectionUtil.java
+C:\Users\songhongtu\IdeaProjects\runflow\src\main\java\com\runflow\engine\util\io\StreamUtils.java
 C:\Users\songhongtu\IdeaProjects\runflow\src\main\java\com\runflow\engine\impl\agenda\ContinueProcessOperation.java
 C:\Users\songhongtu\IdeaProjects\runflow\src\main\java\com\runflow\engine\delegate\SubProcessActivityBehavior.java
 C:\Users\songhongtu\IdeaProjects\runflow\src\main\java\com\runflow\engine\bpmn\entity\impl\ProcessDefinitionEntityImpl.java

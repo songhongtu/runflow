@@ -19,7 +19,7 @@ public class ParallelGatewayActivityBehavior extends GatewayActivityBehavior {
 
 
     @Override
-    public synchronized void execute(ExecutionEntityImpl e1) {
+    public  void execute(ExecutionEntityImpl e1) {
 
 
         ExecutionEntityImpl execution = e1;
@@ -62,7 +62,7 @@ public class ParallelGatewayActivityBehavior extends GatewayActivityBehavior {
 
     public List<ExecutionEntityImpl> findInactiveExecutionsByActivityIdAndProcessInstanceId(ExecutionEntityImpl executionEntity) {
         CurrentHashMapCache defaultSession = Context.getCommandContext().getDefaultSession();
-        List<ExecutionEntityImpl> inCache = defaultSession.findInCache(executionEntity.getSerialNumber());
+        Set<ExecutionEntityImpl> inCache = defaultSession.findInCache(executionEntity.getSerialNumber());
         return inCache.stream().filter(c -> !c.isActive() && c.getCurrentActivityId().equals(executionEntity.getCurrentActivityId())).collect(Collectors.toList());
 
     }

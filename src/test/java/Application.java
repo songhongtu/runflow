@@ -27,20 +27,17 @@ public class Application {
 
     ProcessEngineConfigurationImpl conf = new ProcessEngineConfigurationImpl();
 
-    RunTimeServiceImpl repositoryService = conf.getRunTimeService();
+    RunTimeServiceImpl repositoryService;
 
     {
         conf.init();
-        String path = (System.getProperty("user.dir") + "\\src\\test\\resources\\");//user.dir指定了当前的路径
-        File file = new File(path + "/bpmn");
-        for (File f : file.listFiles()) {
-            try {
-                repositoryService.createDeployment().name(f.getName()).addInputStream(f.getName(), new FileInputStream(f)).deploy();
-            } catch (Exception e) {
-                e.printStackTrace();
-                logger.error("文件：{}部署错误，错误日志{}", f.getPath(),e.getMessage());
-            }
-        }
+        repositoryService = conf.getRunTimeService();
+        conf.addPath("/bpmn/leave.bpmn")
+                .addPath("/bpmn/parallelLeave.bpmn")
+                .addPath("/bpmn/ParallelGatewayTest.bpmn")
+                .addPath("/bpmn/diagram.bpmn")
+                .addPath("/bpmn/t.bpmn")
+        ;
 
 
     }
@@ -113,7 +110,11 @@ public class Application {
         }
     }
 
-
+    /**
+     * 单线程
+     * @throws FileNotFoundException
+     * @throws InterruptedException
+     */
     @Test
     public void t() throws FileNotFoundException, InterruptedException {
 
@@ -129,9 +130,9 @@ public class Application {
         map.put("c", c);
         map.put("d", d);
         map.put("e", e);
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 50; i++) {
             Thread thread = new Thread(() -> {
-                for (int j = 0; j < 5000; j++) {
+                for (int j = 0; j < 2000; j++) {
                     ExecutionEntityImpl leave = repositoryService.startWorkflow("Process_1671936597549", map);
                 }
 
@@ -154,14 +155,15 @@ public class Application {
 
     }
 
-
+    /**
+     * 多线程
+     * @throws FileNotFoundException
+     * @throws InterruptedException
+     */
     @Test
     public void ParallelGatewayTest() throws FileNotFoundException, InterruptedException {
 
-        String fileName = "ParallelGatewayTest.bpmn";
-        FileInputStream fileInputStream = new FileInputStream("C:\\Users\\songhongtu\\Desktop\\ParallelGatewayTest.bpmn");
         RunTimeServiceImpl repositoryService = conf.getRunTimeService();
-        repositoryService.createDeployment().name(fileName).addInputStream(fileName, fileInputStream).deploy();
         AtomicInteger a = new AtomicInteger(0);
         AtomicInteger b = new AtomicInteger(0);
 
@@ -174,9 +176,9 @@ public class Application {
         map.put("c", c);
         map.put("d", d);
         map.put("e", e);
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 50; i++) {
             Thread thread = new Thread(() -> {
-                for (int j = 0; j < 200; j++) {
+                for (int j = 0; j < 2000; j++) {
                     ExecutionEntityImpl leave = repositoryService.startWorkflow("ParallelGatewayTest01", map);
                 }
 
@@ -201,15 +203,6 @@ public class Application {
 
     @Test
     public void diagram() throws FileNotFoundException, InterruptedException {
-        try {
-            ParallelGatewayTest();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        String fileName = "diagram.bpmn";
-        FileInputStream fileInputStream = new FileInputStream("C:\\Users\\songhongtu\\Desktop\\" + fileName);
-        RunTimeServiceImpl repositoryService = conf.getRunTimeService();
-        repositoryService.createDeployment().name(fileName).addInputStream(fileName, fileInputStream).deploy();
         ExecutionEntityImpl leave = repositoryService.startWorkflow("Process_1");
 
     }

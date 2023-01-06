@@ -26,11 +26,11 @@ public class RunTimeServiceImpl extends ServiceImpl implements RunTimeService {
     }
 
     public ExecutionEntityImpl startWorkflow(String key){
-        return commandExecutor.execute(new StartProcessInstanceCmd<ExecutionEntityImpl>(key,new HashMap<>()));
+        return commandExecutor.execute(new StartProcessInstanceCmd(key,new HashMap<>()));
     }
 
     public ExecutionEntityImpl startWorkflow(String key, Map<String,Object> variables){
-        return commandExecutor.execute(new StartProcessInstanceCmd<ExecutionEntityImpl>(key,variables));
+        return commandExecutor.execute(new StartProcessInstanceCmd(key,variables));
     }
 
     public void generaImages(String key){

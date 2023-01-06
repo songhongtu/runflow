@@ -7,15 +7,12 @@ import com.runflow.engine.impl.CommandContext;
 import com.runflow.engine.utils.ConditionUtil;
 import org.activiti.bpmn.model.*;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
 
-    private static final Logger logger = LoggerFactory.getLogger(TakeOutgoingSequenceFlowsOperation.class);
 
     protected boolean evaluateConditions;
 
@@ -32,13 +29,6 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
         if ((currentFlowElement instanceof Activity)
                 && (((Activity) currentFlowElement)).isForCompensation()) {
 
-            /*
-             * If the current flow element is part of a compensation, we don't always
-             * want to follow the regular rules of leaving an activity.
-             * More specifically, if there are no outgoing sequenceflow, we simply must stop
-             * the execution there and don't go up in the scopes as we usually do
-             * to find the outgoing sequenceflow
-             */
             throw new RunFlowException("不支持");
         }
 
@@ -86,13 +76,11 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
         }
 
         // Check if there is a default sequence flow
-        if (outgoingSequenceFlows.size() == 0 && evaluateConditions) { // The elements that set this to false also have no support for default sequence flow
-            if (defaultSequenceFlowId != null) {
-                for (SequenceFlow sequenceFlow : flowNode.getOutgoingFlows()) {
-                    if (defaultSequenceFlowId.equals(sequenceFlow.getId())) {
-                        outgoingSequenceFlows.add(sequenceFlow);
-                        break;
-                    }
+        if (outgoingSequenceFlows.size() == 0 && evaluateConditions && defaultSequenceFlowId != null) { // The elements that set this to false also have no support for default sequence flow
+            for (SequenceFlow sequenceFlow : flowNode.getOutgoingFlows()) {
+                if (defaultSequenceFlowId.equals(sequenceFlow.getId())) {
+                    outgoingSequenceFlows.add(sequenceFlow);
+                    break;
                 }
             }
         }
@@ -106,7 +94,7 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
             }
 
         } else {
-            List<ExecutionEntityImpl> outgoingExecutions = new ArrayList<ExecutionEntityImpl>(flowNode.getOutgoingFlows().size());
+            List<ExecutionEntityImpl> outgoingExecutions = new ArrayList<>(flowNode.getOutgoingFlows().size());
             SequenceFlow sequenceFlow = outgoingSequenceFlows.get(0);
             // Reuse existing one
             execution.setCurrentFlowElement(sequenceFlow);
@@ -116,7 +104,7 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
             // Executions for all the other one
             if (outgoingSequenceFlows.size() > 1) {
                 for (int i = 1; i < outgoingSequenceFlows.size(); i++) {
-                    ExecutionEntityImpl parent = (ExecutionEntityImpl) (execution.getParentId() != null ? execution.getParent() : execution);
+                    ExecutionEntityImpl parent = (execution.getParentId() != null ? execution.getParent() : execution);
                     ExecutionEntityImpl outgoingExecutionEntity = parent.createChildExecution(parent);
                     SequenceFlow outgoingSequenceFlow = outgoingSequenceFlows.get(i);
                     outgoingExecutionEntity.setCurrentFlowElement(outgoingSequenceFlow);

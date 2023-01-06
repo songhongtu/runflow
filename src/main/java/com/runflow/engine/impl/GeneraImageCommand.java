@@ -17,7 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.Serializable;
 import java.util.Collections;
 
-public class GeneraImageCommand <T> implements Command<Object>, Serializable {
+public class GeneraImageCommand implements Command<Object>, Serializable {
 
     private String key;
 
@@ -30,7 +30,7 @@ public class GeneraImageCommand <T> implements Command<Object>, Serializable {
     public Object execute(CommandContext commandContext) {
         ProcessEngineConfigurationImpl processEngineConfiguration = commandContext.getProcessEngineConfiguration();
         ProcessDefinitionCacheEntry processDefinitionCacheEntry = processEngineConfiguration.getProcessDefinitionCache().get(key);
-        ResourceEntity diagramForProcessDefinition = this.createDiagramForProcessDefinition(processDefinitionCacheEntry.getProcessDefinition(), processDefinitionCacheEntry.getBpmnModel());
+         this.createDiagramForProcessDefinition(processDefinitionCacheEntry.getProcessDefinition(), processDefinitionCacheEntry.getBpmnModel());
 
         return null;
     }

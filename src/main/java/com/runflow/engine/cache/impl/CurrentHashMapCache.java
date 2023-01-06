@@ -7,20 +7,30 @@ import com.runflow.engine.utils.CollectionUtil;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public   class   CurrentHashMapCache<V extends ExecutionEntity> extends ConcurrentHashMap<String, List<V>> {
+public class CurrentHashMapCache<V extends ExecutionEntity> extends ConcurrentHashMap<String, Set<V>> {
 
 
-    public synchronized   List<V> putSingle(V v) {
+    @Override
+    public Set<V> put(String key, Set<V> value) {
+        return super.put(key, value);
+    }
+
+    public Set<V> putSingle(V v) {
         return this.putSingle(v.getSerialNumber(), v);
     }
 
 
-    public  List<V> putSingle(String key, V value) {
-        List<V> vs = this.get(key);
+    public Set<V> putSingle(String key, V value) {
+        Set<V> vs = this.get(key);
         if (CollectionUtil.isEmpty(vs)) {
-            List<V> objects = new ArrayList<>();
-            objects.add(value);
-            return super.put(key, objects);
+            synchronized (CurrentHashMapCache.class) {
+                if (CollectionUtil.isEmpty(vs)) {
+                    Set<V> objects = ConcurrentHashMap.newKeySet();
+                    objects.add(value);
+                    return super.put(key, objects);
+                }
+            }
+
         }
         V byId = this.getById(key, value.getId());
         if (byId != null) {
@@ -36,17 +46,17 @@ public   class   CurrentHashMapCache<V extends ExecutionEntity> extends Concurre
     }
 
 
-    public  List<V> findInCache(String key) {
+    public Set<V> findInCache(String key) {
         return this.get(key);
     }
 
-    protected  V getById(String uuid, String id) {
+    protected V getById(String uuid, String id) {
         return this.getById(this.get(uuid), id);
 
     }
 
 
-    protected  V getById(List<V> vs, String id) {
+    protected V getById(Set<V> vs, String id) {
         for (V v : vs) {
             if (v.getId().equals(id)) {
                 return v;

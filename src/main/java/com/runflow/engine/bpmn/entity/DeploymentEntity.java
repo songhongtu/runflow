@@ -1,12 +1,12 @@
 package com.runflow.engine.bpmn.entity;
 
-import com.runflow.engine.bpmn.deployer.ParsedDeployment;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public interface DeploymentEntity extends Deployment, Entity {
+public interface DeploymentEntity extends Deployment, Entity, Serializable {
 
 
     void addResource(ResourceEntity resource);

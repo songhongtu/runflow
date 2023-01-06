@@ -1,6 +1,5 @@
 package com.runflow.engine.cmd;
 
-import com.runflow.engine.ExecutionEntity;
 import com.runflow.engine.ExecutionEntityImpl;
 import com.runflow.engine.bpmn.entity.impl.DefaultDeploymentCache;
 import com.runflow.engine.bpmn.entity.impl.ProcessDefinitionCacheEntry;
@@ -13,13 +12,15 @@ import org.activiti.bpmn.model.Process;
 import org.activiti.bpmn.model.StartEvent;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serializable;
 import java.util.*;
 
-public class StartProcessInstanceCmd<T> implements Command<ExecutionEntityImpl>, Serializable {
+public class StartProcessInstanceCmd implements Command<ExecutionEntityImpl> {
     private String key;
     protected Map<String, Object> variables;
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(TakeOutgoingSequenceFlowsOperation.class);
+
+
+
 
     public StartProcessInstanceCmd(String key, Map<String, Object> variables) {
         this.key = key;
