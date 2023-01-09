@@ -1,8 +1,6 @@
 import com.runflow.engine.ExecutionEntityImpl;
 import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
-import com.runflow.engine.impl.ProcessEngineImpl;
 import com.runflow.engine.impl.RunTimeServiceImpl;
-import com.runflow.engine.impl.agenda.TakeOutgoingSequenceFlowsOperation;
 import com.runflow.engine.utils.ConditionUtil;
 import de.odysseus.el.ExpressionFactoryImpl;
 import de.odysseus.el.ObjectValueExpression;
@@ -12,18 +10,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.el.ValueExpression;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
-public class Application {
-    private static final Logger logger = LoggerFactory.getLogger(Application.class);
+public class ApplicationTest {
+    private static final Logger logger = LoggerFactory.getLogger(ApplicationTest.class);
 
     ProcessEngineConfigurationImpl conf = new ProcessEngineConfigurationImpl();
 

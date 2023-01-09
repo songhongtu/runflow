@@ -13,12 +13,7 @@ import java.util.Map;
 public class RunTimeServiceImpl extends ServiceImpl implements RunTimeService {
 
     public DeploymentBuilder createDeployment() {
-        return commandExecutor.execute(new Command<DeploymentBuilder>() {
-            @Override
-            public DeploymentBuilder execute(CommandContext commandContext) {
-                return new DeploymentBuilderImpl(RunTimeServiceImpl.this);
-            }
-        });
+        return commandExecutor.execute((Command<DeploymentBuilder>) commandContext -> new DeploymentBuilderImpl(RunTimeServiceImpl.this));
     }
 
     public Deployment deploy(DeploymentBuilderImpl deploymentBuilder) {
