@@ -12,9 +12,11 @@ public class ParallelGatewayParseHandler extends AbstractActivityBpmnParseHandle
         return ParallelGateway.class;
     }
 
-
+    @Override
     protected void executeParse(BpmnParse bpmnParse, ParallelGateway gateway) {
         gateway.setBehavior(new  ParallelGatewayActivityBehavior());
     }
+
+
 
 }

@@ -12,20 +12,13 @@ import com.runflow.engine.parse.BpmnParseHandler;
 import com.runflow.engine.parse.BpmnParseHandlers;
 import com.runflow.engine.parse.BpmnParser;
 import com.runflow.engine.parse.handler.*;
-import com.runflow.engine.util.io.FileCopyUtils;
-import com.runflow.engine.util.io.IoUtil;
 import org.activiti.bpmn.exceptions.XMLException;
 import org.activiti.image.ProcessDiagramGenerator;
 import org.activiti.image.impl.DefaultProcessDiagramGenerator;
 import org.slf4j.LoggerFactory;
-import sun.misc.IOUtils;
-import sun.nio.ch.IOUtil;
 
 import javax.el.ELResolver;
 import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -183,7 +176,7 @@ public class ProcessEngineConfigurationImpl {
                         }
 
                     }
-
+                    isLoad=true;
                 }
             }
 

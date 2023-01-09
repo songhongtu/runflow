@@ -10,6 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
 public class ParallelGatewayActivityBehavior extends GatewayActivityBehavior {
@@ -17,10 +20,8 @@ public class ParallelGatewayActivityBehavior extends GatewayActivityBehavior {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ParallelGatewayActivityBehavior.class);
 
-
     @Override
-    public  void execute(ExecutionEntityImpl e1) {
-
+    public synchronized void execute(ExecutionEntityImpl e1) {
 
         ExecutionEntityImpl execution = e1;
         execution.inactivate();
@@ -35,37 +36,34 @@ public class ParallelGatewayActivityBehavior extends GatewayActivityBehavior {
             throw new RunFlowException("Programmatic error: parallel gateway behaviour can only be applied" + " to a ParallelGateway instance, but got an instance of " + flowElement);
         }
 
-        String parallelGatewayId = parallelGateway.getId();
 
 
-        {
-            int nbrOfExecutionsToJoin = parallelGateway.getIncomingFlows().size();
-            List<ExecutionEntityImpl> joinedExecutions = this.findInactiveExecutionsByActivityIdAndProcessInstanceId(execution);
-            int nbrOfExecutionsCurrentlyJoined = joinedExecutions.size();
-            if (nbrOfExecutionsCurrentlyJoined == nbrOfExecutionsToJoin) {
-                LOGGER.debug("并行网关  名称：{}  id:{}  线程名称:{} ",execution.getCurrentFlowElement().getName(),execution.getId(),Thread.currentThread().getName());
-                if (parallelGateway.getIncomingFlows().size() > 1) {
-                    // All (now inactive) children are deleted.
-                    Iterator<ExecutionEntityImpl> iterator = joinedExecutions.iterator();
-                    while (iterator.hasNext()) {
-                        ExecutionEntityImpl next = iterator.next();
-                        if (!next.getId().equals(execution.getId())) {
-                            iterator.remove();
-                        }
+        int nbrOfExecutionsToJoin = parallelGateway.getIncomingFlows().size();
+        CurrentHashMapCache defaultSession = Context.getCommandContext().getDefaultSession();
+        Set<ExecutionEntityImpl> entitySet = (Set<ExecutionEntityImpl>) defaultSession.get(execution.getSerialNumber());
+
+        List<ExecutionEntityImpl> joinedExecutions = entitySet.stream().filter(c -> !c.isActive() && c.getCurrentActivityId().equals(execution.getCurrentActivityId())).collect(Collectors.toList());
+
+
+        int nbrOfExecutionsCurrentlyJoined = joinedExecutions.size();
+
+        if (nbrOfExecutionsCurrentlyJoined == nbrOfExecutionsToJoin) {
+            LOGGER.debug("并行网关  名称：{}  id:{}  线程名称:{} ", execution.getCurrentFlowElement().getName(), execution.getId(), Thread.currentThread().getName());
+            if (parallelGateway.getIncomingFlows().size() > 1) {
+                // All (now inactive) children are deleted.
+                Iterator<ExecutionEntityImpl> iterator = joinedExecutions.iterator();
+                while (iterator.hasNext()) {
+                    ExecutionEntityImpl next = iterator.next();
+                    if (!next.getId().equals(execution.getId())) {
+                        entitySet.remove(next);
                     }
                 }
-                Context.getAgenda().planTakeOutgoingSequenceFlowsOperation((ExecutionEntityImpl) execution, false); // false -> ignoring conditions on parallel gw
             }
+            Context.getAgenda().planTakeOutgoingSequenceFlowsOperation(execution, false); // false -> ignoring conditions on parallel gw
         }
     }
 
 
-    public List<ExecutionEntityImpl> findInactiveExecutionsByActivityIdAndProcessInstanceId(ExecutionEntityImpl executionEntity) {
-        CurrentHashMapCache defaultSession = Context.getCommandContext().getDefaultSession();
-        Set<ExecutionEntityImpl> inCache = defaultSession.findInCache(executionEntity.getSerialNumber());
-        return inCache.stream().filter(c -> !c.isActive() && c.getCurrentActivityId().equals(executionEntity.getCurrentActivityId())).collect(Collectors.toList());
-
-    }
 
 
 }

@@ -7,11 +7,10 @@ import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
 
 import java.util.*;
 
-public  class Context {
+public class Context {
 
     protected static ThreadLocal<Stack<CommandContext>> commandContextThreadLocal = new ThreadLocal<Stack<CommandContext>>();
     protected static ThreadLocal<Stack<ProcessEngineConfigurationImpl>> processEngineConfigurationStackThreadLocal = new ThreadLocal<Stack<ProcessEngineConfigurationImpl>>();
-    protected static ThreadLocal<Map<String, ObjectNode>> bpmnOverrideContextThreadLocal = new ThreadLocal<Map<String, ObjectNode>>();
 
 
     public static CommandContext getCommandContext() {
@@ -58,23 +57,6 @@ public  class Context {
         }
         return stack;
     }
-
-
-
-    public static void removeBpmnOverrideContext() {
-        bpmnOverrideContextThreadLocal.remove();
-    }
-
-
-    protected static Map<String, ObjectNode> getBpmnOverrideContext() {
-        Map<String, ObjectNode> bpmnOverrideMap = bpmnOverrideContextThreadLocal.get();
-        if (bpmnOverrideMap == null) {
-            bpmnOverrideMap = new HashMap<String, ObjectNode>();
-        }
-        return bpmnOverrideMap;
-    }
-
-
 
 
 }

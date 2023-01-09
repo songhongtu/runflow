@@ -43,6 +43,15 @@ public class Application {
     }
 
 
+    AtomicInteger integer = new AtomicInteger(0);
+
+
+    public void incrementAndGet() throws InterruptedException {
+        Thread.sleep(1000);
+        integer.incrementAndGet();
+    }
+
+
     @Test
     public void executeLeave() throws FileNotFoundException {
         Map<String, Object> map = new HashMap();
@@ -68,16 +77,18 @@ public class Application {
 
     @Test
     public void testCondition() throws InterruptedException {
-        ExpressionFactoryImpl factory = new ExpressionFactoryImpl();
-        SimpleContext elContext = new SimpleContext();
+
+
         AtomicInteger a = new AtomicInteger(0);
         AtomicInteger b = new AtomicInteger(0);
         AtomicInteger c = new AtomicInteger(0);
         AtomicInteger d = new AtomicInteger(0);
         AtomicInteger e = new AtomicInteger(0);
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 200; i++) {
             Thread thread = new Thread(() -> {
-                for (int j = 0; j < 50; j++) {
+                for (int j = 0; j < 500; j++) {
+                    ExpressionFactoryImpl factory = new ExpressionFactoryImpl();
+                    SimpleContext elContext = new SimpleContext();
                     Map map = new HashMap();
                     map.put("a", a);
                     map.put("b", b);
@@ -112,6 +123,7 @@ public class Application {
 
     /**
      * 单线程
+     *
      * @throws FileNotFoundException
      * @throws InterruptedException
      */
@@ -130,9 +142,9 @@ public class Application {
         map.put("c", c);
         map.put("d", d);
         map.put("e", e);
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 200; i++) {
             Thread thread = new Thread(() -> {
-                for (int j = 0; j < 2000; j++) {
+                for (int j = 0; j < 500; j++) {
                     ExecutionEntityImpl leave = repositoryService.startWorkflow("Process_1671936597549", map);
                 }
 
@@ -155,8 +167,30 @@ public class Application {
 
     }
 
+
+    @Test
+    public void t1() throws FileNotFoundException, InterruptedException {
+
+        Map map = new HashMap();
+        map.put("a", this);
+        map.put("b", this);
+        map.put("c", this);
+        map.put("d", this);
+        map.put("e", this);
+
+        long start = System.currentTimeMillis();
+        for (int j = 0; j < 5; j++) {
+            ExecutionEntityImpl leave = repositoryService.startWorkflow("Process_1671936597549", map);
+        }
+        long end = System.currentTimeMillis();
+        System.out.println(end - start);
+        System.out.println(integer.get());
+
+    }
+
     /**
      * 多线程
+     *
      * @throws FileNotFoundException
      * @throws InterruptedException
      */
@@ -176,9 +210,9 @@ public class Application {
         map.put("c", c);
         map.put("d", d);
         map.put("e", e);
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 200; i++) {
             Thread thread = new Thread(() -> {
-                for (int j = 0; j < 2000; j++) {
+                for (int j = 0; j < 500; j++) {
                     ExecutionEntityImpl leave = repositoryService.startWorkflow("ParallelGatewayTest01", map);
                 }
 
@@ -200,6 +234,29 @@ public class Application {
 
 
     }
+
+
+    @Test
+    public void ParallelGatewayTest1() throws FileNotFoundException, InterruptedException {
+        RunTimeServiceImpl repositoryService = conf.getRunTimeService();
+        Map map = new HashMap();
+        map.put("a", this);
+        map.put("b", this);
+        map.put("c", this);
+        map.put("d", this);
+        map.put("e", this);
+        long start = System.currentTimeMillis();
+        for (int j = 0; j < 5; j++) {
+            ExecutionEntityImpl leave = repositoryService.startWorkflow("ParallelGatewayTest01", map);
+        }
+
+
+        long end = System.currentTimeMillis();
+        System.out.println(end - start);
+        System.out.println(integer.get());
+
+    }
+
 
     @Test
     public void diagram() throws FileNotFoundException, InterruptedException {

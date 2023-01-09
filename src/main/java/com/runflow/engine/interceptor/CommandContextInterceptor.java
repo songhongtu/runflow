@@ -23,9 +23,9 @@ public class CommandContextInterceptor extends AbstractCommandInterceptor {
     public <T> T execute(CommandConfig config, Command<T> command) {
         CommandContext context = Context.getCommandContext();
 
-        boolean contextReused = false;
-
-        context = commandContextFactory.createCommandContext(command);
+        if(context==null){
+            context = commandContextFactory.createCommandContext(command);
+        }
 
         try {
 
@@ -39,14 +39,11 @@ public class CommandContextInterceptor extends AbstractCommandInterceptor {
             context.exception(e);
         } finally {
             try {
-                if (!contextReused) {
-                    context.close();
-                }
+                  context.close();
             } finally {
                 // Pop from stack
                 Context.removeCommandContext();
                 Context.removeProcessEngineConfiguration();
-                Context.removeBpmnOverrideContext();
             }
         }
         return null;

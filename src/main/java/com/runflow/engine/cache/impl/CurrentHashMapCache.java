@@ -25,7 +25,8 @@ public class CurrentHashMapCache<V extends ExecutionEntity> extends ConcurrentHa
         if (CollectionUtil.isEmpty(vs)) {
             synchronized (CurrentHashMapCache.class) {
                 if (CollectionUtil.isEmpty(vs)) {
-                    Set<V> objects = ConcurrentHashMap.newKeySet();
+                  Set<V> objects = ConcurrentHashMap.newKeySet();
+                    //               Set<V> objects =new HashSet<>();
                     objects.add(value);
                     return super.put(key, objects);
                 }

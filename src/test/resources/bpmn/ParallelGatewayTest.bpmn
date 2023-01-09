@@ -22,7 +22,7 @@
         <flowable:formProperty id="1622210627442_91255" name="多行文本" readable="true" writable="true" />
       </extensionElements>
     </userTask>
-    <userTask id="sid-EA859B8D-3245-4584-98C8-DE0E35319DA5" name="员工二" activiti:skipExpression="${b.incrementAndGet()}" flowable:assignee="admin">
+    <userTask id="sid-EA859B8D-3245-4584-98C8-DE0E35319DA5" name="员工二"  activiti:async="true" activiti:skipExpression="${b.incrementAndGet()}" flowable:assignee="admin">
       <extensionElements>
         <flowable:formProperty id="1622206213817_7184" name="子表单" readable="true" writable="true" />
         <flowable:formProperty id="1622206215915_74415" name="单行文本" readable="true" writable="true" />
@@ -32,7 +32,7 @@
         <flowable:formProperty id="1622210627442_91255" name="多行文本" readable="true" writable="true" />
       </extensionElements>
     </userTask>
-    <userTask id="sid-C06A652D-3CA7-4000-A2B3-6313E03C679A" name="部门经理" activiti:skipExpression="${d.incrementAndGet()}" flowable:assignee="admin">
+    <userTask id="sid-C06A652D-3CA7-4000-A2B3-6313E03C679A"  activiti:async="true" name="部门经理" activiti:skipExpression="${d.incrementAndGet()}" flowable:assignee="admin">
       <extensionElements>
         <flowable:formProperty id="1622206213817_7184" name="子表单" readable="true" writable="true" />
         <flowable:formProperty id="1622206215915_74415" name="单行文本" readable="true" writable="true" />
@@ -63,7 +63,7 @@
     <parallelGateway id="sid-A0A5DB28-FFC6-4B14-ABC5-EE9310E39B53" name="总聚合" />
     <sequenceFlow id="sid-C2EBDC51-ABEC-4B69-9924-0101B7EA9E91" sourceRef="sid-C06A652D-3CA7-4000-A2B3-6313E03C679A" targetRef="sid-A0A5DB28-FFC6-4B14-ABC5-EE9310E39B53" />
     <sequenceFlow id="sid-85C1D7AE-4568-427E-8E6D-AFC79ED41FD9" sourceRef="sid-C18060F2-D0AB-4E71-A7B6-6D3654E93FFF" targetRef="sid-A0A5DB28-FFC6-4B14-ABC5-EE9310E39B53" />
-    <userTask id="sid-CA755ED3-B18F-41D0-BBE5-22D41CFCF024" name="老板" activiti:skipExpression="${e.incrementAndGet()}" flowable:assignee="admin">
+    <userTask id="sid-CA755ED3-B18F-41D0-BBE5-22D41CFCF024"  activiti:async="true" name="老板" activiti:skipExpression="${e.incrementAndGet()}" flowable:assignee="admin">
       <extensionElements>
         <flowable:formProperty id="1622206213817_7184" name="子表单" readable="true" writable="true" />
         <flowable:formProperty id="1622206215915_74415" name="单行文本" readable="true" writable="true" />
