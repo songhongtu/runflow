@@ -1,7 +1,6 @@
 package com.runflow.engine.cache.impl;
 
 import com.runflow.engine.ExecutionEntity;
-import com.runflow.engine.cache.Session;
 import com.runflow.engine.utils.CollectionUtil;
 
 import java.util.*;
@@ -10,10 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CurrentHashMapCache<V extends ExecutionEntity> extends ConcurrentHashMap<String, Set<V>> {
 
 
-    @Override
-    public Set<V> put(String key, Set<V> value) {
-        return super.put(key, value);
-    }
+
 
     public Set<V> putSingle(V v) {
         return this.putSingle(v.getSerialNumber(), v);
@@ -26,7 +22,6 @@ public class CurrentHashMapCache<V extends ExecutionEntity> extends ConcurrentHa
             synchronized (CurrentHashMapCache.class) {
                 if (CollectionUtil.isEmpty(vs)) {
                   Set<V> objects = ConcurrentHashMap.newKeySet();
-                    //               Set<V> objects =new HashSet<>();
                     objects.add(value);
                     return super.put(key, objects);
                 }
@@ -35,7 +30,7 @@ public class CurrentHashMapCache<V extends ExecutionEntity> extends ConcurrentHa
         }
         V byId = this.getById(key, value.getId());
         if (byId != null) {
-            return null;
+            return new HashSet<>();
         } else {
             vs.add(value);
         }

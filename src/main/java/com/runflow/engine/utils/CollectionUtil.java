@@ -32,7 +32,7 @@ public class CollectionUtil {
             throw new RuntimeException("The input should always be even since we expect a list of key-value pairs!");
         }
 
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         for (int i = 0; i < objects.length; i += 2) {
             map.put((String) objects[i], objects[i + 1]);
         }

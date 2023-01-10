@@ -4,7 +4,6 @@ import com.runflow.engine.RunFlowException;
 import org.activiti.bpmn.model.BaseElement;
 import org.activiti.bpmn.model.DataObject;
 import org.activiti.bpmn.model.FlowElement;
-import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,12 +12,11 @@ import java.util.Map;
 
 public class BpmnParseHandlers {
 
-    private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(BpmnParseHandlers.class);
 
     protected Map<Class<? extends BaseElement>, List<BpmnParseHandler>> parseHandlers;
 
     public BpmnParseHandlers() {
-        this.parseHandlers = new HashMap<Class<? extends BaseElement>, List<BpmnParseHandler>>();
+        this.parseHandlers = new HashMap<>();
     }
 
     public List<BpmnParseHandler> getHandlersFor(Class<? extends BaseElement> clazz) {
@@ -33,11 +31,9 @@ public class BpmnParseHandlers {
 
     public void addHandler(BpmnParseHandler bpmnParseHandler) {
         for (Class<? extends BaseElement> type : bpmnParseHandler.getHandledTypes()) {
-            List<BpmnParseHandler> handlers = parseHandlers.get(type);
-            if (handlers == null) {
-                handlers = new ArrayList<BpmnParseHandler>();
-                parseHandlers.put(type, handlers);
-            }
+
+            List<BpmnParseHandler> handlers = parseHandlers.computeIfAbsent(type, v -> new ArrayList<>());
+
             handlers.add(bpmnParseHandler);
         }
     }
@@ -58,7 +54,7 @@ public class BpmnParseHandlers {
         List<BpmnParseHandler> handlers = parseHandlers.get(element.getClass());
 
         if (handlers == null) {
-            throw new RunFlowException("不支持处理类型："+element.getClass());
+            throw new RunFlowException("不支持处理类型：" + element.getClass());
         } else {
             for (BpmnParseHandler handler : handlers) {
                 handler.parse(bpmnParse, element);

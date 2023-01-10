@@ -2,7 +2,6 @@ package com.runflow.engine.parse.handler;
 
 import com.runflow.engine.bpmn.entity.ProcessDefinitionEntity;
 import com.runflow.engine.bpmn.entity.impl.ProcessDefinitionEntityImpl;
-import com.runflow.engine.context.Context;
 import com.runflow.engine.parse.AbstractBpmnParseHandler;
 import com.runflow.engine.parse.BpmnParse;
 import org.activiti.bpmn.model.*;
@@ -10,7 +9,6 @@ import org.activiti.bpmn.model.Process;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 
 public class ProcessParseHandler extends AbstractBpmnParseHandler<Process> {
 
@@ -27,9 +25,7 @@ public class ProcessParseHandler extends AbstractBpmnParseHandler<Process> {
     }
 
     protected void executeParse(BpmnParse bpmnParse, Process process) {
-        if (process.isExecutable() == false) {
-            LOGGER.info("Ignoring non-executable process with id='" + process.getId() + "'. Set the attribute isExecutable=\"true\" to deploy this process.");
-        } else {
+        if (process.isExecutable()) {
             bpmnParse.getProcessDefinitions().add(transformProcess(bpmnParse, process));
         }
     }
@@ -51,7 +47,6 @@ public class ProcessParseHandler extends AbstractBpmnParseHandler<Process> {
             currentProcessDefinition.setEngineVersion(bpmnParse.getDeployment().getEngineVersion());
         }
 
-//        createEventListeners(bpmnParse, process.getEventListeners());
 
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Parsing process {}", currentProcessDefinition.getKey());

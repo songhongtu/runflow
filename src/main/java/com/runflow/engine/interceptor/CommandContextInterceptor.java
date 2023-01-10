@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 public class CommandContextInterceptor extends AbstractCommandInterceptor {
 
-    private static final Logger log = LoggerFactory.getLogger(CommandContextInterceptor.class);
 
     protected CommandContextFactory commandContextFactory;
     protected ProcessEngineConfigurationImpl processEngineConfiguration;

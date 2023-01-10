@@ -1,11 +1,8 @@
 package com.runflow.engine.repository;
 
 import com.runflow.engine.bpmn.entity.Deployment;
-import org.activiti.bpmn.model.BpmnModel;
 
 import java.io.InputStream;
-import java.util.Date;
-import java.util.zip.ZipInputStream;
 
 public interface DeploymentBuilder {
 

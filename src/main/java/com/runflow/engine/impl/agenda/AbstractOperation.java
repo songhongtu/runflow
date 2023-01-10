@@ -15,11 +15,7 @@ public abstract class AbstractOperation implements Runnable {
     protected Agenda agenda;
     protected ExecutionEntityImpl execution;
 
-    public AbstractOperation() {
-
-    }
-
-    public AbstractOperation(CommandContext commandContext, ExecutionEntityImpl execution) {
+    protected AbstractOperation(CommandContext commandContext, ExecutionEntityImpl execution) {
         this.commandContext = commandContext;
         this.execution = execution;
         this.agenda = commandContext.getAgenda();
@@ -33,11 +29,6 @@ public abstract class AbstractOperation implements Runnable {
             return execution.getCurrentFlowElement();
         } else if (execution.getCurrentActivityId() != null) {
             //通过id查找
-//            String processDefinitionId = execution.getProcessDefinitionId();
-//            org.activiti.bpmn.model.Process process = ProcessDefinitionUtil.getProcess(processDefinitionId);
-//            String activityId = execution.getCurrentActivityId();
-//            FlowElement currentFlowElement = process.getFlowElement(activityId, true);
-//            return currentFlowElement;
         }
         return null;
     }

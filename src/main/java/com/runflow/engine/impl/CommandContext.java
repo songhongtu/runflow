@@ -1,8 +1,8 @@
 package com.runflow.engine.impl;
 
+import com.runflow.engine.ExecutionEntityImpl;
 import com.runflow.engine.RunFlowEngineAgenda;
 import com.runflow.engine.RunFlowException;
-import com.runflow.engine.ExecutionEntity;
 import com.runflow.engine.cache.impl.CurrentHashMapCache;
 import com.runflow.engine.delegate.DefaultRunFlowEngineAgenda;
 import org.slf4j.Logger;
@@ -24,7 +24,7 @@ public class CommandContext {
     protected String serialNumber;
 
 
-    protected LinkedList<Object> resultStack = new LinkedList<Object>(); // needs to be a stack, as JavaDelegates can do api calls again
+    protected LinkedList<Object> resultStack = new LinkedList<>(); // needs to be a stack, as JavaDelegates can do api calls again
 
 
     public String getSerialNumber() {
@@ -72,11 +72,9 @@ public class CommandContext {
         this.command = command;
         this.processEngineConfiguration = processEngineConfiguration;
         this.agenda = new DefaultRunFlowEngineAgenda(this);
-//        this.sessionFactory =processEngineConfiguration.getSessionFactory();
     }
 
 
-    protected Map<String, ExecutionEntity> involvedExecutions = new HashMap<String, ExecutionEntity>(1); // The executions involved with the command
 
     protected ProcessEngineConfigurationImpl processEngineConfiguration;
 
@@ -89,24 +87,13 @@ public class CommandContext {
         this.processEngineConfiguration = processEngineConfiguration;
     }
 
-    public void addInvolvedExecution(ExecutionEntity executionEntity) {
-        if (executionEntity.getId() != null) {
-            involvedExecutions.put(executionEntity.getId(), executionEntity);
-        }
-    }
 
-    public boolean hasInvolvedExecutions() {
-        return involvedExecutions.size() > 0;
-    }
 
-    public Collection<ExecutionEntity> getInvolvedExecutions() {
-        return involvedExecutions.values();
-    }
 
     // getters and setters
 
 
-    public Command<?> getCommand() {
+    public Command getCommand() {
         return command;
     }
 
@@ -122,14 +109,13 @@ public class CommandContext {
         this.agenda = agenda;
     }
 
-    public CurrentHashMapCache getDefaultSession() {
+    public CurrentHashMapCache<ExecutionEntityImpl> getDefaultSession() {
         return getSession();
     }
 
 
-    public CurrentHashMapCache getSession() {
-        CurrentHashMapCache runTimeExecution = this.processEngineConfiguration.getRunTimeExecution();
-        return runTimeExecution;
+    public CurrentHashMapCache<ExecutionEntityImpl> getSession() {
+        return     this.processEngineConfiguration.getRunTimeExecution();
     }
 
 

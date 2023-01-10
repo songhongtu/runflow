@@ -3,7 +3,6 @@ package com.runflow.engine.impl;
 import com.runflow.engine.ExecutionEntityImpl;
 import com.runflow.engine.RunTimeService;
 import com.runflow.engine.bpmn.entity.Deployment;
-import com.runflow.engine.bpmn.entity.ResourceEntity;
 import com.runflow.engine.cmd.DeployCmd;
 import com.runflow.engine.cmd.StartProcessInstanceCmd;
 import com.runflow.engine.repository.DeploymentBuilder;
@@ -19,7 +18,7 @@ public class RunTimeServiceImpl extends ServiceImpl implements RunTimeService {
     }
 
     public Deployment deploy(DeploymentBuilderImpl deploymentBuilder) {
-        return commandExecutor.execute(new DeployCmd<Deployment>(deploymentBuilder));
+        return commandExecutor.execute(new DeployCmd(deploymentBuilder));
     }
 
     public ExecutionEntityImpl startWorkflow(String key){

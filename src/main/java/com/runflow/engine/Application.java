@@ -39,7 +39,7 @@ public class Application {
 
         }
 
-        Map<String, Object> map = new HashMap();
+        Map<String, Object> map = new HashMap<>();
         map.put("conditionUtil", new ConditionUtil());
         map.put("exclusivegateway1", true);
         map.put("deptleaderapprove", true);

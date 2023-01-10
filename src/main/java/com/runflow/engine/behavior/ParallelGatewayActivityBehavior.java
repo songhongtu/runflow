@@ -10,9 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
 public class ParallelGatewayActivityBehavior extends GatewayActivityBehavior {
@@ -39,8 +36,8 @@ public class ParallelGatewayActivityBehavior extends GatewayActivityBehavior {
 
 
         int nbrOfExecutionsToJoin = parallelGateway.getIncomingFlows().size();
-        CurrentHashMapCache defaultSession = Context.getCommandContext().getDefaultSession();
-        Set<ExecutionEntityImpl> entitySet = (Set<ExecutionEntityImpl>) defaultSession.get(execution.getSerialNumber());
+        CurrentHashMapCache<ExecutionEntityImpl> defaultSession = Context.getCommandContext().getDefaultSession();
+        Set<ExecutionEntityImpl> entitySet = defaultSession.get(execution.getSerialNumber());
 
         List<ExecutionEntityImpl> joinedExecutions = entitySet.stream().filter(c -> !c.isActive() && c.getCurrentActivityId().equals(execution.getCurrentActivityId())).collect(Collectors.toList());
 

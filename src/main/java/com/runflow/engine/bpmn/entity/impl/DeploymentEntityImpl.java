@@ -6,12 +6,10 @@ import com.runflow.engine.bpmn.entity.DeploymentEntity;
 import com.runflow.engine.bpmn.entity.ResourceEntity;
 import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
 
-import java.io.Serializable;
 import java.util.*;
 
-public class DeploymentEntityImpl extends AbstractEntityNoRevision implements DeploymentEntity, Serializable {
+public class DeploymentEntityImpl extends AbstractEntityNoRevision implements DeploymentEntity {
 
-    private static final long serialVersionUID = 1L;
 
     protected String name;
     protected String category;
@@ -32,13 +30,10 @@ public class DeploymentEntityImpl extends AbstractEntityNoRevision implements De
      */
     protected Map<Class<?>, List<Object>> deployedArtifacts;
 
-    public DeploymentEntityImpl() {
-
-    }
 
     public void addResource(ResourceEntity resource) {
         if (resources == null) {
-            resources = new HashMap<String, ResourceEntity>();
+            resources = new HashMap<>();
         }
         resources.put(resource.getName(), resource);
     }
@@ -53,7 +48,7 @@ public class DeploymentEntityImpl extends AbstractEntityNoRevision implements De
     }
 
     public Object getPersistentState() {
-        Map<String, Object> persistentState = new HashMap<String, Object>();
+        Map<String, Object> persistentState = new HashMap<>();
         persistentState.put("category", this.category);
         persistentState.put("key", this.key);
         persistentState.put("tenantId", tenantId);
@@ -64,13 +59,13 @@ public class DeploymentEntityImpl extends AbstractEntityNoRevision implements De
 
     public void addDeployedArtifact(Object deployedArtifact) {
         if (deployedArtifacts == null) {
-            deployedArtifacts = new HashMap<Class<?>, List<Object>>();
+            deployedArtifacts = new HashMap<>();
         }
 
         Class<?> clazz = deployedArtifact.getClass();
         List<Object> artifacts = deployedArtifacts.get(clazz);
         if (artifacts == null) {
-            artifacts = new ArrayList<Object>();
+            artifacts = new ArrayList<>();
             deployedArtifacts.put(clazz, artifacts);
         }
 
@@ -84,7 +79,7 @@ public class DeploymentEntityImpl extends AbstractEntityNoRevision implements De
                 return (List<T>) deployedArtifacts.get(deployedArtifactsClass);
             }
         }
-        return null;
+        return new ArrayList<>();
     }
 
     // getters and setters ////////////////////////////////////////////////////////

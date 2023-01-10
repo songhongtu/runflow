@@ -1,6 +1,5 @@
 package com.runflow.engine.context;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.runflow.engine.RunFlowEngineAgenda;
 import com.runflow.engine.impl.CommandContext;
 import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
@@ -9,9 +8,11 @@ import java.util.*;
 
 public class Context {
 
-    protected static ThreadLocal<Stack<CommandContext>> commandContextThreadLocal = new ThreadLocal<Stack<CommandContext>>();
-    protected static ThreadLocal<Stack<ProcessEngineConfigurationImpl>> processEngineConfigurationStackThreadLocal = new ThreadLocal<Stack<ProcessEngineConfigurationImpl>>();
+    protected static ThreadLocal<Stack<CommandContext>> commandContextThreadLocal = new ThreadLocal<>();
+    protected static ThreadLocal<Stack<ProcessEngineConfigurationImpl>> processEngineConfigurationStackThreadLocal = new ThreadLocal<>();
+    private Context(){
 
+    }
 
     public static CommandContext getCommandContext() {
         Stack<CommandContext> stack = getStack(commandContextThreadLocal);
@@ -52,7 +53,7 @@ public class Context {
     protected static <T> Stack<T> getStack(ThreadLocal<Stack<T>> threadLocal) {
         Stack<T> stack = threadLocal.get();
         if (stack == null) {
-            stack = new Stack<T>();
+            stack = new Stack<>();
             threadLocal.set(stack);
         }
         return stack;

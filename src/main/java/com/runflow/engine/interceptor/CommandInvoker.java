@@ -12,7 +12,6 @@ import java.util.concurrent.locks.LockSupport;
 
 public class CommandInvoker extends AbstractCommandInterceptor {
 
-    private static final Logger logger = LoggerFactory.getLogger(CommandInvoker.class);
 
     @Override
     @SuppressWarnings("unchecked")

@@ -1,10 +1,8 @@
 package com.runflow.engine.delegate;
 
-import com.runflow.engine.ExecutionEntity;
 import com.runflow.engine.ExecutionEntityImpl;
 
-import java.io.Serializable;
 
-public interface ActivityBehavior  extends Serializable {
+public interface ActivityBehavior  {
     void execute(ExecutionEntityImpl execution);
 }

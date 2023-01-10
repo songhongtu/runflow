@@ -13,9 +13,6 @@ public class ResourceEntityImpl  extends AbstractEntityNoRevision implements Res
     protected String deploymentId;
     protected boolean generated;
 
-    public ResourceEntityImpl() {
-
-    }
 
     public String getName() {
         return name;

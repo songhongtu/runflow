@@ -17,9 +17,7 @@ import java.util.Random;
 public class ConditionUtil {
 
 
-    public boolean abs(Object o) {
-        return new Random().nextBoolean();
-    }
+
 
 
     public static boolean hasTrueCondition(String ex, ExecutionEntityImpl execution) {
@@ -35,7 +33,10 @@ public class ConditionUtil {
         ValueExpression valueExpression = expressionFactory.createValueExpression(elContext, expression.trim(), Object.class);
         Object value = valueExpression.getValue(elContext);
         ExecutionEntityImpl rootParent = execution.findRootParent(execution);
-        rootParent.variableInstances.put(execution.getActivityId(),value);
+        if(value!=null){
+            rootParent.variableInstances.put(execution.getActivityId(),value);
+        }
+
         return value;
     }
 

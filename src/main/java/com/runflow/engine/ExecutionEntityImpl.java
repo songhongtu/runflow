@@ -1,19 +1,14 @@
 package com.runflow.engine;
 
-import com.runflow.engine.behavior.ParallelGatewayActivityBehavior;
 import com.runflow.engine.bpmn.entity.*;
 import com.runflow.engine.context.Context;
 import de.odysseus.el.util.SimpleContext;
 import org.activiti.bpmn.model.FlowElement;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class ExecutionEntityImpl implements ExecutionEntity, Entity {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ParallelGatewayActivityBehavior.class);
     protected Thread mainThread;
 
     protected Map<String, Object> transientVariabes;
@@ -55,7 +50,6 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
 
     // events ///////////////////////////////////////////////////////////////////
 
-    // TODO: still needed in v6?
 
 
     // associated entities /////////////////////////////////////////////////////
@@ -114,8 +108,7 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
 
     public FlowElement getCurrentFlowElement() {
         if (currentFlowElement == null) {
-            String processDefinitionId = getProcessDefinitionId();
-            if (processDefinitionId != null) {
+            if ( getProcessDefinitionId() != null) {
                 org.activiti.bpmn.model.Process process = Context.getProcessEngineConfiguration().getProcessDefinitionCache().get(processDefinitionKey).getProcess();
                 currentFlowElement = process.getFlowElement(getCurrentActivityId(), true);
             }
@@ -222,7 +215,6 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
     protected void ensureParentInitialized() {
         if (parent == null && parentId != null) {
             throw new RunFlowException("parentId 不存在");
-            // parent = (ExecutionEntityImpl) Context.getCommandContext().getExecutionEntityManager().findById(parentId);
         }
     }
 
@@ -313,8 +305,10 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
         // manage the bidirectional parent-child relation
         parentExecutionEntity.addChildExecution(childExecution1);
         Context.getCommandContext().getDefaultSession().putSingle(childExecution1);
+        /**
+         * LOGGER.info("线程名称："+Thread.currentThread().getName()+"："+"创建节点:{}",childExecution1.getId());
+         */
 
-//        LOGGER.info("线程名称："+Thread.currentThread().getName()+"："+"创建节点:{}",childExecution1.getId());
         return childExecution1;
     }
 
@@ -420,11 +414,8 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
     }
 
     public boolean hasVariable(String variableName) {
-        Object variableInstances = this.getVariableInstances(variableName);
-        if (variableInstances == null) {
-            return false;
-        }
-        return true;
+        return  this.getVariableInstances(variableName)==null?false:true;
+
     }
 
 

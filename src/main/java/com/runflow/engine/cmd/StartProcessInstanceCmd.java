@@ -6,11 +6,8 @@ import com.runflow.engine.bpmn.entity.impl.ProcessDefinitionCacheEntry;
 import com.runflow.engine.context.Context;
 import com.runflow.engine.impl.Command;
 import com.runflow.engine.impl.CommandContext;
-import com.runflow.engine.impl.agenda.TakeOutgoingSequenceFlowsOperation;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.Process;
-import org.activiti.bpmn.model.StartEvent;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,7 +15,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class StartProcessInstanceCmd implements Command<ExecutionEntityImpl> {
     private String key;
     protected Map<String, Object> variables;
-    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(TakeOutgoingSequenceFlowsOperation.class);
 
 
     public StartProcessInstanceCmd(String key, Map<String, Object> variables) {
@@ -49,9 +45,11 @@ public class StartProcessInstanceCmd implements Command<ExecutionEntityImpl> {
         processInstance.setScope(true);
         execution.setCurrentFlowElement(initialFlowElement);
         if (variables != null) {
-            for (String key : variables.keySet()) {
-                processInstance.variableInstances.put(key, variables.get(key));
+            for (Map.Entry<String,Object> entry : variables.entrySet()) {
+                processInstance.variableInstances.put(entry.getKey(),entry.getValue());
             }
+
+
         }
         commandContext.getDefaultSession().putSingle(processInstance);
         startProcessInstance(processInstance, Context.getCommandContext());

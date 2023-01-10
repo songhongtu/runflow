@@ -1,6 +1,5 @@
 package com.runflow.engine.bpmn.entity;
 
-import java.util.List;
 
 public interface ProcessDefinitionEntity extends ProcessDefinition, Entity {
 

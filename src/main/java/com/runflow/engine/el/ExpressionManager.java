@@ -4,7 +4,6 @@ import com.runflow.engine.ExecutionEntityImpl;
 import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
 import de.odysseus.el.ExpressionFactoryImpl;
 import de.odysseus.el.util.SimpleContext;
-import de.odysseus.el.util.SimpleResolver;
 
 import javax.el.*;
 

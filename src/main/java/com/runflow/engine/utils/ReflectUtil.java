@@ -3,8 +3,6 @@ package com.runflow.engine.utils;
 import com.runflow.engine.RunFlowException;
 import com.runflow.engine.context.Context;
 import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
@@ -16,7 +14,8 @@ import java.util.regex.Pattern;
 
 public class ReflectUtil {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ReflectUtil.class);
+    private ReflectUtil(){}
+
 
     private static final Pattern GETTER_PATTERN = Pattern.compile("(get|is)[A-Z].*");
     private static final Pattern SETTER_PATTERN = Pattern.compile("set[A-Z].*");
@@ -71,16 +70,6 @@ public class ReflectUtil {
     }
 
 
-    public static Object invoke(Object target, String methodName, Object[] args) {
-        try {
-            Class<? extends Object> clazz = target.getClass();
-            Method method = findMethod(clazz, methodName, args);
-            method.setAccessible(true);
-            return method.invoke(target, args);
-        } catch (Exception e) {
-            throw new RunFlowException("couldn't invoke " + methodName + " on " + target, e);
-        }
-    }
 
     /**
      * Returns the field of the given object or null if it doesn't exist.
@@ -109,16 +98,6 @@ public class ReflectUtil {
         return field;
     }
 
-    public static void setField(Field field, Object object, Object value) {
-        try {
-            field.setAccessible(true);
-            field.set(object, value);
-        } catch (IllegalArgumentException e) {
-            throw new RunFlowException("Could not set field " + field.toString(), e);
-        } catch (IllegalAccessException e) {
-            throw new RunFlowException("Could not set field " + field.toString(), e);
-        }
-    }
 
     /**
      * Returns the setter-method for the given field name or null if no setter exists.
@@ -143,39 +122,9 @@ public class ReflectUtil {
         }
     }
 
-    private static Method findMethod(Class<? extends Object> clazz, String methodName, Object[] args) {
-        for (Method method : clazz.getDeclaredMethods()) {
-            // TODO add parameter matching
-            if (method.getName().equals(methodName) && matches(method.getParameterTypes(), args)) {
-                return method;
-            }
-        }
-        Class<?> superClass = clazz.getSuperclass();
-        if (superClass != null) {
-            return findMethod(superClass, methodName, args);
-        }
-        return null;
-    }
 
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private static <T> Constructor<T> findMatchingConstructor(Class<T> clazz, Object[] args) {
-        for (Constructor constructor : clazz.getDeclaredConstructors()) { // cannot
-            // use
-            // <?>
-            // or
-            // <T>
-            // due
-            // to
-            // JDK
-            // 5/6
-            // incompatibility
-            if (matches(constructor.getParameterTypes(), args)) {
-                return constructor;
-            }
-        }
-        return null;
-    }
 
     private static boolean matches(Class<?>[] parameterTypes, Object[] args) {
         if ((parameterTypes == null) || (parameterTypes.length == 0)) {

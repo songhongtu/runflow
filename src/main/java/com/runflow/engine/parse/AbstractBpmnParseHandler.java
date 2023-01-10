@@ -1,8 +1,6 @@
 package com.runflow.engine.parse;
 
 import org.activiti.bpmn.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -10,10 +8,9 @@ import java.util.Set;
 
 public abstract class AbstractBpmnParseHandler<T extends BaseElement> implements BpmnParseHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(AbstractBpmnParseHandler.class);
 
     public Set<Class<? extends BaseElement>> getHandledTypes() {
-        Set<Class<? extends BaseElement>> types = new HashSet<Class<? extends BaseElement>>();
+        Set<Class<? extends BaseElement>> types = new HashSet<>();
         types.add(getHandledType());
         return types;
     }
@@ -43,7 +40,6 @@ public abstract class AbstractBpmnParseHandler<T extends BaseElement> implements
         if (bpmnModel.getArtifact(association.getSourceRef()) != null || bpmnModel.getArtifact(association.getTargetRef()) != null) {
 
             // connected to a text annotation so skipping it
-            return;
         }
     }
 }

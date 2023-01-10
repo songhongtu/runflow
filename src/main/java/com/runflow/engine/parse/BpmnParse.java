@@ -41,7 +41,7 @@ public class BpmnParse {
     /**
      * The end result of the parsing: a list of process definition.
      */
-    protected List<ProcessDefinitionEntity> processDefinitions = new ArrayList<ProcessDefinitionEntity>();
+    protected List<ProcessDefinitionEntity> processDefinitions = new ArrayList<>();
 
 
     public BpmnParse deployment(DeploymentEntity deployment) {
@@ -67,10 +67,7 @@ public class BpmnParse {
 
 
 
-        ProcessValidator processValidator = null;
-        if (processValidator == null) {
-            processValidator = new ProcessValidatorFactory().createDefaultProcessValidator();
-        }
+        ProcessValidator processValidator = new ProcessValidatorFactory().createDefaultProcessValidator();
         List<ValidationError> validationErrors = processValidator.validate(bpmnModel);
         if (validationErrors != null && !validationErrors.isEmpty()) {
 
@@ -89,12 +86,12 @@ public class BpmnParse {
 
             // Throw exception if there is any error
             if (errorBuilder.length() > 0) {
-                throw new RunFlowException("Errors while parsing:\n" + errorBuilder.toString());
+                throw new RunFlowException("Errors while parsing:\n{}" + errorBuilder);
             }
 
             // Write out warnings (if any)
             if (warningBuilder.length() > 0) {
-                LOGGER.warn("Following warnings encountered during process validation: " + warningBuilder.toString());
+                LOGGER.warn("Following warnings encountered during process validation: {}" , warningBuilder);
             }
 
         }
@@ -126,7 +123,7 @@ public class BpmnParse {
         FlowElement flowElement = bpmnModel.getFlowElement(key);
         if (flowElement instanceof SequenceFlow) {
             SequenceFlow sequenceFlow = (SequenceFlow) flowElement;
-            List<Integer> waypoints = new ArrayList<Integer>();
+            List<Integer> waypoints = new ArrayList<>();
             for (GraphicInfo waypointInfo : graphicList) {
                 waypoints.add((int) waypointInfo.getX());
                 waypoints.add((int) waypointInfo.getY());
@@ -136,7 +133,7 @@ public class BpmnParse {
         } else if (bpmnModel.getArtifact(key) != null) {
             // it's an association, so nothing to do
         } else {
-            LOGGER.warn("Invalid reference in 'bpmnElement' attribute, sequenceFlow " + key + " not found");
+            LOGGER.warn("Invalid reference in 'bpmnElement' attribute, sequenceFlow {}} not found",key);
         }
     }
 
@@ -156,11 +153,11 @@ public class BpmnParse {
                     if (bpmnModel.getArtifact(bpmnReference) == null) {
                         // Check if it's a Pool or Lane, then DI is ok
                         if (bpmnModel.getPool(bpmnReference) == null && bpmnModel.getLane(bpmnReference) == null) {
-                            LOGGER.warn("Invalid reference in diagram interchange definition: could not find " + bpmnReference);
+                            LOGGER.warn("Invalid reference in diagram interchange definition: could not find {}" , bpmnReference);
                         }
                     }
                 } else if (!(bpmnModel.getFlowElement(bpmnReference) instanceof FlowNode)) {
-                    LOGGER.warn("Invalid reference in diagram interchange definition: " + bpmnReference + " does not reference a flow node");
+                    LOGGER.warn("Invalid reference in diagram interchange definition: {} does not reference a flow node",bpmnReference);
                 }
             }
 
@@ -168,10 +165,10 @@ public class BpmnParse {
                 if (bpmnModel.getFlowElement(bpmnReference) == null) {
                     // ACT-1625: don't warn when artifacts are referenced from DI
                     if (bpmnModel.getArtifact(bpmnReference) == null) {
-                        LOGGER.warn("Invalid reference in diagram interchange definition: could not find " + bpmnReference);
+                        LOGGER.warn("Invalid reference in diagram interchange definition: could not find {} " , bpmnReference);
                     }
                 } else if (!(bpmnModel.getFlowElement(bpmnReference) instanceof SequenceFlow)) {
-                    LOGGER.warn("Invalid reference in diagram interchange definition: " + bpmnReference + " does not reference a sequence flow");
+                    LOGGER.warn("Invalid reference in diagram interchange definition:{} does not reference a sequence flow",bpmnReference);
                 }
             }
 
@@ -205,7 +202,7 @@ public class BpmnParse {
     }
 
     protected void applyParseHandlers() {
-        sequenceFlows = new HashMap<String, SequenceFlow>();
+        sequenceFlows = new HashMap<>();
         for (Process process : bpmnModel.getProcesses()) {
             currentProcess = process;
             if (process.isExecutable()) {
@@ -251,11 +248,11 @@ public class BpmnParse {
         // a certain type.
 
         // Using lists as we want to keep the order in which they are defined
-        List<SequenceFlow> sequenceFlowToParse = new ArrayList<SequenceFlow>();
-        List<BoundaryEvent> boundaryEventsToParse = new ArrayList<BoundaryEvent>();
+        List<SequenceFlow> sequenceFlowToParse = new ArrayList<>();
+        List<BoundaryEvent> boundaryEventsToParse = new ArrayList<>();
 
         // Flow elements that depend on other elements are parse after the first run-through
-        List<FlowElement> defferedFlowElementsToParse = new ArrayList<FlowElement>();
+        List<FlowElement> defferedFlowElementsToParse = new ArrayList<>();
 
         // Activities are parsed first
         for (FlowElement flowElement : flowElements) {

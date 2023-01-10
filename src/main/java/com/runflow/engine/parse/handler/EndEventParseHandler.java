@@ -5,12 +5,9 @@ import com.runflow.engine.behavior.NoneEndEventActivityBehavior;
 import com.runflow.engine.parse.AbstractActivityBpmnParseHandler;
 import com.runflow.engine.parse.BpmnParse;
 import org.activiti.bpmn.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class EndEventParseHandler  extends AbstractActivityBpmnParseHandler<EndEvent> {
 
-    private static final Logger logger = LoggerFactory.getLogger(EndEventParseHandler.class);
 
     public Class<? extends BaseElement> getHandledType() {
         return EndEvent.class;

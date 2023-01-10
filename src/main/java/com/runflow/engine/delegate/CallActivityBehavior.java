@@ -6,17 +6,14 @@ import com.runflow.engine.behavior.AbstractBpmnActivityBehavior;
 import com.runflow.engine.bpmn.entity.ProcessDefinition;
 import com.runflow.engine.bpmn.entity.impl.ProcessDefinitionCacheEntry;
 import com.runflow.engine.context.Context;
-import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
 import org.activiti.bpmn.model.*;
 import org.activiti.bpmn.model.Process;
 
 import javax.el.Expression;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public class CallActivityBehavior extends AbstractBpmnActivityBehavior implements SubProcessActivityBehavior {
-
     protected String processDefinitonKey;
     protected Expression processDefinitionExpression;
     protected List<MapExceptionEntry> mapExceptions;
@@ -38,7 +35,7 @@ public class CallActivityBehavior extends AbstractBpmnActivityBehavior implement
 
         ProcessDefinitionCacheEntry processDefinitionCacheEntry = Context.getProcessEngineConfiguration().getProcessDefinitionCache().get(finalProcessDefinitonKey);
         if (processDefinitionCacheEntry == null) {
-            throw new RunFlowException("找不到子流程 key:"+processDefinitonKey);
+            throw new RunFlowException("找不到子流程 key:" + processDefinitonKey);
         }
 
         String uuid = UUID.randomUUID().toString();
@@ -46,35 +43,39 @@ public class CallActivityBehavior extends AbstractBpmnActivityBehavior implement
         ProcessDefinition processDefinition = processDefinitionCacheEntry.getProcessDefinition();
         Process subProcess = processDefinitionCacheEntry.getProcess();
         FlowElement initialFlowElement = subProcess.getInitialFlowElement();
-        ExecutionEntityImpl executionEntity = (ExecutionEntityImpl) execution;
-        CallActivity callActivity = (CallActivity) execution.getCurrentFlowElement();
-        ExecutionEntityImpl subProcessInstance = executionEntity.createSubprocessInstance(processDefinition, executionEntity, null);
+        /**
+         *    CallActivity callActivity = (CallActivity) execution.getCurrentFlowElement();
+         */
+
+        ExecutionEntityImpl subProcessInstance = execution.createSubprocessInstance(processDefinition, execution, null);
         subProcessInstance.setMainThread(Thread.currentThread());
         subProcessInstance.setSerialNumber(uuid);
 
-        ExecutionEntityImpl subProcessInitialExecution = executionEntity.createChildExecution(subProcessInstance);
+        ExecutionEntityImpl subProcessInitialExecution = execution.createChildExecution(subProcessInstance);
         subProcessInitialExecution.setCurrentFlowElement(initialFlowElement);
 
-        List<IOParameter> inParameters = callActivity.getInParameters();
-        Map<String, Object> variableInstances = execution.getVariableInstances();
-
-        subProcessInstance.setVariableInstances(variableInstances);
-        ProcessEngineConfigurationImpl processEngineConfiguration = Context.getProcessEngineConfiguration();
+        /**
+         *         List<IOParameter> inParameters = callActivity.getInParameters();
+         *         Map<String, Object> variableInstances = execution.getVariableInstances();
+         *
+         *         subProcessInstance.setVariableInstances(variableInstances);
+         *         ProcessEngineConfigurationImpl processEngineConfiguration = Context.getProcessEngineConfiguration();
+         */
 
 
         Context.getAgenda().planContinueProcessOperation(subProcessInitialExecution);
 
     }
 
+
     @Override
     public void completing(ExecutionEntityImpl execution, ExecutionEntityImpl subProcessInstance) {
-        ExecutionEntityImpl executionEntity = (ExecutionEntityImpl) execution;
-
+        subProcessInstance.getVariableInstances();
     }
 
     @Override
-    public void completed(ExecutionEntityImpl execution) throws Exception {
-        ExecutionEntityImpl executionEntity = (ExecutionEntityImpl) execution;
+    public void completed(ExecutionEntityImpl execution) {
+        ExecutionEntityImpl executionEntity = execution;
 
         leave(executionEntity);
     }

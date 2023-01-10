@@ -32,8 +32,7 @@ public class GeneraImageCommand implements Command<InputStream>, Serializable {
         Context.getProcessEngineConfiguration().scan();
         ProcessEngineConfigurationImpl processEngineConfiguration = commandContext.getProcessEngineConfiguration();
         ProcessDefinitionCacheEntry processDefinitionCacheEntry = processEngineConfiguration.getProcessDefinitionCache().get(key);
-        InputStream diagramForProcessDefinition = this.createDiagramForProcessDefinition(processDefinitionCacheEntry.getProcessDefinition(), processDefinitionCacheEntry.getBpmnModel());
-        return diagramForProcessDefinition;
+        return this.createDiagramForProcessDefinition(processDefinitionCacheEntry.getProcessDefinition(), processDefinitionCacheEntry.getBpmnModel());
     }
 
 
@@ -44,8 +43,7 @@ public class GeneraImageCommand implements Command<InputStream>, Serializable {
         }
         ProcessEngineConfigurationImpl processEngineConfiguration = Context.getCommandContext().getProcessEngineConfiguration();
         try {
-            InputStream inputStream = processEngineConfiguration.getProcessDiagramGenerator().generateDiagram(bpmnModel, "png", Collections.emptyList(), Collections.emptyList(), "宋体", "宋体", "宋体", processEngineConfiguration.getClassLoader(), 1.0D);
-            return inputStream;
+            return processEngineConfiguration.getProcessDiagramGenerator().generateDiagram(bpmnModel, "png", Collections.emptyList(), Collections.emptyList(), "宋体", "宋体", "宋体", processEngineConfiguration.getClassLoader(), 1.0D);
         } catch (Throwable t) { // if anything goes wrong, we don't store the image (the process will still be executable).
             t.printStackTrace();
         }

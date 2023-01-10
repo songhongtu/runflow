@@ -1,23 +1,16 @@
 package com.runflow.engine.impl.agenda;
 
-import com.runflow.engine.ExecutionEntity;
 import com.runflow.engine.ExecutionEntityImpl;
-import com.runflow.engine.behavior.ParallelGatewayActivityBehavior;
 import com.runflow.engine.cache.impl.CurrentHashMapCache;
-import com.runflow.engine.delegate.ActivityBehavior;
 import com.runflow.engine.delegate.SubProcessActivityBehavior;
 import com.runflow.engine.impl.CommandContext;
 import org.activiti.bpmn.model.FlowNode;
-import org.activiti.bpmn.model.SubProcess;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.locks.LockSupport;
 
 public class EndExecutionOperation extends AbstractOperation {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EndExecutionOperation.class);
 
     public EndExecutionOperation(CommandContext commandContext, ExecutionEntityImpl execution) {
         super(commandContext, execution);
@@ -34,9 +27,9 @@ public class EndExecutionOperation extends AbstractOperation {
 
 
     protected void handleRegularExecution() {
-        ExecutionEntityImpl execution = (ExecutionEntityImpl) this.execution;
+        ExecutionEntityImpl execution =  this.execution;
 
-        CurrentHashMapCache runTimeExecution = commandContext.getProcessEngineConfiguration().getRunTimeExecution();
+        CurrentHashMapCache<ExecutionEntityImpl> runTimeExecution = commandContext.getProcessEngineConfiguration().getRunTimeExecution();
         String serialNumber = execution.getSerialNumber();
         if (!StringUtils.isEmpty(serialNumber)) {
             runTimeExecution.remove(serialNumber);

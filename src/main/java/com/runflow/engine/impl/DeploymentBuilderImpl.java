@@ -11,6 +11,7 @@ import com.runflow.engine.util.io.IoUtil;
 import com.runflow.engine.utils.ReflectUtil;
 import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
+import org.apache.commons.io.Charsets;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -22,13 +23,12 @@ import java.util.zip.ZipInputStream;
 
 public class DeploymentBuilderImpl  implements DeploymentBuilder {
 
-    protected static final String DEFAULT_ENCODING = "UTF-8";
+    protected static final String DEFAULT_ENCODING = Charsets.UTF_8.toString();
 
     protected  RunTimeServiceImpl repositoryService;
 
     protected DeploymentEntity deployment;
     protected boolean isBpmn20XsdValidationEnabled = true;
-    protected boolean isProcessValidationEnabled = true;
     protected boolean isDuplicateFilterEnabled;
     protected Date processDefinitionsActivationDate;
     protected Map<String, Object> deploymentProperties = new HashMap<>();
@@ -50,13 +50,6 @@ public class DeploymentBuilderImpl  implements DeploymentBuilder {
         return this;
     }
 
-    public DeploymentBuilder addClasspathResource(String resource) {
-        InputStream inputStream = ReflectUtil.getResourceAsStream(resource);
-        if (inputStream == null) {
-            throw new RunFlowException("resource '" + resource + "' not found");
-        }
-        return addInputStream(resource, inputStream);
-    }
 
     public DeploymentBuilder addString(String resourceName, String text) {
         if (text == null) {
@@ -73,68 +66,20 @@ public class DeploymentBuilderImpl  implements DeploymentBuilder {
         return this;
     }
 
-    public DeploymentBuilder addBytes(String resourceName, byte[] bytes) {
-        if (bytes == null) {
-            throw new RunFlowException("bytes is null");
-        }
-        ResourceEntity resource = new ResourceEntityImpl();
-        resource.setName(resourceName);
-        resource.setBytes(bytes);
 
-        deployment.addResource(resource);
-        return this;
-    }
 
-    public DeploymentBuilder addZipInputStream(ZipInputStream zipInputStream) {
-        try {
-            ZipEntry entry = zipInputStream.getNextEntry();
-            while (entry != null) {
-                if (!entry.isDirectory()) {
-                    String entryName = entry.getName();
-                    byte[] bytes = IoUtil.readInputStream(zipInputStream, entryName);
-                    ResourceEntity resource =new ResourceEntityImpl();
-                    resource.setName(entryName);
-                    resource.setBytes(bytes);
-                    deployment.addResource(resource);
-                }
-                entry = zipInputStream.getNextEntry();
-            }
-        } catch (Exception e) {
-            throw new RunFlowException("problem reading zip input stream", e);
-        }
-        return this;
-    }
-
-    public DeploymentBuilder addBpmnModel(String resourceName, BpmnModel bpmnModel) {
-        BpmnXMLConverter bpmnXMLConverter = new BpmnXMLConverter();
-        try {
-            String bpmn20Xml = new String(bpmnXMLConverter.convertToXML(bpmnModel), DEFAULT_ENCODING);
-            addString(resourceName, bpmn20Xml);
-        } catch (UnsupportedEncodingException e) {
-            throw new RunFlowException("Error while transforming BPMN model to xml: not UTF-8 encoded", e);
-        }
-        return this;
-    }
 
     public DeploymentBuilder name(String name) {
         deployment.setName(name);
         return this;
     }
 
-    public DeploymentBuilder category(String category) {
-        deployment.setCategory(category);
-        return this;
-    }
 
     public DeploymentBuilder key(String key) {
         deployment.setKey(key);
         return this;
     }
 
-    public DeploymentBuilder disableBpmnValidation() {
-        this.isProcessValidationEnabled = false;
-        return this;
-    }
 
     public DeploymentBuilder disableSchemaValidation() {
         this.isBpmn20XsdValidationEnabled = false;
@@ -172,24 +117,6 @@ public class DeploymentBuilderImpl  implements DeploymentBuilder {
         return deployment;
     }
 
-    public boolean isProcessValidationEnabled() {
-        return isProcessValidationEnabled;
-    }
 
-    public boolean isBpmn20XsdValidationEnabled() {
-        return isBpmn20XsdValidationEnabled;
-    }
-
-    public boolean isDuplicateFilterEnabled() {
-        return isDuplicateFilterEnabled;
-    }
-
-    public Date getProcessDefinitionsActivationDate() {
-        return processDefinitionsActivationDate;
-    }
-
-    public Map<String, Object> getDeploymentProperties() {
-        return deploymentProperties;
-    }
 
 }

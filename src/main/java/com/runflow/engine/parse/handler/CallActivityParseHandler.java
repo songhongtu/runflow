@@ -2,11 +2,9 @@ package com.runflow.engine.parse.handler;
 
 import com.runflow.engine.delegate.CallActivityBehavior;
 import com.runflow.engine.parse.AbstractActivityBpmnParseHandler;
-import com.runflow.engine.parse.AbstractBpmnParseHandler;
 import com.runflow.engine.parse.BpmnParse;
 import org.activiti.bpmn.model.BaseElement;
 import org.activiti.bpmn.model.CallActivity;
-import org.activiti.bpmn.model.SequenceFlow;
 
 public class CallActivityParseHandler extends AbstractActivityBpmnParseHandler<CallActivity> {
 

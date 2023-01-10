@@ -27,7 +27,7 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
 
         // Compensation check
         if ((currentFlowElement instanceof Activity)
-                && (((Activity) currentFlowElement)).isForCompensation()) {
+                && ((Activity) currentFlowElement).isForCompensation()) {
 
             throw new RunFlowException("不支持");
         }
@@ -40,8 +40,7 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
     }
 
     protected void handleFlowNode(FlowNode flowNode) {
-        if (flowNode.getParentContainer() != null
-                && flowNode.getParentContainer() instanceof AdhocSubProcess) {
+        if ( flowNode.getParentContainer() instanceof AdhocSubProcess) {
             throw new RunFlowException("不支持");
         } else {
             leaveFlowNode(flowNode);
@@ -59,12 +58,12 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
         }
 
         // Determine which sequence flows can be used for leaving
-        List<SequenceFlow> outgoingSequenceFlows = new ArrayList<SequenceFlow>();
+        List<SequenceFlow> outgoingSequenceFlows = new ArrayList<>();
         for (SequenceFlow sequenceFlow : flowNode.getOutgoingFlows()) {
             String skipExpressionString = sequenceFlow.getSkipExpression();
             String conditionExpression = sequenceFlow.getConditionExpression();
             if (!StringUtils.isEmpty(conditionExpression)) {
-                if (evaluateConditions && ConditionUtil.hasTrueCondition(conditionExpression, (ExecutionEntityImpl) execution)) {
+                if (evaluateConditions && ConditionUtil.hasTrueCondition(conditionExpression,  execution)) {
                     outgoingSequenceFlows.add(sequenceFlow);
                 }
             } else if (StringUtils.isEmpty(skipExpressionString)) {

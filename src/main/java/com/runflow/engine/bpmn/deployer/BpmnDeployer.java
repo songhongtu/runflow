@@ -5,16 +5,13 @@ import com.runflow.engine.bpmn.entity.ProcessDefinitionEntity;
 import com.runflow.engine.bpmn.entity.ResourceEntity;
 import com.runflow.engine.bpmn.entity.impl.DefaultDeploymentCache;
 import com.runflow.engine.bpmn.entity.impl.ProcessDefinitionCacheEntry;
-import com.runflow.engine.bpmn.entity.impl.ResourceEntityImpl;
 import com.runflow.engine.context.Context;
 import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
 import com.runflow.engine.parse.BpmnParse;
 import com.runflow.engine.parse.BpmnParser;
-import com.runflow.engine.util.io.IoUtil;
 import com.runflow.engine.utils.ResourceNameUtil;
 import org.activiti.bpmn.model.*;
 import org.activiti.bpmn.model.Process;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,12 +22,12 @@ public class BpmnDeployer {
 
     private static final Logger log = LoggerFactory.getLogger(BpmnDeployer.class);
 
-    public ParsedDeployment deploy(DeploymentEntity deployment, Map<String, Object> deploymentSettings,BpmnParser bpmnParser) {
+    public ParsedDeployment deploy(DeploymentEntity deployment,BpmnParser bpmnParser) {
         log.debug("Processing deployment {}", deployment.getName());
 
         // The ParsedDeployment represents the deployment, the process definitions, and the BPMN
         // resource, parse, and model associated with each process definition.
-        ParsedDeployment parsedDeployment =build(deployment,deploymentSettings,bpmnParser);
+        ParsedDeployment parsedDeployment =build(deployment,bpmnParser);
 
             for (ProcessDefinitionEntity processDefinition : parsedDeployment.getAllProcessDefinitions()) {
                 String resourceName = parsedDeployment.getResourceForProcessDefinition(processDefinition).getName();
@@ -83,7 +80,7 @@ return parsedDeployment;
         return false;
     }
 
-    protected BpmnParse createBpmnParseFromResource(ResourceEntity resource, BpmnParser bpmnParser,Map<String, Object> deploymentSettings,DeploymentEntity deploymentEntity) {
+    protected BpmnParse createBpmnParseFromResource(ResourceEntity resource, BpmnParser bpmnParser,DeploymentEntity deploymentEntity) {
         String resourceName = resource.getName();
         ByteArrayInputStream inputStream = new ByteArrayInputStream(resource.getBytes());
 
@@ -96,18 +93,18 @@ return parsedDeployment;
         return bpmnParse;
     }
 
-    public ParsedDeployment build(DeploymentEntity deploymentEntity, Map<String, Object> deploymentSettings,BpmnParser bpmnParser) {
-        List<ProcessDefinitionEntity> processDefinitions = new ArrayList<ProcessDefinitionEntity>();
+    public ParsedDeployment build(DeploymentEntity deploymentEntity,BpmnParser bpmnParser) {
+        List<ProcessDefinitionEntity> processDefinitions = new ArrayList<>();
         Map<ProcessDefinitionEntity, BpmnParse> processDefinitionsToBpmnParseMap
-                = new LinkedHashMap<ProcessDefinitionEntity, BpmnParse>();
+                = new LinkedHashMap<>();
         Map<ProcessDefinitionEntity, ResourceEntity> processDefinitionsToResourceMap
-                = new LinkedHashMap<ProcessDefinitionEntity, ResourceEntity>();
+                = new LinkedHashMap<>();
 
         for (ResourceEntity resource : deploymentEntity.getResources().values()) {
             if (isBpmnResource(resource.getName())) {
                 log.debug("Processing BPMN resource {}", resource.getName());
                 //createProcessDefinitions
-                BpmnParse parse = createBpmnParseFromResource(resource,bpmnParser,deploymentSettings,deploymentEntity);
+                BpmnParse parse = createBpmnParseFromResource(resource,bpmnParser,deploymentEntity);
                 for (ProcessDefinitionEntity processDefinition : parse.getProcessDefinitions()) {
                     processDefinitions.add(processDefinition);
                     processDefinitionsToBpmnParseMap.put(processDefinition, parse);

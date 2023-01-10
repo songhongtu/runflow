@@ -65,9 +65,9 @@ public class ContinueProcessOperation extends AbstractOperation {
             executeSynchronous(flowNode);
         } else {
             CommandExecutorImpl commandExecutor = Context.getProcessEngineConfiguration().getCommandExecutor();
-            executorService.execute(() -> {
-                commandExecutor.execute(new ExecuteAsyncJobCmd( execution));
-            });
+            executorService.execute(() ->
+                commandExecutor.execute(new ExecuteAsyncJobCmd( execution))
+            );
         }
     }
 

@@ -34,10 +34,7 @@ public class ApplicationTest {
                 .addPath("/bpmn/parallelLeave.bpmn")
                 .addPath("/bpmn/ParallelGatewayTest.bpmn")
                 .addPath("/bpmn/diagram.bpmn")
-                .addPath("/bpmn/t.bpmn")
-        ;
-
-
+                .addPath("/bpmn/t.bpmn") ;
     }
 
 
@@ -45,7 +42,7 @@ public class ApplicationTest {
 
 
     public void incrementAndGet() throws InterruptedException {
-        Thread.sleep(1000);
+        Thread.sleep(200);
         integer.incrementAndGet();
     }
 
@@ -60,9 +57,9 @@ public class ApplicationTest {
         map.put("reapply", true);
         ExecutionEntityImpl leave = repositoryService.startWorkflow("leave", map);
         Map<String, Object> variableInstances = leave.getVariableInstances();
-        System.out.println(variableInstances.get("deptleaderaudit"));
-        System.out.println(variableInstances.get("flow3"));
-        System.out.println(variableInstances.get("flow8"));
+        System.out.println(variableInstances.get("exclusivegateway1"));
+        System.out.println(variableInstances.get("reapply"));
+        System.out.println(variableInstances.get("hrapprove"));
 
     }
 
@@ -215,10 +212,8 @@ public class ApplicationTest {
         map.put("e", e);
         for (int i = 0; i < 200; i++) {
             Thread thread = new Thread(() -> {
-                for (int j = 0; j < 50; j++) {
+                for (int j = 0; j < 500; j++) {
                     ExecutionEntityImpl leave = repositoryService.startWorkflow("ParallelGatewayTest01", map);
-                    Map<String, Object> variableInstances = leave.getVariableInstances();
-
                 }
 
             });
@@ -263,45 +258,20 @@ public class ApplicationTest {
     }
 
 
+
+    /**
+     * 生成图片
+     * @throws FileNotFoundException
+     * @throws InterruptedException
+     */
     @Test
-    public void diagram() throws FileNotFoundException, InterruptedException {
-        ExecutionEntityImpl leave = repositoryService.startWorkflow("Process_1");
-
-    }
-
-
-    @Test
-    public void generater() throws FileNotFoundException, InterruptedException {
+    public void generaImages() throws FileNotFoundException, InterruptedException {
         String fileName = "diagram.bpmn";
-        FileInputStream fileInputStream = new FileInputStream("C:\\Users\\songhongtu\\Desktop\\" + fileName);
-        RunTimeServiceImpl repositoryService = conf.getRunTimeService();
-        repositoryService.createDeployment().name(fileName).addInputStream(fileName, fileInputStream).deploy();
         InputStream inputStream = conf.getRunTimeService().generaImages("Process_1");
 
 
     }
 
-    @Test
-    public void te() throws InterruptedException {
-
-        Thread daemon = new Thread(() -> {
-            try {
-                Thread.sleep(10000);
-                int sum = 0;
-                for (int i = 0; i < 100; i++) {
-                    sum += i;
-                }
-                System.out.println(sum);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-        // 设置守护线程
-        daemon.setDaemon(false);
-        daemon.start();
-//   daemon.join();/
-        System.out.println("主线程结束");
-    }
 
 
 }

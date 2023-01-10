@@ -14,7 +14,6 @@ import java.util.Iterator;
 
 public class ExclusiveGatewayActivityBehavior extends GatewayActivityBehavior {
 
-    private static final Logger logger = LoggerFactory.getLogger(EndEventParseHandler.class);
 
 
     @Override

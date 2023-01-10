@@ -5,11 +5,6 @@ import com.runflow.engine.bpmn.entity.ProcessDefinitionEntity;
 import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
 import org.activiti.bpmn.model.IOSpecification;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class ProcessDefinitionEntityImpl extends AbstractEntity implements ProcessDefinitionEntity {
 

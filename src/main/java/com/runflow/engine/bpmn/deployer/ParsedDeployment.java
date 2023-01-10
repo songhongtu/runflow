@@ -4,23 +4,13 @@ import com.runflow.engine.bpmn.entity.DeploymentEntity;
 import com.runflow.engine.bpmn.entity.ProcessDefinitionEntity;
 import com.runflow.engine.bpmn.entity.ResourceEntity;
 import com.runflow.engine.parse.BpmnParse;
-import com.runflow.engine.parse.BpmnParser;
 import com.runflow.engine.utils.ResourceNameUtil;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.Process;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ParsedDeployment {
-    private static final Logger log = LoggerFactory.getLogger(ParsedDeployment.class);
-    public static final String[] BPMN_RESOURCE_SUFFIXES = new String[]{"bpmn20.xml", "bpmn"};
-    public static final String[] DIAGRAM_SUFFIXES = new String[]{"png", "jpg", "gif", "svg"};
     protected DeploymentEntity deploymentEntity;
     protected BpmnParse bpmnParse;
     protected List<ProcessDefinitionEntity> processDefinitions;
@@ -100,31 +90,7 @@ public class ParsedDeployment {
         this.bpmnParse = bpmnParse;
     }
 
-    public ProcessDefinitionEntity getProcessDefinition(String processDefinitionKey) {
-        for (ProcessDefinitionEntity processDefinition : processDefinitions) {
-            if (processDefinition.getKey().equals(processDefinitionKey)) {
-                return processDefinition;
-            }
-        }
-        return null;
-    }
 
-//    protected BpmnParse createBpmnParseFromResource(ResourceEntity resource) {
-//        String resourceName = resource.getName();
-//        ByteArrayInputStream inputStream = new ByteArrayInputStream(resource.getBytes());
-//        BpmnParse bpmnParse = new BpmnParse()
-//                .sourceInputStream(inputStream)
-//                .setSourceSystemId(resourceName)
-//                .deployment(deploymentEntity)
-//                .name(resourceName);
-//        try {
-//            bpmnParse.execute();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return bpmnParse;
-//    }
 
 
 }

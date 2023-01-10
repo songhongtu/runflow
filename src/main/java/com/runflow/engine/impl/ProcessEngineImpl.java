@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 
 public class ProcessEngineImpl {
 
-    private static Logger log = LoggerFactory.getLogger(ProcessEngineImpl.class);
 
     protected RunTimeService repositoryService;
     protected ProcessEngineConfigurationImpl processEngineConfiguration;
@@ -17,11 +16,6 @@ public class ProcessEngineImpl {
 
     }
 
-    public void close() {
-//        ProcessEngines.unregister(this);
-
-
-    }
 
     // getters and setters
     // //////////////////////////////////////////////////////

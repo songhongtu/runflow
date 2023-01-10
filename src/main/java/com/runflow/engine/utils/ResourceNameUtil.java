@@ -8,6 +8,8 @@ import java.util.Map;
 
 public class ResourceNameUtil {
 
+    private ResourceNameUtil(){}
+
     public static final String[] BPMN_RESOURCE_SUFFIXES = new String[] { "bpmn20.xml", "bpmn" };
     public static final String[] DIAGRAM_SUFFIXES = new String[] { "png", "jpg", "gif", "svg" };
 

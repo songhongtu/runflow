@@ -55,8 +55,7 @@ public class ProcessEngineConfigurationImpl {
 
     public ProcessEngineImpl buildProcessEngine() {
         init();
-        ProcessEngineImpl processEngine = new ProcessEngineImpl(this);
-        return processEngine;
+        return new ProcessEngineImpl(this);
     }
 
 

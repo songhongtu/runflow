@@ -7,12 +7,10 @@ import com.runflow.engine.impl.Command;
 import com.runflow.engine.impl.CommandContext;
 import com.runflow.engine.impl.DeploymentBuilderImpl;
 
-import java.io.Serializable;
 import java.util.*;
 
-public class  DeployCmd<T> implements Command<Deployment>, Serializable {
+public class  DeployCmd implements Command<Deployment> {
 
-    private static final long serialVersionUID = 1L;
     protected DeploymentBuilderImpl deploymentBuilder;
 
     public DeployCmd(DeploymentBuilderImpl deploymentBuilder) {
@@ -29,11 +27,8 @@ public class  DeployCmd<T> implements Command<Deployment>, Serializable {
         DeploymentEntity deployment = deploymentBuilder.getDeployment();
         deployment.setDeploymentTime(new Date());
         deployment.setNew(true);
-        Map<String, Object> deploymentSettings = new HashMap<String, Object>();
-        deploymentSettings.put(DeploymentSettings.IS_BPMN20_XSD_VALIDATION_ENABLED, deploymentBuilder.isBpmn20XsdValidationEnabled());
-        deploymentSettings.put(DeploymentSettings.IS_PROCESS_VALIDATION_ENABLED, deploymentBuilder.isProcessValidationEnabled());
         // Actually deploy
-        ParsedDeployment deploy = commandContext.getProcessEngineConfiguration().getBpmnDeployer().deploy(deployment, deploymentSettings, commandContext.getProcessEngineConfiguration().getBpmnParser());
+        ParsedDeployment deploy = commandContext.getProcessEngineConfiguration().getBpmnDeployer().deploy(deployment, commandContext.getProcessEngineConfiguration().getBpmnParser());
         deployment.setParsedDeployment(deploy);
         return deployment;
     }

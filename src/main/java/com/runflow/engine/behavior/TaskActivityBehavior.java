@@ -33,7 +33,7 @@ public class TaskActivityBehavior extends AbstractBpmnActivityBehavior {
                 if (overrideValuesNode.isNull() || overrideValuesNode.isArray() == false || overrideValuesNode.size() == 0) {
                     activeValues = null;
                 } else {
-                    activeValues = new ArrayList<String>();
+                    activeValues = new ArrayList<>();
                     for (JsonNode valueNode : overrideValuesNode) {
                         activeValues.add(valueNode.asText());
                     }
