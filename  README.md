@@ -308,8 +308,7 @@ ProcessEngineConfigurationImpl processEngineConfiguration;
 
 把上面的bpmn中的 ${a.incrementAndGet()} 全部替换为 ${demo1Service.incrementAndGet(integer)}
 
-
-` @Autowired
+`    @Autowired
 RunTimeServiceImpl runTimeService;
 
 
@@ -321,4 +320,18 @@ RunTimeServiceImpl runTimeService;
         runTimeService.startWorkflow("Process_1671936597549",map);
         System.out.println(integer.get());
         return integer.get();
-    }`
+    }
+
+    /**
+     * 生成图片
+     * @param key
+     * @param response
+     * @throws IOException
+     */
+    @GetMapping("/images")
+    public void images(String key, HttpServletResponse response) throws IOException {
+        InputStream inputStream = runTimeService.generaImages(key);
+        IOUtils.copy(inputStream, response.getOutputStream());
+    }
+`
+

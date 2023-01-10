@@ -68,7 +68,6 @@ com\runflow\engine\utils\CollectionUtil.class
 com\runflow\engine\el\ExpressionManager.class
 com\runflow\engine\parse\handler\CallActivityParseHandler.class
 com\runflow\engine\delegate\ActivityBehavior.class
-com\runflow\engine\impl\RunTimeServiceImpl$1.class
 com\runflow\engine\interceptor\CommandInvoker$1.class
 com\runflow\engine\delegate\TriggerableActivityBehavior.class
 com\runflow\engine\utils\debug\ExecutionTreeUtil.class

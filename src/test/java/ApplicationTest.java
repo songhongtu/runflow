@@ -1,10 +1,12 @@
 import com.runflow.engine.ExecutionEntityImpl;
 import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
 import com.runflow.engine.impl.RunTimeServiceImpl;
+import com.runflow.engine.util.io.IoUtil;
 import com.runflow.engine.utils.ConditionUtil;
 import de.odysseus.el.ExpressionFactoryImpl;
 import de.odysseus.el.ObjectValueExpression;
 import de.odysseus.el.util.SimpleContext;
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import javax.el.ValueExpression;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -56,6 +59,11 @@ public class ApplicationTest {
         map.put("hrapprove", false);
         map.put("reapply", true);
         ExecutionEntityImpl leave = repositoryService.startWorkflow("leave", map);
+        Map<String, Object> variableInstances = leave.getVariableInstances();
+        System.out.println(variableInstances.get("deptleaderaudit"));
+        System.out.println(variableInstances.get("flow3"));
+        System.out.println(variableInstances.get("flow8"));
+
     }
 
 
@@ -207,8 +215,10 @@ public class ApplicationTest {
         map.put("e", e);
         for (int i = 0; i < 200; i++) {
             Thread thread = new Thread(() -> {
-                for (int j = 0; j < 500; j++) {
+                for (int j = 0; j < 50; j++) {
                     ExecutionEntityImpl leave = repositoryService.startWorkflow("ParallelGatewayTest01", map);
+                    Map<String, Object> variableInstances = leave.getVariableInstances();
+
                 }
 
             });
@@ -266,7 +276,8 @@ public class ApplicationTest {
         FileInputStream fileInputStream = new FileInputStream("C:\\Users\\songhongtu\\Desktop\\" + fileName);
         RunTimeServiceImpl repositoryService = conf.getRunTimeService();
         repositoryService.createDeployment().name(fileName).addInputStream(fileName, fileInputStream).deploy();
-        conf.getRunTimeService().generaImages("Process_1");
+        InputStream inputStream = conf.getRunTimeService().generaImages("Process_1");
+
 
     }
 

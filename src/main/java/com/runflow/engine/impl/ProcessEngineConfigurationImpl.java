@@ -56,8 +56,6 @@ public class ProcessEngineConfigurationImpl {
     public ProcessEngineImpl buildProcessEngine() {
         init();
         ProcessEngineImpl processEngine = new ProcessEngineImpl(this);
-
-
         return processEngine;
     }
 
@@ -164,10 +162,6 @@ public class ProcessEngineConfigurationImpl {
             synchronized (StartProcessInstanceCmd.class) {
                 if (!isLoad) {
                     for (String s : pathList) {
-//                        String resourcePath = getResourcePath();
-//                        if (!resourcePath.startsWith("/")) {
-//                            resourcePath = "/" + resourcePath;
-//                        }
                         try {
                             InputStream resourceAsStream1 = ProcessEngineConfigurationImpl.class.getResourceAsStream(s);
                             runTimeService.createDeployment().name(s).addInputStream(s, resourceAsStream1).deploy();

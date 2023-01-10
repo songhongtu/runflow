@@ -1,3 +1,4 @@
+import com.runflow.engine.ExecutionEntityImpl;
 import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
 import com.runflow.engine.impl.RunTimeServiceImpl;
 import org.junit.Test;
@@ -27,7 +28,7 @@ public class DemoTest {
         AtomicInteger integer = new AtomicInteger(0);
         Map map = new HashMap();
         map.put("a", integer);
-        runTimeService.startWorkflow("Process_1671936597549", map);
+        ExecutionEntityImpl executionEntity = runTimeService.startWorkflow("Process_1671936597549", map);
         System.out.println("integer:"+integer);
     }
 

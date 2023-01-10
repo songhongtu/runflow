@@ -13,13 +13,12 @@ import org.activiti.bpmn.model.StartEvent;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class StartProcessInstanceCmd implements Command<ExecutionEntityImpl> {
     private String key;
     protected Map<String, Object> variables;
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(TakeOutgoingSequenceFlowsOperation.class);
-
-
 
 
     public StartProcessInstanceCmd(String key, Map<String, Object> variables) {
@@ -35,12 +34,6 @@ public class StartProcessInstanceCmd implements Command<ExecutionEntityImpl> {
         Process process = leave.getProcess();
         FlowElement initialFlowElement = process.getInitialFlowElement();
 
-        // Create the process instance
-        String initiatorVariableName = null;
-        if (initialFlowElement instanceof StartEvent) {
-            initiatorVariableName = ((StartEvent) initialFlowElement).getInitiator();
-        }
-
 
         String uuid = UUID.randomUUID().toString();
         ExecutionEntityImpl processInstance = new ExecutionEntityImpl();
@@ -50,22 +43,18 @@ public class StartProcessInstanceCmd implements Command<ExecutionEntityImpl> {
 
 //        logger.info("线程名称："+Thread.currentThread().getName()+"："+"创建父节点:{}", processInstance.getId());
 
-        processInstance.executions = new ArrayList<ExecutionEntityImpl>(1);
-        processInstance.variableInstances = new HashMap<String, Object>(1);
+        processInstance.executions = new ArrayList<>();
+        processInstance.variableInstances = new ConcurrentHashMap<>();
         ExecutionEntityImpl execution = processInstance.createChildExecution(processInstance);
         processInstance.setScope(true);
         execution.setCurrentFlowElement(initialFlowElement);
-        startProcessInstance(processInstance, Context.getCommandContext());
-
         if (variables != null) {
             for (String key : variables.keySet()) {
-                processInstance.setVariableInstances(key, variables.get(key));
+                processInstance.variableInstances.put(key, variables.get(key));
             }
         }
-
         commandContext.getDefaultSession().putSingle(processInstance);
-
-
+        startProcessInstance(processInstance, Context.getCommandContext());
         return processInstance;
     }
 

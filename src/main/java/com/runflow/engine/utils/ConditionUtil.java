@@ -33,8 +33,14 @@ public class ConditionUtil {
         ExpressionFactory expressionFactory = expressionManager.getExpressionFactory();
         ELContext elContext = expressionManager.getElContext(execution);
         ValueExpression valueExpression = expressionFactory.createValueExpression(elContext, expression.trim(), Object.class);
-        return   valueExpression.getValue(elContext);
+        Object value = valueExpression.getValue(elContext);
+        ExecutionEntityImpl rootParent = execution.findRootParent(execution);
+        rootParent.variableInstances.put(execution.getActivityId(),value);
+        return value;
     }
+
+
+
 
 
     public static void main(String[] args) throws NoSuchMethodException {

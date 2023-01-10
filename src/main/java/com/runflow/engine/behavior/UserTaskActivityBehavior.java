@@ -30,8 +30,7 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
     }
 
     public void execute(ExecutionEntityImpl execution) {
-        ExecutionEntityImpl execution1 = (ExecutionEntityImpl) execution;
-        String name = execution1.getCurrentFlowElement().getName();
+        String name = execution.getCurrentFlowElement().getName();
         LOGGER.debug("用户任务  名称：{}  id:{}  线程名称:{} ",name,execution.getId(),Thread.currentThread().getName());
         String skipExpression = userTask.getSkipExpression();
         if (!StringUtils.isEmpty(skipExpression)) {

@@ -7,7 +7,9 @@ import de.odysseus.el.util.SimpleContext;
 import org.activiti.bpmn.model.FlowElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ExecutionEntityImpl implements ExecutionEntity, Entity {
 
@@ -47,7 +49,7 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
 
     // state/type of execution //////////////////////////////////////////////////
 
-    protected  boolean isActive = true;
+    protected boolean isActive = true;
     protected boolean isScope = true;
     protected boolean isEnded;
 
@@ -177,7 +179,6 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
         map.putAll(this.variableInstances);
         if (parent != null) {
             parent.collectVariableInstances(map);
-
         }
         return map;
     }
@@ -194,21 +195,13 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
     }
 
 
-
-    public void setVariableInstances(Map<String,Object> map){
+    public void setVariableInstances(Map<String, Object> map) {
         this.variableInstances = map;
     }
 
     public void setVariableInstances(String variableName, Object value, ExecutionEntityImpl sourceExecution) {
-
-        ExecutionEntityImpl parent = this.getParent();
-        if (parent != null) {
-            this.setVariableInstances(variableName, value, sourceExecution);
-        }
-
         if (sourceExecution != null) {
-            Map<String, Object> variableInstances = sourceExecution.variableInstances;
-            variableInstances.put(variableName, value);
+            sourceExecution.variableInstances.put(variableName, value);
         } else {
             this.variableInstances.put(variableName, value);
         }
@@ -361,8 +354,8 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
 
     public ExecutionEntityImpl createWithEmptyRelationshipCollections() {
         ExecutionEntityImpl execution1 = new ExecutionEntityImpl();
-        execution1.executions = new ArrayList<ExecutionEntityImpl>(1);
-        execution1.variableInstances = new HashMap<String, Object>(1);
+        execution1.executions = new ArrayList<>();
+        execution1.variableInstances = new HashMap<>();
         return execution1;
     }
 
@@ -380,22 +373,16 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
         return UUID.randomUUID().toString();
     }
 
-
-    public List<ExecutionEntityImpl> findAllExection() {
+    public ExecutionEntityImpl findRootParent(){
+        return this.findRootParent(this);
+    }
+    public ExecutionEntityImpl findRootParent(ExecutionEntityImpl parent) {
         // Find highest parent
-        ExecutionEntityImpl parentExecution = this;
-        while (parentExecution.getParentId() != null || parentExecution.getSuperExecution() != null) {
-            if (parentExecution.getParentId() != null) {
-                parentExecution = parentExecution.getParent();
-            } else {
-                parentExecution = parentExecution.getSuperExecution();
-            }
+        ExecutionEntityImpl parentExecution = parent;
+        while (parentExecution.getParent() != null) {
+            parentExecution = this.findRootParent(parentExecution.getParent());
         }
-
-        // Collect all child executions now we have the parent
-        List<ExecutionEntityImpl> allExecutions = new ArrayList<ExecutionEntityImpl>();
-        allExecutions.add(parentExecution);
-        return allExecutions;
+        return parentExecution;
     }
 
 
