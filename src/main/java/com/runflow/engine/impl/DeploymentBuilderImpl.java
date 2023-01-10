@@ -11,7 +11,6 @@ import com.runflow.engine.util.io.IoUtil;
 import com.runflow.engine.utils.ReflectUtil;
 import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
-import org.apache.commons.io.Charsets;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -23,7 +22,7 @@ import java.util.zip.ZipInputStream;
 
 public class DeploymentBuilderImpl  implements DeploymentBuilder {
 
-    protected static final String DEFAULT_ENCODING = Charsets.UTF_8.toString();
+    protected static final String DEFAULT_ENCODING = "UTF-8";
 
     protected  RunTimeServiceImpl repositoryService;
 
