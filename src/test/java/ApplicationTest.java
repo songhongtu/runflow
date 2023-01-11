@@ -34,6 +34,7 @@ public class ApplicationTest {
                 .addPath("/bpmn/ParallelGatewayTest.bpmn")
                 .addPath("/bpmn/diagram.bpmn")
                 .addPath("/bpmn/t.bpmn");
+        conf.addPath("/bpmn/demo1.bpmn");
     }
 
 

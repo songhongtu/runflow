@@ -154,12 +154,13 @@ public class ProcessEngineConfigurationImpl {
         if (!isLoad) {
             synchronized (StartProcessInstanceCmd.class) {
                 if (!isLoad) {
+                    logger.info("文件开始部署{}：{}", pathList);
                     for (String s : pathList) {
                         try {
                             InputStream resourceAsStream1 = ProcessEngineConfigurationImpl.class.getResourceAsStream(s);
                             runTimeService.createDeployment().name(s).addInputStream(s, resourceAsStream1).deploy();
                         } catch (RunFlowException | XMLException e) {
-                            logger.error("文件部署失败{}：{}", s, e.getMessage());
+                            logger.info("文件部署失败{}：{}", s, e.getMessage());
                         }
 
                     }

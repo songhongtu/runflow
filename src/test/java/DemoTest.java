@@ -17,6 +17,11 @@ public class DemoTest {
         //初始化
         conf.init();
         runTimeService = conf.getRunTimeService();
+        conf.addPath("/bpmn/leave.bpmn")
+                .addPath("/bpmn/parallelLeave.bpmn")
+                .addPath("/bpmn/ParallelGatewayTest.bpmn")
+                .addPath("/bpmn/diagram.bpmn")
+                .addPath("/bpmn/t.bpmn");
         //bpmn位置
         conf.addPath("/bpmn/demo1.bpmn");
     }
