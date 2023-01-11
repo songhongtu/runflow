@@ -57,34 +57,6 @@ public class ApplicationTest {
     }
 
 
-    @Test
-    public void executeLeave() {
-        Map<String, Object> map = new HashMap();
-        map.put("conditionUtil", new ConditionUtil());
-        map.put("exclusivegateway1", true);
-        map.put("deptleaderapprove", true);
-        map.put("hrapprove", false);
-        map.put("reapply", true);
-        ExecutionEntityImpl leave = repositoryService.startWorkflow("leave", map);
-        Map<String, Object> variableInstances = leave.getVariableInstances();
-        System.out.println(variableInstances.get("exclusivegateway1"));
-        System.out.println(variableInstances.get("reapply"));
-        System.out.println(variableInstances.get("hrapprove"));
-
-    }
-
-
-    @Test
-    public void executeParallelLeave() throws FileNotFoundException {
-        String fileName = "parallelLeave.bpmn";
-        FileInputStream fileInputStream = new FileInputStream("C:\\Users\\songhongtu\\Desktop\\parallelLeave.bpmn");
-        RunTimeServiceImpl repositoryService = conf.getRunTimeService();
-        repositoryService.createDeployment().name(fileName).addInputStream(fileName, fileInputStream).deploy();
-        ExecutionEntityImpl leave = repositoryService.startWorkflow("parallelLeave");
-
-
-    }
-
 
     /**
      * 排他网关  多线程
