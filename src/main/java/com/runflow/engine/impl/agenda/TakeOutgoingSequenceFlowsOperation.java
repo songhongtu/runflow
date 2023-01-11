@@ -25,13 +25,6 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
     public void run() {
         FlowElement currentFlowElement = getCurrentFlowElement(execution);
 
-        // Compensation check
-        if ((currentFlowElement instanceof Activity)
-                && ((Activity) currentFlowElement).isForCompensation()) {
-
-            throw new RunFlowException("不支持");
-        }
-
         if (currentFlowElement instanceof FlowNode) {
             handleFlowNode((FlowNode) currentFlowElement);
         } else if (currentFlowElement instanceof SequenceFlow) {
@@ -40,11 +33,7 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
     }
 
     protected void handleFlowNode(FlowNode flowNode) {
-        if ( flowNode.getParentContainer() instanceof AdhocSubProcess) {
-            throw new RunFlowException("不支持");
-        } else {
-            leaveFlowNode(flowNode);
-        }
+        leaveFlowNode(flowNode);
     }
 
 
@@ -63,7 +52,7 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
             String skipExpressionString = sequenceFlow.getSkipExpression();
             String conditionExpression = sequenceFlow.getConditionExpression();
             if (!StringUtils.isEmpty(conditionExpression)) {
-                if (evaluateConditions && ConditionUtil.hasTrueCondition(conditionExpression,  execution)) {
+                if (evaluateConditions && ConditionUtil.hasTrueCondition(conditionExpression, execution)) {
                     outgoingSequenceFlows.add(sequenceFlow);
                 }
             } else if (StringUtils.isEmpty(skipExpressionString)) {

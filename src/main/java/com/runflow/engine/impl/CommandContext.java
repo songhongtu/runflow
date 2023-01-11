@@ -17,7 +17,6 @@ public class CommandContext {
 
     protected RunFlowEngineAgenda agenda;
 
-    protected boolean reused;
     protected Throwable exception;
 
 
@@ -43,13 +42,6 @@ public class CommandContext {
         this.exception = exception;
     }
 
-    public boolean isReused() {
-        return reused;
-    }
-
-    public void setReused(boolean reused) {
-        this.reused = reused;
-    }
 
     public void exception(Throwable exception) {
         if (this.exception == null) {
@@ -75,7 +67,6 @@ public class CommandContext {
     }
 
 
-
     protected ProcessEngineConfigurationImpl processEngineConfiguration;
 
 
@@ -86,8 +77,6 @@ public class CommandContext {
     public void setProcessEngineConfiguration(ProcessEngineConfigurationImpl processEngineConfiguration) {
         this.processEngineConfiguration = processEngineConfiguration;
     }
-
-
 
 
     // getters and setters
@@ -105,9 +94,6 @@ public class CommandContext {
         return agenda;
     }
 
-    public void setAgenda(RunFlowEngineAgenda agenda) {
-        this.agenda = agenda;
-    }
 
     public CurrentHashMapCache<ExecutionEntityImpl> getDefaultSession() {
         return getSession();
@@ -115,7 +101,7 @@ public class CommandContext {
 
 
     public CurrentHashMapCache<ExecutionEntityImpl> getSession() {
-        return     this.processEngineConfiguration.getRunTimeExecution();
+        return this.processEngineConfiguration.getRunTimeExecution();
     }
 
 

@@ -11,7 +11,6 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
 
     protected Thread mainThread;
 
-    protected Map<String, Object> transientVariabes;
     // current position /////////////////////////////////////////////////////////
 
     protected FlowElement currentFlowElement;
@@ -46,7 +45,6 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
 
     protected boolean isActive = true;
     protected boolean isScope = true;
-    protected boolean isEnded;
 
     // events ///////////////////////////////////////////////////////////////////
 
@@ -101,10 +99,6 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
         return processInstanceId;
     }
 
-    @Override
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
-    }
 
     public FlowElement getCurrentFlowElement() {
         if (currentFlowElement == null) {
@@ -149,17 +143,7 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
         return isActive;
     }
 
-    public Date getStartTime() {
-        return startTime;
-    }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Map<String, Object> getTransientVariabes() {
-        return transientVariabes;
-    }
 
 
     public Map<String, Object> getVariableInstances() {
@@ -202,10 +186,7 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
 
     }
 
-    @Override
-    public boolean isEnded() {
-        return isEnded;
-    }
+
 
     public ExecutionEntityImpl getParent() {
         ensureParentInitialized();
@@ -305,10 +286,6 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
         // manage the bidirectional parent-child relation
         parentExecutionEntity.addChildExecution(childExecution1);
         Context.getCommandContext().getDefaultSession().putSingle(childExecution1);
-        /**
-         * LOGGER.info("线程名称："+Thread.currentThread().getName()+"："+"创建节点:{}",childExecution1.getId());
-         */
-
         return childExecution1;
     }
 
@@ -322,7 +299,6 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
         }
         childExecution.setRootProcessInstanceId(parentExecutionEntity.getRootProcessInstanceId());
         childExecution.setActive(true);
-        childExecution.setStartTime(new Date());
         childExecution.setSerialNumber(parentExecutionEntity.getSerialNumber());
         childExecution.setMainThread(parentExecutionEntity.getMainThread());
     }

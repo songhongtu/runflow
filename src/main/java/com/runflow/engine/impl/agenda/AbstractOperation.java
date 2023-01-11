@@ -28,34 +28,14 @@ public abstract class AbstractOperation implements Runnable {
         if (execution.getCurrentFlowElement() != null) {
             return execution.getCurrentFlowElement();
         } else if (execution.getCurrentActivityId() != null) {
-            //通过id查找
         }
         return null;
     }
 
-    /**
-     * Executes the execution listeners defined on the given element, with the given event type.
-     * Uses the {@link #execution} of this operation instance as argument for the execution listener.
-     */
-    protected void executeExecutionListeners(HasExecutionListeners elementWithExecutionListeners, String eventType) {
-        executeExecutionListeners(elementWithExecutionListeners, execution, eventType);
-    }
 
-    /**
-     * Executes the execution listeners defined on the given element, with the given event type,
-     * and passing the provided execution to the {@link ExecutionListener} instances.
-     */
-    protected void executeExecutionListeners(HasExecutionListeners elementWithExecutionListeners,
-                                             ExecutionEntity executionEntity, String eventType) {
-      throw new RunFlowException("不支持监听器");
-    }
 
-    /**
-     * Returns the first parent execution of the provided execution that is a scope.
-     */
-    protected ExecutionEntity findFirstParentScopeExecution(ExecutionEntity executionEntity) {
-        throw new RunFlowException("不支持持久化");
-    }
+
+
 
     public CommandContext getCommandContext() {
         return commandContext;
@@ -69,9 +49,6 @@ public abstract class AbstractOperation implements Runnable {
         return agenda;
     }
 
-    public void setAgenda(DefaultRunFlowEngineAgenda agenda) {
-        this.agenda = agenda;
-    }
 
     public ExecutionEntityImpl getExecution() {
         return execution;

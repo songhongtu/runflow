@@ -7,28 +7,30 @@ runflow支持BPMN规范，能够把复杂的业务逻辑可视化。开发人员
 **规则轻量**：只要稍微了解bmpn规范的人员就快速上手。三分钟入门，一看既懂。
 **丰富业务场景**：支持排他网关，并行网关。可以应用到各种业务场景。
 **多线程编排**：通过并行网关与异步任务，可以对多线程进行编排。
-**支持流程设计图**：支持导入导出，可视化编辑流程图
+**流程设计**：支持导入导出，可视化编辑流程图
 ## 3. 界面
 
 ###### **排他网关**
 
-![img_1.png](img_1.png)
+![img_1.png](https://www.kancloud.cn/book/songhongtu/runflow/preview/images/screenshot_1673340303214.png)
 
 ###### **并行网关**
 
-![img.png](img.png)
+![img.png](https://www.kancloud.cn/book/songhongtu/runflow/preview/images/screenshot_1673340329790.png)
 
 ###### **调用活动**
 
-![img_2.png](img_2.png)
+![img_2.png](https://www.kancloud.cn/book/songhongtu/runflow/preview/images/screenshot_1673340348899.png)
 
 ## 4. 快速开始
 ### Step1: 引入`POM`文件
-`<dependency>
-<groupId>com.runflow</groupId>
-<artifactId>runflow</artifactId>
-<version>0.0.1-Beta</version>
-</dependency>`
+~~~
+<dependency>
+  <groupId>com.runflow</groupId>
+  <artifactId>runflow</artifactId>
+  <version>0.0.1-Beta</version>
+</dependency>
+~~~
 ### Step2: 流程
 #### S2.1: 流程设计
 建议用定制的 http://123.249.93.130/runflow/ 在线设计流程
@@ -36,7 +38,8 @@ runflow支持BPMN规范，能够把复杂的业务逻辑可视化。开发人员
 ![img_3.png](img_3.png)
 五个任务串行执行
 
-`<?xml version="1.0" encoding="UTF-8"?>
+~~~
+<?xml version="1.0" encoding="UTF-8"?>
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:activiti="http://activiti.org/bpmn" id="diagram_Process_1671936597549" targetNamespace="http://activiti.org/bpmn">
 <bpmn2:process id="Process_1671936597549" name="业务流程_1671936597549" isExecutable="true">
 <bpmn2:startEvent id="Event_0xovk1v" name="开始">
@@ -161,8 +164,8 @@ runflow支持BPMN规范，能够把复杂的业务逻辑可视化。开发人员
 </bpmndi:BPMNShape>
 </bpmndi:BPMNPlane>
 </bpmndi:BPMNDiagram>
-</bpmn2:definitions>`
-
+</bpmn2:definitions>
+~~~
 把生成的bpmn格式的文件放到resouces里面
 
 

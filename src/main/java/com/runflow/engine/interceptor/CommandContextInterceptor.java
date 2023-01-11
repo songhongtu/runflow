@@ -2,11 +2,8 @@ package com.runflow.engine.interceptor;
 
 import com.runflow.engine.context.Context;
 import com.runflow.engine.impl.Command;
-import com.runflow.engine.impl.CommandConfig;
 import com.runflow.engine.impl.CommandContext;
 import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class CommandContextInterceptor extends AbstractCommandInterceptor {
 
@@ -19,26 +16,22 @@ public class CommandContextInterceptor extends AbstractCommandInterceptor {
         this.processEngineConfiguration = processEngineConfiguration;
     }
 
-    public <T> T execute(CommandConfig config, Command<T> command) {
+    public <T> T execute( Command<T> command) {
         CommandContext context = Context.getCommandContext();
 
-        if(context==null){
+        if (context == null) {
             context = commandContextFactory.createCommandContext(command);
         }
-
         try {
-
             // Push on stack
             Context.setCommandContext(context);
             Context.setProcessEngineConfiguration(processEngineConfiguration);
-
-            return next.execute(config, command);
-
+            return next.execute(command);
         } catch (Exception e) {
             context.exception(e);
         } finally {
             try {
-                  context.close();
+                context.close();
             } finally {
                 // Pop from stack
                 Context.removeCommandContext();
@@ -47,21 +40,8 @@ public class CommandContextInterceptor extends AbstractCommandInterceptor {
         }
         return null;
     }
-
-    public CommandContextFactory getCommandContextFactory() {
-        return commandContextFactory;
-    }
-
-    public void setCommandContextFactory(CommandContextFactory commandContextFactory) {
-        this.commandContextFactory = commandContextFactory;
-    }
-
     public ProcessEngineConfigurationImpl getProcessEngineConfiguration() {
         return processEngineConfiguration;
-    }
-
-    public void setProcessEngineContext(ProcessEngineConfigurationImpl processEngineContext) {
-        this.processEngineConfiguration = processEngineContext;
     }
 
 

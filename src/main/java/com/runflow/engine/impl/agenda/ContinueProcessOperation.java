@@ -51,13 +51,6 @@ public class ContinueProcessOperation extends AbstractOperation {
     protected void continueThroughFlowNode(FlowNode flowNode) {
 
         ExecutorService executorService = Context.getProcessEngineConfiguration().getExecutorService();
-        // For a subprocess, a new child execution is created that will visit the steps of the subprocess
-        // The original execution that arrived here will wait until the subprocess is finished
-        // and will then be used to continue the process instance.
-        if (flowNode instanceof SubProcess) {
-            throw new RunFlowException("不支持子流程");
-        }
-
         if (flowNode instanceof Activity && ((Activity) flowNode).hasMultiInstanceLoopCharacteristics()) {
             // the multi instance execution will look at async
             throw new RunFlowException("不支持多实例异步操作");
@@ -72,13 +65,6 @@ public class ContinueProcessOperation extends AbstractOperation {
     }
 
     protected void executeSynchronous(FlowNode flowNode) {
-        // Execute any boundary events, sub process boundary events will be executed from the activity behavior
-        if (!inCompensation && flowNode instanceof Activity) { // Only activities can have boundary events
-            List<BoundaryEvent> boundaryEvents = ((Activity) flowNode).getBoundaryEvents();
-            if (CollectionUtil.isNotEmpty(boundaryEvents)) {
-                throw new RunFlowException("");
-            }
-        }
 
         // Execute actual behavior
         ActivityBehavior activityBehavior = (ActivityBehavior) flowNode.getBehavior();
@@ -87,7 +73,6 @@ public class ContinueProcessOperation extends AbstractOperation {
             executeActivityBehavior(activityBehavior);
         } else {
             logger.debug("No activityBehavior on activity '{}' with execution {}", flowNode.getId(), execution.getId());
-
             Context.getAgenda().planTakeOutgoingSequenceFlowsOperation(execution, true);
         }
     }

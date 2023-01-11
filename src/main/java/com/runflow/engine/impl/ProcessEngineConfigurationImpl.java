@@ -33,7 +33,6 @@ public class ProcessEngineConfigurationImpl {
     protected CommandInterceptor commandInvoker;
     protected CommandContextFactory commandContextFactory;
     protected RunFlowEngineAgendaFactory engineAgendaFactory;
-    protected CommandConfig defaultCommandConfig;
     protected List<CommandInterceptor> commandInterceptors;
     protected ProcessDiagramGenerator processDiagramGenerator;
     protected ClassLoader classLoader;
@@ -133,22 +132,17 @@ public class ProcessEngineConfigurationImpl {
     public void initCommandExecutor() {
         if (commandExecutor == null) {
             CommandInterceptor first = initInterceptorChain(commandInterceptors);
-            commandExecutor = new CommandExecutorImpl(defaultCommandConfig, first);
+            commandExecutor = new CommandExecutorImpl(first);
         }
     }
 
     public void initCommandExecutors() {
-        initDefaultCommandConfig();
         initCommandInvoker();
         initCommandInterceptors();
         initCommandExecutor();
     }
 
 
-    public ProcessEngineConfigurationImpl customResolver(ELResolver resolver) {
-        this.getResolverList().add(resolver);
-        return this;
-    }
 
     public static void refresh() {
         isLoad = false;
@@ -169,7 +163,7 @@ public class ProcessEngineConfigurationImpl {
                         }
 
                     }
-                    isLoad=true;
+                    isLoad = true;
                 }
             }
 
@@ -188,16 +182,12 @@ public class ProcessEngineConfigurationImpl {
 
     public Collection<CommandInterceptor> getDefaultCommandInterceptors() {
         List<CommandInterceptor> interceptors = new ArrayList<>();
-        interceptors.add(new LogInterceptor());
+            interceptors.add(new LogInterceptor());
         interceptors.add(new CommandContextInterceptor(commandContextFactory, this));
-
         return interceptors;
     }
 
 
-    public void initDefaultCommandConfig() {
-        defaultCommandConfig = new CommandConfig();
-    }
 
     public void initCommandInvoker() {
         if (commandInvoker == null) {
@@ -337,7 +327,7 @@ public class ProcessEngineConfigurationImpl {
     }
 
 
-    public ProcessEngineConfigurationImpl addPath(String u){
+    public ProcessEngineConfigurationImpl addPath(String u) {
         pathList.add(u);
         return this;
     }

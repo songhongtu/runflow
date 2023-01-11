@@ -1,37 +1,17 @@
 package com.runflow.engine;
 
 import com.runflow.engine.impl.Command;
-import com.runflow.engine.impl.CommandConfig;
 import com.runflow.engine.interceptor.CommandInterceptor;
 
-public class CommandExecutorImpl  {
+public class CommandExecutorImpl {
 
-    protected CommandConfig defaultConfig;
     protected CommandInterceptor first;
 
-    public CommandExecutorImpl(CommandConfig defaultConfig, CommandInterceptor first) {
-        this.defaultConfig = defaultConfig;
+    public CommandExecutorImpl(CommandInterceptor first) {
         this.first = first;
     }
 
-    public CommandInterceptor getFirst() {
-        return first;
-    }
-
-    public void setFirst(CommandInterceptor commandInterceptor) {
-        this.first = commandInterceptor;
-    }
-
-    public CommandConfig getDefaultConfig() {
-        return defaultConfig;
-    }
-
     public <T> T execute(Command<T> command) {
-        return execute(defaultConfig, command);
+        return first.execute(command);
     }
-
-    public <T> T execute(CommandConfig config, Command<T> command) {
-        return first.execute(config, command);
-    }
-
 }
