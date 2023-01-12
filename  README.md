@@ -35,7 +35,7 @@ runflow支持BPMN规范，能够把复杂的业务逻辑可视化。开发人员
 #### S2.1: 流程设计
 建议用定制的 http://123.249.93.130/runflow/ 在线设计流程
 
-![img_3.png](img_3.png)
+![img_3.png](static/img/img_3.png)
 五个任务串行执行
 
 ~~~
@@ -199,7 +199,7 @@ RunTimeServiceImpl runTimeService;
 `
 直接运行即可
 
-![img_4.png](img_4.png)
+![img_4.png](static/img/img_4.png)
 
 ##### S2.2.2: 调用流程(springboot)
 
