@@ -1,4 +1,3 @@
-**目前处于Beta版本，因此不建议用到正式环境！！！**
 欢迎大家提Issues，看到后我会回复的
 ## 1. `runflow`是什么
 runflow是一个基于逻辑流转的轻量级流程引擎。
@@ -92,7 +91,7 @@ RunTimeServiceImpl runTimeService;
 </dependency>
 ~~~
 
-
+##### Step3.1.2: 调用流程
 ~~~
    @Autowired
    RunTimeServiceImpl runTimeService;
@@ -102,7 +101,7 @@ RunTimeServiceImpl runTimeService;
     public Integer demo1(){
         AtomicInteger integer = new AtomicInteger(0);
         Map map = new HashMap();
-        map.put("integer",integer);
+        map.put("a", integer);
         runTimeService.startWorkflow("Process_1671936597549",map);
         System.out.println(integer.get());
         return integer.get();
@@ -119,6 +118,10 @@ RunTimeServiceImpl runTimeService;
         IOUtils.copy(inputStream, response.getOutputStream());
     }
 ~~~
+
+
+
+> 欢迎提出更好的意见，帮助完善 runflow
 
 # **未完待续，文档正在补充中。。。。**
 
