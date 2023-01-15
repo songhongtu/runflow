@@ -3,10 +3,10 @@
 runflow是一个基于逻辑流转的轻量级流程引擎。
 runflow支持BPMN规范，能够把复杂的业务逻辑可视化。开发人员可以通过流程编辑器设计自己的业务流程，为业务设计人员与开发工程师架起一座桥梁。
 ## 2. 特性
-**规则轻量**：只要稍微了解bmpn规范的人员就快速上手。三分钟入门，一看既懂。
-**丰富业务场景**：支持排他网关，并行网关。可以应用到各种业务场景。
-**多线程编排**：通过并行网关与异步任务，可以对多线程进行编排。
-**流程设计**：支持导入导出，可视化编辑流程图
+- **规则轻量**：只要稍微了解bmpn规范的人员就快速上手。三分钟入门，一看既懂。
+- **丰富业务场景**：支持排他网关，并行网关。可以应用到各种业务场景。
+- **多线程编排**：通过并行网关与异步任务，可以对多线程进行编排。
+- **流程设计**：支持导入导出，可视化编辑流程图
 ## 3. 界面
 
 ###### **排他网关**
@@ -41,7 +41,7 @@ runflow支持BPMN规范，能够把复杂的业务逻辑可视化。开发人员
 
 #### S2.1: 调用流程(jar包方式)
 
-##### Step2.1.1: 引入`POM`文件
+##### 2.1.1: 引入`POM`文件
 ~~~
 <dependency>
     <groupId>com.runflow</groupId>
@@ -52,7 +52,7 @@ runflow支持BPMN规范，能够把复杂的业务逻辑可视化。开发人员
 
 
 
-##### S2.1.2: 调用流程
+##### 2.1.2: 调用流程
 ~~~
     ProcessEngineConfigurationImpl conf = new ProcessEngineConfigurationImpl();
 RunTimeServiceImpl runTimeService;
@@ -82,7 +82,7 @@ RunTimeServiceImpl runTimeService;
 
 #### S3.1: 调用流程(springboot方式)
 
-##### Step3.1.1: 引入`POM`文件
+##### 3.1.1: 引入`POM`文件
 ~~~
 <dependency>
     <groupId>com.runflow</groupId>
@@ -91,7 +91,7 @@ RunTimeServiceImpl runTimeService;
 </dependency>
 ~~~
 
-##### Step3.1.2: 调用流程
+##### 3.1.2: 调用流程
 ~~~
    @Autowired
    RunTimeServiceImpl runTimeService;
