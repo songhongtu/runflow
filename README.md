@@ -134,7 +134,7 @@ RunTimeServiceImpl runTimeService;
 
 > 欢迎提出更好的意见，帮助完善 runflow
 
-*[更多文档](/wiki/%E8%8A%82%E7%82%B9%E8%AF%B4%E6%98%8E)*
+*[更多文档](../../wiki/%E8%8A%82%E7%82%B9%E8%AF%B4%E6%98%8E)*
 
 
 
