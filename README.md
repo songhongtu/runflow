@@ -37,6 +37,17 @@ runflow支持BPMN规范，能够把复杂的业务逻辑可视化。开发人员
 
 也可以用 http://123.249.93.130/runflow/ 在线设计自己的流程
 
+#### S1.2: build
+
+目前还没有上传到maven中央仓库，因此需要下载源码 安装到本地仓库
+
+~~~
+git clone https://github.com/songhongtu/runflow.git
+
+mvn -Dmaven.test.failure.ignore=true clean install
+
+~~~
+
 
 
 #### S2.1: 调用流程(jar包方式)
@@ -123,7 +134,7 @@ RunTimeServiceImpl runTimeService;
 
 > 欢迎提出更好的意见，帮助完善 runflow
 
-# **未完待续，文档正在补充中。。。。**
+*[更多文档](./wiki/%E8%8A%82%E7%82%B9%E8%AF%B4%E6%98%8E)*
 
 
 
