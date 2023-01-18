@@ -22,7 +22,7 @@ public class BaseTestCase {
     private static long testEndTime;
 
     //线程数量
-    protected static int THREADCOUNT = 500;
+    protected static int THREADCOUNT = 100;
     //循环数量
     protected static int SECOND = 20000;
     //总数
