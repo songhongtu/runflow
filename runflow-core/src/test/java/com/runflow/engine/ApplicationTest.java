@@ -1,48 +1,19 @@
-import com.runflow.engine.ExecutionEntityImpl;
+package com.runflow.engine;
+
 import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
 import com.runflow.engine.impl.RunTimeServiceImpl;
-import com.runflow.engine.utils.ConditionUtil;
-import de.odysseus.el.ExpressionFactoryImpl;
-import de.odysseus.el.ObjectValueExpression;
-import de.odysseus.el.util.SimpleContext;
-import org.activiti.bpmn.model.SendTask;
+import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.el.ValueExpression;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ApplicationTest {
-    private static final Logger logger = LoggerFactory.getLogger(ApplicationTest.class);
-
-
-    AtomicInteger integer = new AtomicInteger(0);
-    private static ProcessEngineConfigurationImpl conf = InitTest.conf;
-    private static RunTimeServiceImpl repositoryService = InitTest.repositoryService;
-
-    //线程数量
-    private static int THREADCOUNT = InitTest.THREADCOUNT;
-    //循环数量
-    private static int SECOND = InitTest.SECOND;
-    //总数
-    private static int TOTALCOUNT = InitTest.TOTALCOUNT;
-
-
-    /**
-     * 模拟线程休眠
-     *
-     * @throws InterruptedException
-     */
-    public void incrementAndGet() throws InterruptedException {
-        Thread.sleep(2);
-        integer.incrementAndGet();
-    }
+public class ApplicationTest extends BaseTestCase {
 
 
     /**
@@ -72,6 +43,8 @@ public class ApplicationTest {
             Thread thread = new Thread(() -> {
                 for (int j = 0; j < SECOND; j++) {
                     ExecutionEntityImpl leave = repositoryService.startWorkflow("Process_1671936597549", map);
+
+
                 }
 
             });
@@ -90,8 +63,12 @@ public class ApplicationTest {
             }
         }
         Long endTime = System.currentTimeMillis();
-        logger.info("exclusiveGateway1 总耗时1:{}", endTime - startTime);
-
+        logger.info("exclusiveGateway1 总耗时:{}", endTime - startTime);
+        Assert.assertEquals(a.get(), TOTALCOUNT);
+        Assert.assertEquals(b.get(), TOTALCOUNT);
+        Assert.assertEquals(c.get(), TOTALCOUNT);
+        Assert.assertEquals(d.get(), TOTALCOUNT);
+        Assert.assertEquals(e.get(), TOTALCOUNT);
 
     }
 
@@ -102,20 +79,28 @@ public class ApplicationTest {
      */
     @Test
     public void exclusiveGateway2() {
+
+        ApplicationTest applicationTest = new ApplicationTest();
+
         Map map = new HashMap();
-        map.put("a", this);
-        map.put("b", this);
-        map.put("c", this);
-        map.put("d", this);
-        map.put("e", this);
+        map.put("a", applicationTest);
+        map.put("b", applicationTest);
+        map.put("c", applicationTest);
+        map.put("d", applicationTest);
+        map.put("e", applicationTest);
 
         long start = System.currentTimeMillis();
-        for (int j = 0; j < TOTALCOUNT; j++) {
+        for (int j = 0; j < THREADCOUNT; j++) {
             repositoryService.startWorkflow("Process_1671936597549", map);
         }
         long end = System.currentTimeMillis();
         logger.info("exclusiveGateway2 结果:{}", integer.get());
         logger.info("exclusiveGateway2 耗时:{}", end - start);
+        Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT * 5);
+        Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT * 5);
+        Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT * 5);
+        Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT * 5);
+        Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT * 5);
 
     }
 
@@ -150,6 +135,14 @@ public class ApplicationTest {
         logger.info("exclusiveGateway3 d:{}", d);
         logger.info("exclusiveGateway3 e:{}", e);
         logger.info("exclusiveGateway3 总耗时:{}", endTime - startTime);
+
+        Assert.assertEquals(a.get(), TOTALCOUNT);
+        Assert.assertEquals(b.get(), TOTALCOUNT);
+        Assert.assertEquals(c.get(), TOTALCOUNT);
+        Assert.assertEquals(d.get(), TOTALCOUNT);
+        Assert.assertEquals(e.get(), TOTALCOUNT);
+
+
     }
 
 
@@ -200,6 +193,13 @@ public class ApplicationTest {
         Long endTime = System.currentTimeMillis();
         logger.info("parallelGatewayTest1 总耗时:{}", endTime - startTime);
 
+
+        Assert.assertEquals(a.get(), TOTALCOUNT);
+        Assert.assertEquals(b.get(), TOTALCOUNT);
+        Assert.assertEquals(c.get(), TOTALCOUNT);
+        Assert.assertEquals(d.get(), TOTALCOUNT);
+        Assert.assertEquals(e.get(), TOTALCOUNT);
+
     }
 
     /**
@@ -210,20 +210,29 @@ public class ApplicationTest {
      */
     @Test
     public void parallelGatewayTest2() {
-        RunTimeServiceImpl repositoryService = conf.getRunTimeService();
+
+        ApplicationTest applicationTest = new ApplicationTest();
+
         Map map = new HashMap();
-        map.put("a", this);
-        map.put("b", this);
-        map.put("c", this);
-        map.put("d", this);
-        map.put("e", this);
+        map.put("a", applicationTest);
+        map.put("b", applicationTest);
+        map.put("c", applicationTest);
+        map.put("d", applicationTest);
+        map.put("e", applicationTest);
         long start = System.currentTimeMillis();
-        for (int j = 0; j < TOTALCOUNT; j++) {
+        for (int j = 0; j < THREADCOUNT; j++) {
             ExecutionEntityImpl leave = repositoryService.startWorkflow("ParallelGatewayTest01", map);
         }
         long end = System.currentTimeMillis();
         logger.info("parallelGatewayTest2 结果:{}", integer.get());
         logger.info("parallelGatewayTest2 耗时:{}", end - start);
+
+
+        Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT*5);
+        Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT*5);
+        Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT*5);
+        Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT*5);
+        Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT*5);
 
     }
 
@@ -260,6 +269,14 @@ public class ApplicationTest {
         logger.info("parallelGatewayTest3 d:{}", d);
         logger.info("parallelGatewayTest3 e:{}", e);
         logger.info("parallelGatewayTest3 总耗时:{}", endTime - startTime);
+
+
+        Assert.assertEquals(a.get(), TOTALCOUNT);
+        Assert.assertEquals(b.get(), TOTALCOUNT);
+        Assert.assertEquals(c.get(), TOTALCOUNT);
+        Assert.assertEquals(d.get(), TOTALCOUNT);
+        Assert.assertEquals(e.get(), TOTALCOUNT);
+
 
     }
 
