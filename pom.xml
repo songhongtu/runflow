@@ -11,6 +11,7 @@
         <module>runflow-core</module>
         <module>runflow-spring</module>
         <module>runflow-spring-boot-starters</module>
+        <module>runflow-demo</module>
     </modules>
 
 
