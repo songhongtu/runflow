@@ -1,9 +1,9 @@
 **runflow上手很简单，只要掌握基础的bmpn设计基础，看完下面的demo后就能很快上手**
 
-## 简单的demo
+## demo
 
-### 简单的demo1 （包含排他网关）
-在resouces里面m目录里面有文件：[demo1.bpmn](./src/main/resources/bpmn/demo1.bpmn) 
+### demo1 （包含排他网关）
+在resouces里面目录里面有文件：[demo1.bpmn](./src/main/resources/bpmn/demo1.bpmn) 
 
 如下图所示
 
