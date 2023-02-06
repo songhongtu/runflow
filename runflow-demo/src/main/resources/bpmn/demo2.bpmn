@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:activiti="http://activiti.org/bpmn" id="diagram_Process_1671936597549" targetNamespace="http://activiti.org/bpmn">
+  <bpmn2:process id="Process_16719365976" name="业务流程_1671936597549" isExecutable="true">
+    <bpmn2:startEvent id="Event_0xovk1v" name="开始">
+      <bpmn2:outgoing>Flow_12bo28y</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:userTask id="Activity_1hw5c91" name="任务一" activiti:skipExpression="${demo2.add(integer)}">
+      <bpmn2:incoming>Flow_12bo28y</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_15njuue</bpmn2:outgoing>
+    </bpmn2:userTask>
+    <bpmn2:sequenceFlow id="Flow_12bo28y" sourceRef="Event_0xovk1v" targetRef="Activity_1hw5c91" />
+    <bpmn2:userTask id="Activity_17y9tbx" name="任务二" activiti:async="true" activiti:skipExpression="${demo2.add(integer)}">
+      <bpmn2:incoming>Flow_0wtdfcr</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_1gw89bk</bpmn2:outgoing>
+    </bpmn2:userTask>
+    <bpmn2:userTask id="Activity_053zx4p" name="任务三" activiti:async="true" activiti:skipExpression="${demo2.add(integer)}">
+      <bpmn2:incoming>Flow_12vlfum</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_0meocdr</bpmn2:outgoing>
+    </bpmn2:userTask>
+    <bpmn2:sequenceFlow id="Flow_12vlfum" sourceRef="Gateway_0tz2ciz" targetRef="Activity_053zx4p" />
+    <bpmn2:sequenceFlow id="Flow_0wtdfcr" sourceRef="Gateway_0tz2ciz" targetRef="Activity_17y9tbx" />
+    <bpmn2:parallelGateway id="Gateway_0tz2ciz" name="网关一">
+      <bpmn2:incoming>Flow_15njuue</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_12vlfum</bpmn2:outgoing>
+      <bpmn2:outgoing>Flow_0wtdfcr</bpmn2:outgoing>
+    </bpmn2:parallelGateway>
+    <bpmn2:sequenceFlow id="Flow_1gw89bk" sourceRef="Activity_17y9tbx" targetRef="Gateway_1f30rlv" />
+    <bpmn2:parallelGateway id="Gateway_1f30rlv">
+      <bpmn2:incoming>Flow_1gw89bk</bpmn2:incoming>
+      <bpmn2:incoming>Flow_0meocdr</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_0t6dh9n</bpmn2:outgoing>
+    </bpmn2:parallelGateway>
+    <bpmn2:sequenceFlow id="Flow_0meocdr" sourceRef="Activity_053zx4p" targetRef="Gateway_1f30rlv" />
+    <bpmn2:userTask id="Activity_1uaa0hi" name="任务四" activiti:skipExpression="${demo2.add(integer)}">
+      <bpmn2:incoming>Flow_0t6dh9n</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_1a2daes</bpmn2:outgoing>
+    </bpmn2:userTask>
+    <bpmn2:sequenceFlow id="Flow_0t6dh9n" sourceRef="Gateway_1f30rlv" targetRef="Activity_1uaa0hi" />
+    <bpmn2:endEvent id="Event_1o3tgwn">
+      <bpmn2:incoming>Flow_1a2daes</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="Flow_1a2daes" sourceRef="Activity_1uaa0hi" targetRef="Event_1o3tgwn" />
+    <bpmn2:sequenceFlow id="Flow_15njuue" sourceRef="Activity_1hw5c91" targetRef="Gateway_0tz2ciz" />
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_16719365976">
+      <bpmndi:BPMNEdge id="Flow_15njuue_di" bpmnElement="Flow_15njuue">
+        <di:waypoint x="610" y="230" />
+        <di:waypoint x="695" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1a2daes_di" bpmnElement="Flow_1a2daes">
+        <di:waypoint x="1110" y="230" />
+        <di:waypoint x="1192" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0t6dh9n_di" bpmnElement="Flow_0t6dh9n">
+        <di:waypoint x="935" y="230" />
+        <di:waypoint x="1010" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0meocdr_di" bpmnElement="Flow_0meocdr">
+        <di:waypoint x="770" y="380" />
+        <di:waypoint x="910" y="380" />
+        <di:waypoint x="910" y="255" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gw89bk_di" bpmnElement="Flow_1gw89bk">
+        <di:waypoint x="770" y="100" />
+        <di:waypoint x="910" y="100" />
+        <di:waypoint x="910" y="205" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0wtdfcr_di" bpmnElement="Flow_0wtdfcr">
+        <di:waypoint x="720" y="205" />
+        <di:waypoint x="720" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12vlfum_di" bpmnElement="Flow_12vlfum">
+        <di:waypoint x="720" y="255" />
+        <di:waypoint x="720" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12bo28y_di" bpmnElement="Flow_12bo28y">
+        <di:waypoint x="428" y="230" />
+        <di:waypoint x="510" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_17y9tbx_di" bpmnElement="Activity_17y9tbx">
+        <dc:Bounds x="670" y="60" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_053zx4p_di" bpmnElement="Activity_053zx4p">
+        <dc:Bounds x="670" y="340" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0kr4bmv_di" bpmnElement="Gateway_0tz2ciz">
+        <dc:Bounds x="695" y="205" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="755" y="223" width="33" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0zr76b9_di" bpmnElement="Gateway_1f30rlv">
+        <dc:Bounds x="885" y="205" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1uaa0hi_di" bpmnElement="Activity_1uaa0hi">
+        <dc:Bounds x="1010" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1o3tgwn_di" bpmnElement="Event_1o3tgwn">
+        <dc:Bounds x="1192" y="212" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1hw5c91_di" bpmnElement="Activity_1hw5c91">
+        <dc:Bounds x="510" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0xovk1v_di" bpmnElement="Event_0xovk1v">
+        <dc:Bounds x="392" y="212" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="399" y="255" width="23" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>

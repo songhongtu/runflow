@@ -22,7 +22,6 @@ public class Demo1Controller {
     @Autowired
     private RunTimeServiceImpl runTimeService;
     @GetMapping("/demo1")
-    @ResponseBody
     public Object demo1() throws JsonProcessingException {
         //Process_16719365975 是bpmn 文件中的  process id="Process_16719365975"
         ExecutionEntityImpl executionEntity = runTimeService.startWorkflow("Process_16719365975");
