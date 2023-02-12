@@ -11,12 +11,14 @@ runflow支持BPMN规范，能够把复杂的业务逻辑可视化。开发人员
 - **丰富业务场景**：支持排他网关，并行网关。可以应用到各种业务场景。
 - **多线程编排**：通过并行网关与异步任务，可以对多线程进行编排。
 - **流程设计**：支持导入导出，可视化编辑流程图
-  
 
 
-*[demo例子](./runflow-springboot-demo/)*
 
-*[更多文档](../../wiki)*
+### 文档： [更多文档](../../wiki)
+### 示例工程：[demo例子](./runflow-springboot-demo/)
+
+
+
 
 ## 3. runflow设计初衷
 一个功能刚开始比较简单，随着后面的不断迭代完善，功能越来越复杂。
@@ -54,7 +56,7 @@ runflow可以对里面的步骤进行编排。
 
 ![img_2.png](static/img/img.png)
 
-## 4. 快速开始
+## 6. 快速开始
 ### Step1: 流程
 #### S1.1: 流程设计
 
@@ -163,7 +165,15 @@ RunTimeServiceImpl runTimeService;
     }
 ~~~
 
+## 7.项目结构
 
+~~~
+runflow-core ....................................... 核心模块
+runflow-spring ..................................... spring模块
+runflow-spring-boot-starters ....................... springboot模块
+runflow-springboot-demo ............................ springboot例子
+runflow-web ..................................... runflow设计器
+~~~
 
 > 欢迎提出更好的意见，帮助完善 runflow
 
