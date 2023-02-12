@@ -1,5 +1,3 @@
-*/bo-utils linguist-language=java
-*/components linguist-language=java
-*/utils linguist-language=java
-*/additional-modules linguist-language=java
+*.ts linguist-language=java
+
 
