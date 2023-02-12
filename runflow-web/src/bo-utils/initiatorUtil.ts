@@ -48,14 +48,14 @@ export function setAsync(element: Base, value: boolean | false) {
 
 
 
-export function getCalledElement(element: Base): string | false {
+export function getCalledElement(element: Base): string | undefined {
   const prefix = editor().getProcessEngine
   const businessObject = getBusinessObject(element)
 
   return businessObject.get(`calledElement`)
 }
 
-export function setCalledElement(element: Base, value: string | false) {
+export function setCalledElement(element: Base, value: string | undefined) {
   const prefix = editor().getProcessEngine
   const modeling = modeler().getModeling
   const businessObject = getBusinessObject(element)

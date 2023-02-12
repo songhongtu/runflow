@@ -11,11 +11,11 @@
         <n-switch placeholder="${...}" v-model:value="isAsync" @change="setElementAsync" />
       </edit-item>
 
-      <edit-item v-if="getActive.type!='bpmn:CallActivity'" label="表达式">
+      <edit-item v-if="getActive?.type!='bpmn:CallActivity'" label="表达式">
         <n-input placeholder="${...}" v-model:value="initiator" @change="setElementInitiator" />
       </edit-item>
 
-      <edit-item v-if="getActive.type=='bpmn:CallActivity'" label="流程key">
+      <edit-item v-if="getActive?.type=='bpmn:CallActivity'" label="流程key">
         <n-input placeholder="子流程key" v-model:value="calledElement" @change="setElementCalledElement" />
       </edit-item>
 
