@@ -1,1 +1,1 @@
-*.ts linguist-language=java
+*/bo-utils/*.ts linguist-language=java
