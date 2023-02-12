@@ -211,7 +211,7 @@ public class ApplicationTest extends BaseTestCase {
     @Test
     public void parallelGatewayTest2() {
 
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 15000; i++) {
 
 
         ApplicationTest applicationTest = new ApplicationTest();
