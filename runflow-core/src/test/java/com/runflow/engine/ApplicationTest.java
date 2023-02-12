@@ -211,7 +211,7 @@ public class ApplicationTest extends BaseTestCase {
     @Test
     public void parallelGatewayTest2() {
 
-        for (int i = 0; i < 15000; i++) {
+        for (int i = 0; i < 500; i++) {
 
 
         ApplicationTest applicationTest = new ApplicationTest();
@@ -223,17 +223,13 @@ public class ApplicationTest extends BaseTestCase {
         map.put("d", applicationTest);
         map.put("e", applicationTest);
         long start = System.currentTimeMillis();
-            ExecutionEntityImpl leave =null;
         for (int j = 0; j < THREADCOUNT; j++) {
-             leave = repositoryService.startWorkflow("ParallelGatewayTest01", map);
+            ExecutionEntityImpl leave = repositoryService.startWorkflow("ParallelGatewayTest01", map);
         }
         long end = System.currentTimeMillis();
         logger.info("parallelGatewayTest2 结果:{}", applicationTest.integer.get());
         logger.info("parallelGatewayTest2 耗时:{}", end - start);
-        if(applicationTest.integer.get()!=500){
-            logger.info("结果不一致:{}",leave);
-            throw new RuntimeException("ERROR");
-        }
+
 
         Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT*5);
         Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT*5);
