@@ -15,7 +15,7 @@ runflow支持BPMN规范，能够把复杂的业务逻辑可视化。开发人员
 
 
 ### 文档： [更多文档](../../wiki)
-### 示例工程：[demo例子](./runflow-springboot-demo/)
+### 示例工程：[demo例子](./runflow-springboot-demo/)    （runflow上手很简单，只要掌握基础的bmpn设计基础，看完demo后就能很快上手）
 
 
 
