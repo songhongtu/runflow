@@ -59,7 +59,7 @@ public class BaseTestCase {
      * @throws InterruptedException
      */
     public void incrementAndGet() throws InterruptedException {
-        Thread.sleep(1);
+        Thread.sleep(20);
         integer.incrementAndGet();
     }
 
