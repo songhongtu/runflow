@@ -20,6 +20,7 @@ public class CurrentHashMapCache<V extends ExecutionEntity> extends ConcurrentHa
         Set<V> vs = this.get(key);
         if (CollectionUtil.isEmpty(vs)) {
             synchronized (CurrentHashMapCache.class) {
+                vs = this.get(key);
                 if (CollectionUtil.isEmpty(vs)) {
                   Set<V> objects = ConcurrentHashMap.newKeySet();
                     objects.add(value);
@@ -28,37 +29,8 @@ public class CurrentHashMapCache<V extends ExecutionEntity> extends ConcurrentHa
             }
 
         }
-        V byId = this.getById(key, value.getId());
-        if (byId != null) {
-            return new HashSet<>();
-        } else {
-            vs.add(value);
-        }
+         vs.add(value);
         return super.put(key, vs);
-    }
-
-    public synchronized V findInCache(String key, String id) {
-        return this.getById(key, id);
-    }
-
-
-    public Set<V> findInCache(String key) {
-        return this.get(key);
-    }
-
-    protected V getById(String uuid, String id) {
-        return this.getById(this.get(uuid), id);
-
-    }
-
-
-    protected V getById(Set<V> vs, String id) {
-        for (V v : vs) {
-            if (v.getId().equals(id)) {
-                return v;
-            }
-        }
-        return null;
     }
 
 
