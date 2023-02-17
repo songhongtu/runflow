@@ -283,9 +283,8 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
         childExecution1.setProcessInstanceId(parentExecutionEntity.getProcessInstanceId() != null
                 ? parentExecutionEntity.getProcessInstanceId() : parentExecutionEntity.getId());
         childExecution1.setScope(false);
-        // manage the bidirectional parent-child relation
         parentExecutionEntity.addChildExecution(childExecution1);
-        Context.getCommandContext().getDefaultSession().putSingle(childExecution1);
+        Context.getCommandContext().getAllRunTimeExecution().putSingle(childExecution1);
         return childExecution1;
     }
 
@@ -316,7 +315,7 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
 
         superExecutionEntity.setSubProcessInstance(subProcessInstance);
 
-        Context.getCommandContext().getDefaultSession().putSingle(subProcessInstance);
+        Context.getCommandContext().getAllRunTimeExecution().putSingle(subProcessInstance);
         return subProcessInstance;
 
     }

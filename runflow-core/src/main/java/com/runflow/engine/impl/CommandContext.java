@@ -95,12 +95,9 @@ public class CommandContext {
     }
 
 
-    public CurrentHashMapCache<ExecutionEntityImpl> getDefaultSession() {
-        return getSession();
-    }
 
 
-    public CurrentHashMapCache<ExecutionEntityImpl> getSession() {
+    public CurrentHashMapCache<ExecutionEntityImpl> getAllRunTimeExecution() {
         return this.processEngineConfiguration.getRunTimeExecution();
     }
 

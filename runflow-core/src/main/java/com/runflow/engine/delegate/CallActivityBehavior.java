@@ -10,8 +10,10 @@ import org.activiti.bpmn.model.*;
 import org.activiti.bpmn.model.Process;
 
 import javax.el.Expression;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CallActivityBehavior extends AbstractBpmnActivityBehavior implements SubProcessActivityBehavior {
     protected String processDefinitonKey;
@@ -50,7 +52,8 @@ public class CallActivityBehavior extends AbstractBpmnActivityBehavior implement
         ExecutionEntityImpl subProcessInstance = execution.createSubprocessInstance(processDefinition, execution, null);
         subProcessInstance.setMainThread(Thread.currentThread());
         subProcessInstance.setSerialNumber(uuid);
-
+        subProcessInstance.executions = new ArrayList<>();
+        subProcessInstance.variableInstances = new ConcurrentHashMap<>();
         ExecutionEntityImpl subProcessInitialExecution = execution.createChildExecution(subProcessInstance);
         subProcessInitialExecution.setCurrentFlowElement(initialFlowElement);
 

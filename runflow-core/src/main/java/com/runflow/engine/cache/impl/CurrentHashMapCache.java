@@ -19,7 +19,7 @@ public class CurrentHashMapCache<V extends ExecutionEntity> extends ConcurrentHa
     public Set<V> putSingle(String key, V value) {
         Set<V> vs = this.get(key);
         if (CollectionUtil.isEmpty(vs)) {
-            synchronized (CurrentHashMapCache.class) {
+            synchronized (key) {
                 vs = this.get(key);
                 if (CollectionUtil.isEmpty(vs)) {
                   Set<V> objects = ConcurrentHashMap.newKeySet();

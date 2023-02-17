@@ -20,7 +20,7 @@ public class CommandInvoker extends AbstractCommandInterceptor {
         // Run loop for agenda
         executeOperations(commandContext);
         String serialNumber = commandContext.getSerialNumber();
-        if (serialNumber != null && commandContext.getSession().get(commandContext.getSerialNumber()) != null) {
+        if (serialNumber != null && commandContext.getAllRunTimeExecution().get(commandContext.getSerialNumber()) != null) {
             try {
                 LockSupport.park();
             } catch (Exception e) {

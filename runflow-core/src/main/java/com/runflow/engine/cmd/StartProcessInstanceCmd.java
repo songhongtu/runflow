@@ -64,7 +64,7 @@ public class StartProcessInstanceCmd implements Command<ExecutionEntityImpl> {
 
 
         }
-        commandContext.getDefaultSession().putSingle(processInstance);
+        commandContext.getAllRunTimeExecution().putSingle(processInstance);
         startProcessInstance(processInstance, Context.getCommandContext());
         return processInstance;
     }
