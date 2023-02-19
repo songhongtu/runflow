@@ -19,13 +19,18 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
     public UserTaskActivityBehavior(UserTask userTask) {
         this.userTask = userTask;
     }
+
     @Override
     public void execute(ExecutionEntityImpl execution) {
         String name = execution.getCurrentFlowElement().getName();
-        LOGGER.debug("用户任务  名称：{}  id:{}  线程名称:{} ",name,execution.getId(),Thread.currentThread().getName());
+        LOGGER.debug("用户任务  名称：{}  id:{}  线程名称:{} ", name, execution.getId(), Thread.currentThread().getName());
         String skipExpression = userTask.getSkipExpression();
         if (!StringUtils.isEmpty(skipExpression)) {
-            ConditionUtil.createExpression(skipExpression, execution);
+            Object expression = ConditionUtil.createExpression(skipExpression, execution);
+            if (expression != null) {
+                ExecutionEntityImpl rootParent = execution.findRootParent(execution);
+                rootParent.variableInstances.put(execution.getActivityId(), expression);
+            }
         }
         leave(execution);
     }

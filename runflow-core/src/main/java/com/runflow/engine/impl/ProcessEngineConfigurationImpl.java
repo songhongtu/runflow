@@ -11,6 +11,7 @@ import com.runflow.engine.parse.BpmnParseHandler;
 import com.runflow.engine.parse.BpmnParseHandlers;
 import com.runflow.engine.parse.BpmnParser;
 import com.runflow.engine.parse.handler.*;
+import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.exceptions.XMLException;
 import org.activiti.image.ProcessDiagramGenerator;
 import org.activiti.image.impl.DefaultProcessDiagramGenerator;
@@ -43,13 +44,13 @@ public class ProcessEngineConfigurationImpl {
     protected ExecutorService executorService;
     protected String resourcePath;
     protected List<ELResolver> resolverList = new ArrayList<>();
-
+    protected List<BpmnParseHandler> customDefaultBpmnParseHandlers;
     protected Set<String> pathList = new HashSet<>();
+
+    protected BpmnXMLConverter bpmnXMLConverter;
 
     //第一次是否加载
     protected static volatile boolean isLoad = false;
-
-
 
 
     public void init() {
@@ -59,6 +60,7 @@ public class ProcessEngineConfigurationImpl {
         if (runTimeExecution == null) {
             runTimeExecution = new CurrentHashMapCache<>();
         }
+        initBpmnXMLConverter();
         initCommandContextFactory();
         initCommandExecutors();
         initCache();
@@ -95,6 +97,12 @@ public class ProcessEngineConfigurationImpl {
         }
     }
 
+    public void initBpmnXMLConverter() {
+        if (bpmnXMLConverter == null) {
+            bpmnXMLConverter = new BpmnXMLConverter();
+        }
+    }
+
 
     public void initCommandContextFactory() {
         if (commandContextFactory == null) {
@@ -119,7 +127,12 @@ public class ProcessEngineConfigurationImpl {
             bpmnParser = new BpmnParser();
         }
         BpmnParseHandlers bpmnParseHandlers = new BpmnParseHandlers();
+        if (this.getCustomDefaultBpmnParseHandlers() != null) {
+            bpmnParseHandlers.addHandlers(getCustomDefaultBpmnParseHandlers());
+        }
         bpmnParseHandlers.addHandlers(getDefaultBpmnParseHandlers());
+
+
         bpmnParser.setBpmnParserHandlers(bpmnParseHandlers);
     }
 
@@ -173,7 +186,7 @@ public class ProcessEngineConfigurationImpl {
         try {
             runTimeService.createDeployment().name(s).addInputStream(s, resourceAsStream1).deploy();
         } catch (RunFlowException | XMLException e) {
-            logger.info("文件部署失败{}：{}", s, e.getMessage());
+            logger.error("文件部署失败{}：", s, e);
         }
     }
 
@@ -226,6 +239,7 @@ public class ProcessEngineConfigurationImpl {
         return engineAgendaFactory;
     }
 
+
     public List<BpmnParseHandler> getDefaultBpmnParseHandlers() {
         List<BpmnParseHandler> bpmnParserHandlers = new ArrayList<>();
         bpmnParserHandlers.add(new EndEventParseHandler());
@@ -236,6 +250,8 @@ public class ProcessEngineConfigurationImpl {
         bpmnParserHandlers.add(new ParallelGatewayParseHandler());
         bpmnParserHandlers.add(new SequenceFlowParseHandler());
         bpmnParserHandlers.add(new CallActivityParseHandler());
+
+
         return bpmnParserHandlers;
     }
 
@@ -338,4 +354,19 @@ public class ProcessEngineConfigurationImpl {
         return this;
     }
 
+    public List<BpmnParseHandler> getCustomDefaultBpmnParseHandlers() {
+        return customDefaultBpmnParseHandlers;
+    }
+
+    public void setCustomDefaultBpmnParseHandlers(List<BpmnParseHandler> customDefaultBpmnParseHandlers) {
+        this.customDefaultBpmnParseHandlers = customDefaultBpmnParseHandlers;
+    }
+
+    public BpmnXMLConverter getBpmnXMLConverter() {
+        return bpmnXMLConverter;
+    }
+
+    public void setBpmnXMLConverter(BpmnXMLConverter bpmnXMLConverter) {
+        this.bpmnXMLConverter = bpmnXMLConverter;
+    }
 }

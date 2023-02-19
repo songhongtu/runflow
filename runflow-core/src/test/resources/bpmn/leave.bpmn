@@ -2,6 +2,7 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="leave" name="请假申请流程" isExecutable="true">
     <userTask id="deptleaderaudit" name="部门领导审批" activiti:assignee="${deptleader}" activiti:candidateGroups="部门经理"></userTask>
+	
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <userTask id="hraudit" name="人事审批" activiti:assignee="${hr}" activiti:candidateGroups="人事"></userTask>
     <sequenceFlow id="flow3" name="同意" sourceRef="exclusivegateway1" targetRef="hraudit">

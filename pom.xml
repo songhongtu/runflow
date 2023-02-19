@@ -12,6 +12,7 @@
         <module>runflow-spring</module>
         <module>runflow-spring-boot-starters</module>
         <module>runflow-springboot-demo</module>
+        <module>plugin/runflow-plugin-mybatis</module>
     </modules>
 
 

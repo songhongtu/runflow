@@ -1,0 +1,11 @@
+com\runflow\plugin\mybatis\controller\MybatisController.class
+com\runflow\plugin\mybatis\constant\MyBatisTaskConstant.class
+com\runflow\plugin\mybatis\dao\RunFlowDao.class
+com\runflow\plugin\mybatis\model\MybatisTask.class
+com\runflow\plugin\mybatis\constant\MyBatisTaskConstant$SelectTypeEnum.class
+com\runflow\plugin\mybatis\controller\UserLoginMapper.class
+com\runflow\plugin\mybatis\bpmn\converter\MyBatisTaskXMLConverter.class
+com\runflow\plugin\mybatis\bpmn\handler\MyBatisTaskHandler.class
+com\runflow\plugin\mybatis\behavior\MybatisTaskBehavior$1.class
+com\runflow\plugin\mybatis\behavior\MybatisTaskBehavior.class
+com\runflow\plugin\mybatis\Application.class

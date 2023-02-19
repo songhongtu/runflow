@@ -17,12 +17,13 @@ import java.util.Random;
 public class ConditionUtil {
 
 
-
-
-
     public static boolean hasTrueCondition(String ex, ExecutionEntityImpl execution) {
-
-        return (boolean) createExpression(ex, execution);
+        Object value = createExpression(ex, execution);
+        if (value != null) {
+            ExecutionEntityImpl rootParent = execution.findRootParent(execution);
+            rootParent.variableInstances.put(execution.getActivityId(), value);
+        }
+        return (boolean) value;
     }
 
 
@@ -32,16 +33,9 @@ public class ConditionUtil {
         ELContext elContext = expressionManager.getElContext(execution);
         ValueExpression valueExpression = expressionFactory.createValueExpression(elContext, expression.trim(), Object.class);
         Object value = valueExpression.getValue(elContext);
-        ExecutionEntityImpl rootParent = execution.findRootParent(execution);
-        if(value!=null){
-            rootParent.variableInstances.put(execution.getActivityId(),value);
-        }
 
         return value;
     }
-
-
-
 
 
     public static void main(String[] args) throws NoSuchMethodException {

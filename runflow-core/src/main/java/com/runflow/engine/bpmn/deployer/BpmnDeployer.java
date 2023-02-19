@@ -10,6 +10,7 @@ import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
 import com.runflow.engine.parse.BpmnParse;
 import com.runflow.engine.parse.BpmnParser;
 import com.runflow.engine.utils.ResourceNameUtil;
+import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.*;
 import org.activiti.bpmn.model.Process;
 import org.slf4j.Logger;
@@ -22,24 +23,24 @@ public class BpmnDeployer {
 
     private static final Logger log = LoggerFactory.getLogger(BpmnDeployer.class);
 
-    public ParsedDeployment deploy(DeploymentEntity deployment,BpmnParser bpmnParser) {
+    public ParsedDeployment deploy(DeploymentEntity deployment, BpmnParser bpmnParser) {
         log.debug("Processing deployment {}", deployment.getName());
 
         // The ParsedDeployment represents the deployment, the process definitions, and the BPMN
         // resource, parse, and model associated with each process definition.
-        ParsedDeployment parsedDeployment =build(deployment,bpmnParser);
+        ParsedDeployment parsedDeployment = build(deployment, bpmnParser);
 
-            for (ProcessDefinitionEntity processDefinition : parsedDeployment.getAllProcessDefinitions()) {
-                String resourceName = parsedDeployment.getResourceForProcessDefinition(processDefinition).getName();
-                processDefinition.setResourceName(resourceName);
-            }
+        for (ProcessDefinitionEntity processDefinition : parsedDeployment.getAllProcessDefinitions()) {
+            String resourceName = parsedDeployment.getResourceForProcessDefinition(processDefinition).getName();
+            processDefinition.setResourceName(resourceName);
+        }
 
 
         setProcessDefinitionDiagramNames(parsedDeployment);
 
-            updateCaching(parsedDeployment);
+        updateCaching(parsedDeployment);
 
-return parsedDeployment;
+        return parsedDeployment;
     }
 
 
@@ -58,16 +59,6 @@ return parsedDeployment;
     }
 
 
-
-
-
-
-
-
-
-
-
-
     public boolean shouldCreateDiagram(ProcessDefinitionEntity processDefinition, DeploymentEntity deployment) {
         if (deployment.isNew()
                 && processDefinition.isGraphicalNotationDefined()) {
@@ -80,11 +71,13 @@ return parsedDeployment;
         return false;
     }
 
-    protected BpmnParse createBpmnParseFromResource(ResourceEntity resource, BpmnParser bpmnParser,DeploymentEntity deploymentEntity) {
+    protected BpmnParse createBpmnParseFromResource(ResourceEntity resource, BpmnParser bpmnParser, DeploymentEntity deploymentEntity) {
         String resourceName = resource.getName();
         ByteArrayInputStream inputStream = new ByteArrayInputStream(resource.getBytes());
 
-        BpmnParse bpmnParse =new BpmnParse(bpmnParser)
+        ProcessEngineConfigurationImpl processEngineConfiguration = Context.getProcessEngineConfiguration();
+        BpmnXMLConverter bpmnXMLConverter = processEngineConfiguration.getBpmnXMLConverter();
+        BpmnParse bpmnParse = new BpmnParse(bpmnParser)
                 .sourceInputStream(inputStream)
                 .setSourceSystemId(resourceName)
                 .deployment(deploymentEntity)
@@ -93,7 +86,7 @@ return parsedDeployment;
         return bpmnParse;
     }
 
-    public ParsedDeployment build(DeploymentEntity deploymentEntity,BpmnParser bpmnParser) {
+    public ParsedDeployment build(DeploymentEntity deploymentEntity, BpmnParser bpmnParser) {
         List<ProcessDefinitionEntity> processDefinitions = new ArrayList<>();
         Map<ProcessDefinitionEntity, BpmnParse> processDefinitionsToBpmnParseMap
                 = new LinkedHashMap<>();
@@ -104,7 +97,7 @@ return parsedDeployment;
             if (isBpmnResource(resource.getName())) {
                 log.debug("Processing BPMN resource {}", resource.getName());
                 //createProcessDefinitions
-                BpmnParse parse = createBpmnParseFromResource(resource,bpmnParser,deploymentEntity);
+                BpmnParse parse = createBpmnParseFromResource(resource, bpmnParser, deploymentEntity);
                 for (ProcessDefinitionEntity processDefinition : parse.getProcessDefinitions()) {
                     processDefinitions.add(processDefinition);
                     processDefinitionsToBpmnParseMap.put(processDefinition, parse);
@@ -116,7 +109,6 @@ return parsedDeployment;
         return new ParsedDeployment(deploymentEntity, processDefinitions,
                 processDefinitionsToBpmnParseMap, processDefinitionsToResourceMap);
     }
-
 
 
     public void updateCaching(ParsedDeployment parsedDeployment) {
@@ -136,7 +128,6 @@ return parsedDeployment;
     }
 
 
-
     protected boolean isBpmnResource(String resourceName) {
         for (String suffix : ResourceNameUtil.BPMN_RESOURCE_SUFFIXES) {
             if (resourceName.endsWith(suffix)) {
@@ -146,15 +137,6 @@ return parsedDeployment;
 
         return false;
     }
-
-
-
-
-
-
-
-
-
 
 
 }

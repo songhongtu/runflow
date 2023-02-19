@@ -1,15 +1,25 @@
 package com.runflow.spring.boot;
 
+import com.runflow.engine.parse.AbstractActivityBpmnParseHandler;
+import com.runflow.engine.parse.BpmnParseHandler;
+import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
+import java.util.List;
+
 public class SpringProcessEngineFactoryBean implements FactoryBean<SpringProcessEngineConfiguration>, ApplicationContextAware {
     private String location;
     private ApplicationContext applicationContext;
     private ResourcePatternResolver resourceLoader;
+
+    private List<BpmnParseHandler> activityBpmnParseHandlerList;
+
+
+    private BpmnXMLConverter bpmnXMLConverter;
 
     @Override
     public SpringProcessEngineConfiguration getObject() throws Exception {
@@ -17,6 +27,9 @@ public class SpringProcessEngineFactoryBean implements FactoryBean<SpringProcess
         springProcessEngineConfiguration.setApplicationContext(applicationContext);
         springProcessEngineConfiguration.setResourceLoader(resourceLoader);
         springProcessEngineConfiguration.setLocation(location);
+        springProcessEngineConfiguration.setCustomDefaultBpmnParseHandlers(activityBpmnParseHandlerList);
+
+
         springProcessEngineConfiguration.getResolverList().add(new ApplicationContextElResolver(applicationContext));
         springProcessEngineConfiguration.init();
         return springProcessEngineConfiguration;
@@ -51,5 +64,22 @@ public class SpringProcessEngineFactoryBean implements FactoryBean<SpringProcess
 
     public void setResourceLoader(ResourcePatternResolver resourceLoader) {
         this.resourceLoader = resourceLoader;
+    }
+
+
+    public List<BpmnParseHandler> getActivityBpmnParseHandlerList() {
+        return activityBpmnParseHandlerList;
+    }
+
+    public void setActivityBpmnParseHandlerList(List<BpmnParseHandler> activityBpmnParseHandlerList) {
+        this.activityBpmnParseHandlerList = activityBpmnParseHandlerList;
+    }
+
+    public BpmnXMLConverter getBpmnXMLConverter() {
+        return bpmnXMLConverter;
+    }
+
+    public void setBpmnXMLConverter(BpmnXMLConverter bpmnXMLConverter) {
+        this.bpmnXMLConverter = bpmnXMLConverter;
     }
 }

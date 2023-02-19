@@ -30,6 +30,9 @@ public class BpmnParse {
     protected DeploymentEntity deployment;
     protected ProcessDefinitionEntity currentProcessDefinition;
 
+
+    protected BpmnXMLConverter bpmnXMLConverter;
+
     public DeploymentEntity getDeployment() {
         return deployment;
     }
@@ -60,12 +63,7 @@ public class BpmnParse {
     }
 
     public BpmnParse execute() {
-
-        BpmnXMLConverter converter = new BpmnXMLConverter();
-
-            bpmnModel = converter.convertToBpmnModel(streamSource, true, false, "utf-8");
-
-
+        bpmnModel = bpmnXMLConverter.convertToBpmnModel(streamSource, false, false, "utf-8");
 
         ProcessValidator processValidator = new ProcessValidatorFactory().createDefaultProcessValidator();
         List<ValidationError> validationErrors = processValidator.validate(bpmnModel);
@@ -91,7 +89,7 @@ public class BpmnParse {
 
             // Write out warnings (if any)
             if (warningBuilder.length() > 0) {
-                LOGGER.warn("Following warnings encountered during process validation: {}" , warningBuilder);
+                LOGGER.warn("Following warnings encountered during process validation: {}", warningBuilder);
             }
 
         }
@@ -108,15 +106,8 @@ public class BpmnParse {
         processDI();
 
 
-
         return this;
     }
-
-
-
-
-
-
 
 
     public void createBPMNEdge(String key, List<GraphicInfo> graphicList) {
@@ -133,7 +124,7 @@ public class BpmnParse {
         } else if (bpmnModel.getArtifact(key) != null) {
             // it's an association, so nothing to do
         } else {
-            LOGGER.warn("Invalid reference in 'bpmnElement' attribute, sequenceFlow {}} not found",key);
+            LOGGER.warn("Invalid reference in 'bpmnElement' attribute, sequenceFlow {}} not found", key);
         }
     }
 
@@ -153,11 +144,11 @@ public class BpmnParse {
                     if (bpmnModel.getArtifact(bpmnReference) == null) {
                         // Check if it's a Pool or Lane, then DI is ok
                         if (bpmnModel.getPool(bpmnReference) == null && bpmnModel.getLane(bpmnReference) == null) {
-                            LOGGER.warn("Invalid reference in diagram interchange definition: could not find {}" , bpmnReference);
+                            LOGGER.warn("Invalid reference in diagram interchange definition: could not find {}", bpmnReference);
                         }
                     }
                 } else if (!(bpmnModel.getFlowElement(bpmnReference) instanceof FlowNode)) {
-                    LOGGER.warn("Invalid reference in diagram interchange definition: {} does not reference a flow node",bpmnReference);
+                    LOGGER.warn("Invalid reference in diagram interchange definition: {} does not reference a flow node", bpmnReference);
                 }
             }
 
@@ -165,10 +156,10 @@ public class BpmnParse {
                 if (bpmnModel.getFlowElement(bpmnReference) == null) {
                     // ACT-1625: don't warn when artifacts are referenced from DI
                     if (bpmnModel.getArtifact(bpmnReference) == null) {
-                        LOGGER.warn("Invalid reference in diagram interchange definition: could not find {} " , bpmnReference);
+                        LOGGER.warn("Invalid reference in diagram interchange definition: could not find {} ", bpmnReference);
                     }
                 } else if (!(bpmnModel.getFlowElement(bpmnReference) instanceof SequenceFlow)) {
-                    LOGGER.warn("Invalid reference in diagram interchange definition:{} does not reference a sequence flow",bpmnReference);
+                    LOGGER.warn("Invalid reference in diagram interchange definition:{} does not reference a sequence flow", bpmnReference);
                 }
             }
 
@@ -216,6 +207,12 @@ public class BpmnParse {
         this.name = name;
         return this;
     }
+
+    public BpmnParse bpmnXmlConverter(BpmnXMLConverter bpmnXMLConverter) {
+        this.bpmnXMLConverter = bpmnXMLConverter;
+        return this;
+    }
+
 
     public BpmnParse setSourceSystemId(String sourceSystemId) {
         this.sourceSystemId = sourceSystemId;
