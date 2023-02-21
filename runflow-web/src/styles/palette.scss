@@ -9,3 +9,40 @@
   background-position: center center;
   background-repeat: no-repeat;
 }
+.miyue-mybatis-task{
+  background-image: url("/icons/mybatis.png");
+  background-size: 1em 1em;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+.miyue-redis-task{
+  background-image: url("/icons/redis.png");
+  background-size: 1em 1em;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.bpmn-icon-user-task-rewrite{
+  background-image: url("/icons/fx.png") !important;
+  background-size: 1em 1em;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+
+.djs-context-pad .bpmn-icon-user-task-rewrite:hover {
+  background-image: url("/icons/fx.png") !important;
+  background-size: cover !important;
+}
+
+
+.djs-context-pad .miyue-mybatis-task:hover {
+  background-image: url("/icons/mybatis.png") !important;
+  background-size: cover !important;
+}
+
+
+.djs-context-pad .miyue-redis-task:hover {
+  background-image: url("/icons/redis.png") !important;
+  background-size: cover !important;
+}

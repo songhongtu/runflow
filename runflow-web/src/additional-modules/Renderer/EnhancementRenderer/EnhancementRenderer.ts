@@ -7,9 +7,17 @@ import TextRenderer from 'bpmn-js/lib/draw/TextRenderer'
 import renderEventContent from '@/additional-modules/Renderer/EnhancementRenderer/renderEventContent'
 import { append as svgAppend, attr as svgAttr, create as svgCreate } from 'tiny-svg'
 import { drawCircle } from '@/additional-modules/Renderer/utils'
+import {Shape} from "diagram-js/lib/model";
+import {getFillColor, getLabelColor, getSemantic, getStrokeColor} from "bpmn-js/lib/draw/BpmnRenderUtil";
+import {transform} from "diagram-js/lib/util/SvgTransformUtil";
+import { assign, forEach, isObject } from 'min-dash'
+import {
+  classes as svgClasses,
+} from 'tiny-svg'
 
 class EnhancementRenderer extends BpmnRenderer {
   _styles: Styles
+  private _textRenderer: TextRenderer;
   constructor(
     config: any,
     eventBus: EventBus,
@@ -22,7 +30,9 @@ class EnhancementRenderer extends BpmnRenderer {
 
     this._styles = styles
 
-    // // 重点！！！在这里执行重绘
+    this._textRenderer = textRenderer
+
+    // // // 重点！！！在这里执行重绘
     // this.handlers['bpmn:Event'] = (parentGfx, element, attrs) => {
     //   if (!attrs || !attrs['fillOpacity']) {
     //     !attrs && (attrs = {})
@@ -42,8 +52,23 @@ class EnhancementRenderer extends BpmnRenderer {
     //   renderEventContent(this.handlers, element, parentGfx)
     //   return circle
     // }
+
+
     // 自定义节点的绘制
-    this.handlers['miyue:SqlTask'] = (parentGfx, element, attr) => {
+    this.handlers['bpmn:UserTask'] = (parentGfx, element, attr) => {
+      const attrs = {
+      }
+        let rect=  this. drawRect(parentGfx, element.width, element.height, 10, attrs)
+        this.renderImage(parentGfx, './icons/fx.png', {})
+        this.renderEmbeddedLabel(parentGfx, element, 'center-middle')
+
+
+      return rect
+
+    }
+
+    // 自定义节点的绘制
+    this.handlers['runflow:SqlTask'] = (parentGfx, element, attr) => {
       const customIcon = svgCreate('image')
       svgAttr(customIcon, {
         ...(attr || {}),
@@ -54,7 +79,180 @@ class EnhancementRenderer extends BpmnRenderer {
       svgAppend(parentGfx, customIcon)
       return customIcon
     }
+
+
+      this.handlers['runflow:MyBatis'] = (parentGfx, element, attr) => {
+          const attrs = {
+          }
+          let rect=  this. drawRect(parentGfx, element.width, element.height, 10, attrs)
+          this.renderImage(parentGfx, './icons/mybatis.png', {})
+          this.renderEmbeddedLabel(parentGfx, element, 'center-middle')
+        return rect;
+
+      }
+
+
+
+      this.handlers['runflow:Redis'] = (parentGfx, element, attr) => {
+          const attrs = {
+          }
+          let rect=  this. drawRect(parentGfx, element.width, element.height, 10, attrs)
+          this.renderImage(parentGfx, './icons/redis.png', {})
+          this.renderEmbeddedLabel(parentGfx, element, 'center-middle')
+          return rect;
+
+      }
+
+
   }
+     renderEmbeddedLabel(parentGfx, element, align) {
+        const semantic = getSemantic(element)
+
+        return this.renderLabel(parentGfx, semantic.name, {
+            box: element,
+            align: align,
+            padding: 5,
+            style: {
+                fill: getLabelColor(element, '', '')
+            }
+        })
+    }
+
+
+
+     drawRect(parentGfx, width, height, r, offset, attrs?) {
+        if (isObject(offset)) {
+            attrs = offset
+            offset = 0
+        }
+
+        offset = offset || 0
+
+        attrs = this._styles.computeStyle(attrs, {
+            stroke: 'black',
+            strokeWidth: 2,
+            fill: 'white'
+        })
+
+        const rect = svgCreate('rect')
+        svgAttr(rect, {
+            x: offset,
+            y: offset,
+            width: width - offset * 2,
+            height: height - offset * 2,
+            rx: r,
+            ry: r
+        })
+        svgAttr(rect, attrs)
+
+        svgAppend(parentGfx, rect)
+
+        return rect
+    }
+
+
+
+  drawShape<E extends Shape>(parentNode: SVGElement, element: E): SVGRectElement {
+
+
+
+
+    const type = element.type // 获取到类型
+
+
+
+
+
+    let svgRectElement = super.drawShape(parentNode, element);
+    if (type=="miyue:SqlTask") { // or customConfig[type]
+      console.log(parentNode)
+      if(element.businessObject.name){
+       this. renderButtomLabel(parentNode,element)
+      }
+    }
+
+
+
+    return svgRectElement;
+  }
+
+    renderImage(parentGfx, href, options) {
+
+        const customIcon = svgCreate('image')
+        const attrs = this._styles.computeStyle(options, {
+            stroke: 'black',
+            strokeWidth: 2,
+        })
+        const offset = 4
+        svgAttr(customIcon, {
+            href: href,
+            x: 2,
+            y: 3,
+            width: 60 - offset * 2,
+            height: 36 - offset * 2,
+            rx: offset,
+            ry: offset
+        })
+        svgAttr(customIcon, attrs)
+        svgAppend(parentGfx, customIcon)
+        return customIcon
+    }
+
+
+   renderButtomLabel(parentGfx, element) {
+    const semantic = getSemantic(element)
+    const textBox = this.renderLabel(parentGfx, semantic.name, {
+      box: {
+        height: 30,
+        width: element.height
+      },
+      align: 'center-bottom',
+      style: {
+        fill: getLabelColor(element, '#000000', '#000000')
+      }
+    })
+
+
+    transform(textBox, 0,100, 0)
+  }
+   renderLabel(parentGfx, label, options) {
+    options = assign(
+        {
+          size: {
+            width: 100
+          }
+        },
+        options
+    )
+
+
+    const text = this._textRenderer.createText(label || '', options)
+
+    svgClasses(text).add('djs-label')
+
+    svgAppend(parentGfx, text)
+
+    return text
+  }
+
+
+
+     drawPath(parentGfx, d, attrs?) {
+        attrs =this._styles. computeStyle(attrs, ['no-fill'], {
+            strokeWidth: 2,
+            stroke: 'black'
+        })
+
+        const path = svgCreate('path')
+        svgAttr(path, { d: d })
+        svgAttr(path, attrs)
+
+        svgAppend(parentGfx, path)
+
+        return path
+    }
+
+
 }
 
 EnhancementRenderer.$inject = [

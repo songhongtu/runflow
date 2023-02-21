@@ -12,6 +12,36 @@ export function getInitiatorValue(element: Base): string | undefined {
 }
 
 
+
+
+
+export function getStringValueByKey(element: Base,key:string): string | undefined {
+  const prefix = editor().getProcessEngine
+  const businessObject = getBusinessObject(element)
+  return businessObject.get(`${prefix}:${key}`)||''
+}
+export function setStringValueByKey(element: Base,key:string, value: string | undefined) {
+  const prefix = editor().getProcessEngine
+  const modeling = modeler().getModeling
+  const businessObject = getBusinessObject(element)
+  modeling.updateModdleProperties(element, businessObject, {
+    [`${prefix}:${key}`]: value
+  })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export function getSkipExpression(element: Base): string | undefined {
   const prefix = editor().getProcessEngine
   const businessObject = getBusinessObject(element)

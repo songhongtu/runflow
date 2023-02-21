@@ -81,6 +81,7 @@ public class BpmnDeployer {
                 .sourceInputStream(inputStream)
                 .setSourceSystemId(resourceName)
                 .deployment(deploymentEntity)
+                .bpmnXmlConverter(bpmnXMLConverter)
                 .name(resourceName);
         bpmnParse.execute();
         return bpmnParse;

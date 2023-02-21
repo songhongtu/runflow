@@ -32,10 +32,24 @@ class RewritePaletteProvider extends PaletteProvider {
       globalConnect = this._globalConnect
 
     function createSqlTask(event) {
-      const sqlTask = elementFactory.createShape({ type: 'miyue:SqlTask' })
+      const sqlTask = elementFactory.createShape({ type: 'runflow:SqlTask' })
 
       create.start(event, sqlTask)
     }
+
+    function createRedisTask(event) {
+      const sqlTask = elementFactory.createShape({ type: 'runflow:Redis' })
+      create.start(event, sqlTask)
+    }
+
+
+
+    function createMyBatisTask(event) {
+      const sqlTask = elementFactory.createShape({ type: 'runflow:MyBatis' })
+      create.start(event, sqlTask)
+    }
+
+
 
     function createSubprocess(event) {
       const subProcess = elementFactory.createShape({
@@ -157,8 +171,8 @@ class RewritePaletteProvider extends PaletteProvider {
         create,
         'bpmn:UserTask',
         'activity',
-        'bpmn-icon-user-task',
-        '用户任务'
+        'bpmn-icon-user-task-rewrite',
+        '执行函数'
       ),
       'create.callActivity': createAction(
           elementFactory,
@@ -177,6 +191,30 @@ class RewritePaletteProvider extends PaletteProvider {
       //     dragstart: createSqlTask
       //   }
       // },
+
+      'create.redis-task': {
+        group: 'activity',
+        className: 'miyue-redis-task',
+        title: 'redis',
+        action: {
+          click: createRedisTask,
+          dragstart: createRedisTask
+        }
+      },
+
+
+      'create.mybatis-task': {
+        group: 'activity',
+        className: 'miyue-mybatis-task',
+        title: 'mybatis',
+        action: {
+          click: createMyBatisTask,
+          dragstart: createMyBatisTask
+        }
+      },
+
+
+
     })
 
     return actions

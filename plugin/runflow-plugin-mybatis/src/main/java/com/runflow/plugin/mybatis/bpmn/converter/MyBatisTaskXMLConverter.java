@@ -1,23 +1,17 @@
 package com.runflow.plugin.mybatis.bpmn.converter;
 
-import com.runflow.engine.bpmn.converter.CustomBaseBpmnXMLConverter;
-import com.runflow.engine.bpmn.converter.CustomFormPropertyParser;
 import com.runflow.engine.utils.Conv;
 import com.runflow.plugin.mybatis.constant.MyBatisTaskConstant;
 import com.runflow.plugin.mybatis.model.MyBatisTask;
 import org.activiti.bpmn.converter.BaseBpmnXMLConverter;
-import org.activiti.bpmn.converter.child.BaseChildElementParser;
 import org.activiti.bpmn.converter.util.BpmnXMLUtil;
 import org.activiti.bpmn.model.BaseElement;
 import org.activiti.bpmn.model.BpmnModel;
-import org.activiti.bpmn.model.ExtensionElement;
 
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
-import java.util.HashMap;
-import java.util.Map;
 
-public class MyBatisTaskXMLConverter extends CustomBaseBpmnXMLConverter {
+public class MyBatisTaskXMLConverter extends BaseBpmnXMLConverter {
 
 
     @Override

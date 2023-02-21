@@ -11,6 +11,13 @@
               <bpmn2:formProperty id="622210618450_95925" name="子表单" readable="true" writable="true" />
               <bpmn2:formProperty id="622210621961_25895" name="多行文本" readable="true" writable="true" />
               <bpmn2:formProperty id="622210627442_91255" name="多行文本" readable="true" writable="true" />
+
+  <bpmn2:properties>
+                             <bpmn2:property name="111" value="2222" />
+                                                  <bpmn2:property name="333" value="4444" />
+                                                  <bpmn2:property name="5" value="6" />
+                       </bpmn2:properties>
+
             </extensionElements>
 
 
@@ -21,6 +28,13 @@
 
 
        <extensionElements>
+
+
+                        <bpmn2:properties>
+                      <bpmn2:property name="111" value="2222" />
+                        <bpmn2:property name="333" value="4444" />
+                        <bpmn2:property name="5" value="6" />
+                       </bpmn2:properties>
                      <bpmn2:formProperty id="1622206213817_7184" name="子表单" readable="true" writable="true" />
                      <bpmn2:formProperty id="1622206215915_74415" name="单行文本" readable="true" writable="true" />
                      <bpmn2:formProperty id="1622206217549_98043" name="单行文本" readable="true" writable="true" />
@@ -35,6 +49,11 @@
     <bpmn2:myBatisTask  selectType="SELECTLIST"  activiti:statementId="com.runflow.plugin.mybatis.dao.RunFlowDao.getUserList" id="Activity_0bsei7v" name="任务二" >
 
          <extensionElements>
+
+        <bpmn2:properties>
+                           <bpmn2:property name="111" value="2222" />
+                       </bpmn2:properties>
+
                         <bpmn2:formProperty id="22206213817_7184" name="子表单" readable="true" writable="true" />
                         <bpmn2:formProperty id="22206215915_74415" name="单行文本" readable="true" writable="true" />
                         <bpmn2:formProperty id="22206217549_98043" name="单行文本" readable="true" writable="true" />

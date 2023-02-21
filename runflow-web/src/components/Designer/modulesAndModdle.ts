@@ -10,7 +10,7 @@ import activitiModdleDescriptors from '@/moddle-extensions/activiti.json'
 import camundaModdleDescriptors from '@/moddle-extensions/camunda.json'
 import flowableModdleDescriptors from '@/moddle-extensions/flowable.json'
 import MiyueModdleDescriptors from '@/moddle-extensions/miyue.json'
-
+import RunFlowModdleDescriptors from '@/moddle-extensions/runflow.json'
 // camunda 官方侧边栏扩展
 import {
   BpmnPropertiesPanelModule,
@@ -150,7 +150,9 @@ export default function (settings: Ref<EditorSettings>) {
   }
 
   // 设置自定义属性
-  moddle['miyue'] = MiyueModdleDescriptors
+  moddle['runflow']=RunFlowModdleDescriptors
+
+
 
   return [modules, moddle, options]
 }

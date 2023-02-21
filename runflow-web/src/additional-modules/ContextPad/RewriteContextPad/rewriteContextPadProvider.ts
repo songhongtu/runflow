@@ -136,19 +136,26 @@ class RewriteContextPadProvider extends ContextPadProvider {
     // 添加创建用户任务按钮
     actions['append.append-user-task'] = {
       group: 'model',
-      className: 'bpmn-icon-user-task',
-      title: '用户任务',
+      className: 'bpmn-icon-user-task-rewrite',
+      title: '函数调用',
       action: {
         dragstart: appendUserTask,
         click: append
       }
     }
+
+
+
+
+
     // 网关
-    actions['append.append-gateway-none'] =appendAction("bpmn:ExclusiveGateway","bpmn-icon-gateway-none","网关","")
+    actions['append.append-gateway-none'] =appendAction("bpmn:ExclusiveGateway","bpmn-icon-gateway-none","网关","gateway")
+    // 网关
+    actions['append.append-gateway-parallel'] =appendAction("bpmn:ParallelGateway","bpmn-icon-gateway-parallel","并行网关","gateway")
 
     // 删除按钮
     actions['append.append-trash'] = {
-      group: 'model',
+      group: 'connect',
       className: 'bpmn-icon-trash',
       title: '删除',
       action: {
@@ -166,9 +173,10 @@ class RewriteContextPadProvider extends ContextPadProvider {
       }
     }
 
-
+    actions['model-redis'] =appendAction("runflow:Redis","miyue-redis-task","redis","model")
+    actions['model-mybatis'] =appendAction("runflow:MyBatis","miyue-mybatis-task","mybatis","model")
     // 添加一个新分组的自定义按钮
- //   actions['enhancement-op'] =appendAction("miyue:SqlTask","miyue-sql-task","mysql1","enhancement")
+   // actions['enhancement-op'] =appendAction("miyue:SqlTask","miyue-sql-task","mysql1","enhancement")
 
     actions['append.end-event'] =appendAction("bpmn:EndEvent","bpmn-icon-end-event-none","结束","enhancement")
 

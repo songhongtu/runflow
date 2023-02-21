@@ -171,7 +171,7 @@ public class ProcessEngineConfigurationImpl {
                     try {
                         this.baseScan();
                     } catch (Exception e) {
-                        logger.error("扫描失败:{}", e.getMessage());
+                        logger.error("扫描失败:", e);
                     } finally {
                         isLoad = true;
                     }

@@ -17,7 +17,7 @@ export default {
   EndEvent: '结束事件',
   SendTask: '发送任务',
   ReceiveTask: '接收任务',
-  UserTask: '用户任务',
+  UserTask: '调用函数',
   ManualTask: '手工任务',
   BusinessRuleTask: '业务规则任务',
   ServiceTask: '服务任务',

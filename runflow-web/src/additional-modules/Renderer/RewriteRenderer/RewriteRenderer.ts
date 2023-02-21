@@ -561,6 +561,29 @@ class RewriteRenderer extends BaseRenderer {
       })
     }
 
+
+
+
+    function renderButtomLabel(parentGfx, element) {
+
+      const semantic = getSemantic(element)
+      const textBox = renderLabel(parentGfx, semantic.name, {
+        box: {
+          height: 30,
+          width: element.height
+        },
+        align: 'center-bottom',
+        style: {
+          fill: getLabelColor(element, defaultLabelColor, defaultTaskColor)
+        }
+      })
+
+
+      transform(textBox, 0,100, 0)
+    }
+
+
+
     function renderExternalLabel(parentGfx, element) {
       const box = {
         width: 90,
@@ -2003,13 +2026,12 @@ class RewriteRenderer extends BaseRenderer {
 
       // 自定义节点的绘制
       'miyue:SqlTask': function (parentGfx, element, attr) {
-        // 渲染外层边框
-        const attrs = {
-          fill: getFillColor(element, defaultFillColor),
-          fillOpacity: defaultTaskOpacity,
-          stroke: getStrokeColor(element, defaultTaskColor)
-        }
-        renderer('bpmn:Activity')(parentGfx, element, attrs)
+        // // 渲染外层边框
+        // const attrs = {
+        //   fill: getFillColor(element, defaultFillColor),
+        //   fillOpacity: defaultTaskOpacity,
+        //   stroke: getStrokeColor(element, defaultTaskColor)
+        // }
         // 自定义节点
         const customIcon = svgCreate('image')
         svgAttr(customIcon, {
@@ -2019,6 +2041,7 @@ class RewriteRenderer extends BaseRenderer {
           href: './icons/mysql.png'
         })
         svgAppend(parentGfx, customIcon)
+        renderButtomLabel(parentGfx, element)
         return customIcon
       }
     })
