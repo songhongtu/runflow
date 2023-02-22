@@ -81,7 +81,7 @@ class EnhancementRenderer extends BpmnRenderer {
     }
 
 
-      this.handlers['runflow:MyBatis'] = (parentGfx, element, attr) => {
+      this.handlers['runflow:myBatisTask'] = (parentGfx, element, attr) => {
           const attrs = {
           }
           let rect=  this. drawRect(parentGfx, element.width, element.height, 10, attrs)

@@ -3,6 +3,9 @@ package com.runflow.plugin.mybatis.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.page.PageMethod;
+import com.runflow.engine.ExecutionEntityImpl;
+import com.runflow.engine.impl.RunTimeServiceImpl;
+import com.runflow.spring.boot.SpringContextUtil;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,15 +24,13 @@ public class MybatisController {
     @Autowired
     SqlSession sqlSession;
 
+
     @Transactional
     @GetMapping("/demo1")
-    public PageInfo<Object> demo1() {
-        PageHelper.startPage(1, 1);
-        Map map = new HashMap();
-        map.put("cc", 1);
-        List<Object> list = sqlSession.selectList("com.runflow.plugin.mybatis.dao.RunFlowDao.getUserList1", map);
-        PageInfo<Object> objectPageInfo = new PageInfo<>(list);
-        return objectPageInfo;
+    public Map<String, Object> demo1() {
+        RunTimeServiceImpl bean = SpringContextUtil.getBean(RunTimeServiceImpl.class);
+        ExecutionEntityImpl executionEntity = bean.startWorkflow("Process_1677031768578");
+        return executionEntity.getVariableInstances();
     }
 
 

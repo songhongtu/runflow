@@ -36,7 +36,7 @@ export default function (
 
   EventEmitter.emit('modeler-init', modeler)
 
-  EnhancementContextmenu(modeler)
+  // EnhancementContextmenu(modeler)
 
   modeler.on('commandStack.changed', async (event) => {
     try {

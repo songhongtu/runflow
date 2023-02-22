@@ -1,32 +1,43 @@
 {
   "name": "runflow",
   "prefix": "runflow",
-  "uri": "http://baidu.com",
+  "uri": "http://runflow.org/schema",
   "xml": {
-    "tagAlias": "lowerCase"
   },
   "associations": [],
   "types": [
-
     {
-      "name": "SqlTask",
+      "name": "myBatisTask",
       "superClass": ["bpmn:Task"],
       "properties": [
         {
-          "name": "address",
+          "name": "selectType",
           "type": "String",
           "isAttr": true
         },
         {
-          "name": "username",
+          "name": "statementId",
           "type": "String",
           "isAttr": true
         },
         {
-          "name": "port",
-          "type": "String",
+          "name": "pageNum",
+          "type": "Number",
           "isAttr": true
         },
+
+        {
+          "name": "pageSize",
+          "type": "Number",
+          "isAttr": true
+        },
+
+        {
+          "name": "isPage",
+          "type": "Boolean",
+          "isAttr": true
+        },
+
         {
           "name": "tables",
           "type": "Table",
@@ -35,37 +46,6 @@
         }
       ]
     },
-
-    {
-      "name": "MyBatis",
-      "superClass": ["bpmn:Task"],
-      "properties": [
-        {
-          "name": "address",
-          "type": "String",
-          "isAttr": true
-        },
-        {
-          "name": "username",
-          "type": "String",
-          "isAttr": true
-        },
-        {
-          "name": "port",
-          "type": "String",
-          "isAttr": true
-        },
-        {
-          "name": "tables",
-          "type": "Table",
-          "isMany": true,
-          "isBody": true
-        }
-      ]
-    },
-
-
-
     {
       "name": "Redis",
       "superClass": ["bpmn:Task"],
@@ -93,106 +73,34 @@
         }
       ]
     },
-
-
-
     {
-      "name": "Table",
-      "superClass": ["bpmn:Element"],
-      "meta": {
-        "allowedIn": ["runflow:MyBatis"]
-      },
+      "name": "SqlTask",
+      "superClass": ["bpmn:Task"],
       "properties": [
         {
-          "name": "fields",
+          "name": "address",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "username",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "port",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "tables",
+          "type": "Table",
           "isMany": true,
-          "type": "TableField"
-        },
-        {
-          "name": "isKey",
-          "isAttr": true,
-          "type": "Boolean",
-          "default": false
-        },
-        {
-          "name": "author",
-          "isAttr": true,
-          "type": "String"
-        },
-        {
-          "name": "title",
-          "isAttr": true,
-          "type": "String"
-        }
-      ]
-    },
-    {
-      "name": "TableField",
-      "superClass": ["bpmn:Element"],
-      "meta": {
-        "allowedIn": ["*"]
-      },
-      "properties": [
-        {
-          "name": "type",
-          "isAttr": true,
-          "type": "String"
-        },
-        {
-          "name": "nullable",
-          "type": "Boolean",
-          "isAttr": true
-        },
-        {
-          "name": "defaultValue",
-          "type": "String",
-          "isAttr": true
-        }
-      ]
-    },
-    {
-      "name": "ExternalTask",
-      "extends": ["bpmn:Task", "bpmn:UserTask", "bpmn:ScriptTask"],
-      "properties": [
-        {
-          "name": "developer",
-          "type": "String",
-          "isAttr": true
-        },
-        {
-          "name": "projectName",
-          "type": "String",
-          "isAttr": true
-        },
-        {
-          "name": "revisedCount",
-          "type": "Number",
-          "default": 1,
-          "isAttr": true
-        }
-      ]
-    },
-    {
-      "name": "ExternalEvent",
-      "extends": ["bpmn:Event"],
-      "properties": [
-        {
-          "name": "developer",
-          "type": "String",
-          "isAttr": true
-        },
-        {
-          "name": "projectName",
-          "type": "String",
-          "isAttr": true
-        },
-        {
-          "name": "revisedCount",
-          "type": "Number",
-          "default": 1,
-          "isAttr": true
+          "isBody": true
         }
       ]
     }
+
+
   ]
 }

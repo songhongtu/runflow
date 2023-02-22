@@ -45,7 +45,7 @@ class RewritePaletteProvider extends PaletteProvider {
 
 
     function createMyBatisTask(event) {
-      const sqlTask = elementFactory.createShape({ type: 'runflow:MyBatis' })
+      const sqlTask = elementFactory.createShape({ type: 'runflow:myBatisTask' })
       create.start(event, sqlTask)
     }
 

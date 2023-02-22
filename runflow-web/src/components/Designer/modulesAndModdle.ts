@@ -9,7 +9,6 @@ import TokenSimulationModule from 'bpmn-js-token-simulation'
 import activitiModdleDescriptors from '@/moddle-extensions/activiti.json'
 import camundaModdleDescriptors from '@/moddle-extensions/camunda.json'
 import flowableModdleDescriptors from '@/moddle-extensions/flowable.json'
-import MiyueModdleDescriptors from '@/moddle-extensions/miyue.json'
 import RunFlowModdleDescriptors from '@/moddle-extensions/runflow.json'
 // camunda 官方侧边栏扩展
 import {
@@ -144,13 +143,14 @@ export default function (settings: Ref<EditorSettings>) {
 
   // 设置对应的 moddle 解析配置文件 ( 避免上面已经配置了 camunda )
   if (!Object.keys(moddle).length) {
+    // 设置自定义属性
+    moddle['runflow']=RunFlowModdleDescriptors
     if (settings.value.processEngine === 'activiti') moddle['activiti'] = activitiModdleDescriptors
     if (settings.value.processEngine === 'camunda') moddle['camunda'] = camundaModdleDescriptors
     if (settings.value.processEngine === 'flowable') moddle['flowable'] = flowableModdleDescriptors
   }
 
-  // 设置自定义属性
-  moddle['runflow']=RunFlowModdleDescriptors
+
 
 
 

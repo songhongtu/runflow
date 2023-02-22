@@ -20,6 +20,19 @@ export function getStringValueByKey(element: Base,key:string): string | undefine
   const businessObject = getBusinessObject(element)
   return businessObject.get(`${prefix}:${key}`)||''
 }
+
+
+
+export function getStringValueByKeyBoolean(element: Base,key:string): boolean | false {
+  const prefix = editor().getProcessEngine
+  const businessObject = getBusinessObject(element)
+  return businessObject.get(`${prefix}:${key}`)||false
+}
+
+
+
+
+
 export function setStringValueByKey(element: Base,key:string, value: string | undefined) {
   const prefix = editor().getProcessEngine
   const modeling = modeler().getModeling

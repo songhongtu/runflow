@@ -16,7 +16,5 @@ import java.util.Arrays;
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
-        RunTimeServiceImpl bean = SpringContextUtil.getBean(RunTimeServiceImpl.class);
-        bean.startWorkflow("Process_16719365975");
     }
 }

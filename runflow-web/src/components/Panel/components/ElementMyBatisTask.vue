@@ -6,28 +6,26 @@
       </collapse-title>
     </template>
     <div class="element-start-initiator">
-
-
       <edit-item label="statementId">
-        <n-input placeholder="${...}" v-model:value="statementId"
+        <n-input placeholder="" v-model:value="statementId"
                  @change="(v)=>setStringValueByKey(getActive,'statementId',v)"/>
       </edit-item>
-
-
-      <edit-item label="selectType">
-        <n-input placeholder="${...}" v-model:value="selectType"
-
+      <edit-item label="查询类型">
+        <n-select placeholder="" v-model:value="selectType" :options="selectTypeOption"
                   @change="(v)=>setStringValueByKey(getActive,'selectType',v)"/>
       </edit-item>
-
-      <edit-item v-if="getActive?.type!='bpmn:CallActivity'" label="表达式">
-        <n-input placeholder="${...}" v-model:value="initiator" @change="setElementInitiator"/>
+      <edit-item label="是否分页">
+        <n-switch v-model:value="isPage"
+                    @change="(v)=>setStringValueByKey(getActive,'isPage',v)"/>
       </edit-item>
-
-      <edit-item v-if="getActive?.type=='bpmn:CallActivity'" label="流程key">
-        <n-input placeholder="子流程key" v-model:value="calledElement" @change="setElementCalledElement"/>
+      <edit-item v-if="pageNum" label="当前页">
+        <n-input placeholder="" v-model:value="pageNum"
+                 @change="(v)=>setStringValueByKey(getActive,'pageNum',v)"/>
       </edit-item>
-
+      <edit-item v-if="pageSize" label="分页大小">
+        <n-input placeholder="" v-model:value="pageSize"
+                 @change="(v)=>setStringValueByKey(getActive,'pageSize',v)"/>
+      </edit-item>
     </div>
   </n-collapse-item>
 </template>
@@ -41,7 +39,7 @@ import {
   setAsync,
   setCalledElement,
   getCalledElement,
-  getStringValueByKey, setStringValueByKey
+  getStringValueByKey, setStringValueByKey, getStringValueByKeyBoolean
 } from '@/bo-utils/initiatorUtil'
 import modeler from '@/store/modeler'
 import {Base} from 'diagram-js/lib/model'
@@ -52,80 +50,50 @@ export default defineComponent({
   setup() {
     const modelerStore = modeler()
     const getActive = computed<Base | null>(() => modelerStore.getActive!)
-
-
-    const selectType = ref<string | undefined>('')
-
+    const selectType = ref<string | undefined>('SELECTLIST')
     const statementId = ref<string | undefined>('')
-
+    const selectTypeOption = ref<Record<string, string>[]>([
+      {label: 'selectOne', value: 'SELECTONE'},
+      {label: 'selectList', value: 'SELECTLIST'},
+      {label: 'insert', value: 'INSERT'},
+      {label: 'delete', value: 'DELETE'},
+    ])
     const pageNum = ref<number | undefined>(0)
-
     const pageSize = ref<number | undefined>(10)
+    const isPage = ref<boolean>(false)
 
-    const isPage = ref<boolean | undefined>(false)
-
-    const initiator = ref<string | undefined>('')
-    const isAsync = ref<boolean | false>(false)
-    const calledElement = ref<string | undefined>('')
-
-    const getElementInitiator = () => {
-      initiator.value = getSkipExpression(getActive.value!) || ""
-    }
-
-    const getElementAsync = () => {
-      isAsync.value = getAsync(getActive.value!)
-    }
-    const setElementAsync = (value: boolean | false) => {
-      setAsync(getActive.value!, value)
-    }
-
-
-    const setElementInitiator = (value: string | undefined) => {
-      setSkipExpression(getActive.value!, value)
-    }
-
-    const setElementCalledElement = (value: string | undefined) => {
-      setCalledElement(getActive.value!, value)
-    }
-    const getElementCalledElemen = () => {
-      calledElement.value = getCalledElement(getActive.value!)
-    }
-
-
-    const getElementStringValueByKey = (f,key: string) => {
+    const isAsync = ref<boolean | false>(true)
+    const getElementStringValueByKey = (f, key: string) => {
       let stringValueByKey = getStringValueByKey(getActive.value!, key);
-      f.value=stringValueByKey
+      f.value = stringValueByKey
+      return stringValueByKey;
+    }
+
+    const getElementStringValueByKeyBoolean = (f, key: string) => {
+      let stringValueByKey = getStringValueByKeyBoolean(getActive.value!, key);
+      f.value = Boolean(stringValueByKey)
       return stringValueByKey;
     }
 
 
+
+    const refresh = () => {
+      getElementStringValueByKey(statementId, 'statementId');
+      getElementStringValueByKey(selectType, 'selectType');
+      getElementStringValueByKeyBoolean(isPage, 'isPage');
+      getElementStringValueByKey(pageNum, 'pageNum');
+      getElementStringValueByKey(pageSize, 'pageSize');
+    }
     onMounted(() => {
-      getElementInitiator()
-      getElementAsync()
-      getElementCalledElemen()
-
-     getElementStringValueByKey(statementId,'statementId');
-      getElementStringValueByKey(selectType,'selectType');
-
+      refresh()
       EventEmitter.on('element-update', () => {
-        getElementInitiator()
-        getElementAsync()
-        getElementCalledElemen()
-          getElementStringValueByKey(statementId,'statementId');
-        getElementStringValueByKey(selectType,'selectType');
+        refresh()
       })
     })
-
     return {
       getActive,
-      isAsync,
-      initiator,
-      setElementInitiator,
-      setElementAsync,
-      calledElement,
-      setElementCalledElement,
-      statementId,selectType,
-      setStringValueByKey
+      statementId, selectType, selectTypeOption, isPage, pageNum, pageSize,
+      setStringValueByKey,isAsync
     }
   }
 })

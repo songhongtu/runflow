@@ -37,7 +37,7 @@ public class MybatisTaskBehavior extends TaskActivityBehavior {
         String name = execution.getCurrentFlowElement().getName();
         LOGGER.debug("mybatis任务  名称：{}  id:{}  线程名称:{} ", name, execution.getId(), Thread.currentThread().getName());
         MyBatisTaskConstant.SelectTypeEnum selectTypeEnum = MyBatisTaskConstant.SelectTypeEnum.valueOf(Conv.NS(mybatisTask.getSelectType(), MyBatisTaskConstant.SelectTypeEnum.SELECTONE.name()));
-        boolean nb = Conv.NB(mybatisTask.isPage()) && selectTypeEnum.name().equals(MyBatisTaskConstant.SelectTypeEnum.SELECTLIST);
+        boolean nb = Conv.NB(mybatisTask.isPage()) && selectTypeEnum.name().equals(MyBatisTaskConstant.SelectTypeEnum.SELECTLIST.name());
         if (nb) {
             int pageNum = Conv.NI(mybatisTask.getPageNum(), MyBatisTaskConstant.DEFAULT_PAGENUM);
             int pageSize = Conv.NI(mybatisTask.getPageSize(), MyBatisTaskConstant.DEFAULT_PAGESIZE);
@@ -57,22 +57,24 @@ public class MybatisTaskBehavior extends TaskActivityBehavior {
 
         }
 
+
+
         SqlSession sqlSession = SpringContextUtil.getApplicationContext().getBean(SqlSession.class);
         Object result = null;
 
 
         switch (selectTypeEnum) {
             case DELETE:
-                result = sqlSession.delete(mybatisTask.getStatementId(), mybatisTask.getParam());
+                result = sqlSession.delete(mybatisTask.getStatementId(), map);
                 break;
             case INSERT:
-                result = sqlSession.insert(mybatisTask.getStatementId(), mybatisTask.getParam());
+                result = sqlSession.insert(mybatisTask.getStatementId(), map);
                 break;
             case SELECTLIST:
-                result = sqlSession.selectList(mybatisTask.getStatementId(), mybatisTask.getParam());
+                result = sqlSession.selectList(mybatisTask.getStatementId(), map);
                 break;
             case SELECTONE:
-                result = sqlSession.selectOne(mybatisTask.getStatementId(), mybatisTask.getParam());
+                result = sqlSession.selectOne(mybatisTask.getStatementId(), map);
                 break;
         }
         if (nb) {
@@ -80,7 +82,7 @@ public class MybatisTaskBehavior extends TaskActivityBehavior {
 
         }
         ExecutionEntityImpl rootParent = execution.findRootParent(execution);
-        rootParent.getVariableInstances().put(execution.getCurrentFlowElement().getId(), result);
+        rootParent.variableInstances.put(execution.getCurrentFlowElement().getId(), result);
         leave(execution);
     }
 

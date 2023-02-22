@@ -14,6 +14,18 @@ const Previews = defineComponent({
 
     const moddle = new BpmnModdle()
 
+
+
+   const clickCopy=(msg) =>{
+      const save = function(e) {
+        e.clipboardData.setData('text/plain', msg)
+        e.preventDefault() // 阻止默认行为
+      }
+      document.addEventListener('copy', save) // 添加一个copy事件
+      document.execCommand('copy') // 执行copy方法
+    }
+
+
     const openXMLPreviewModel = async () => {
       try {
         const modeler = modelerStore.getModeler!
@@ -22,8 +34,9 @@ const Previews = defineComponent({
           return window.__messageBox.warning('模型加载失败，请刷新重试')
         }
 
-        const { xml } = await modeler.saveXML({ format: true, preamble: true })
-
+        const { xml } = await modeler.saveXML({ format: true})
+        console.log(xml)
+        clickCopy(xml)
         previewModel.create({
           title: t('toolbar.previewAs'),
           showIcon: false,

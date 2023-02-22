@@ -47,14 +47,17 @@ const Panel = defineComponent({
     const renderComponents = markRaw<Component[]>([])
 
     const setCurrentComponents = (element: Base) => {
+
+      let type = element.type;
+
       // 清空
       renderComponents.splice(0, renderComponents.length)
       renderComponents.push(ElementGenerations)
       isUserTask(element)&&renderComponents.push(ElementTask)
       // isCanbeConditional(element) && renderComponents.push(ElementConditional)
       // isJobExecutable(element) && renderComponents.push(ElementJobExecution)
-      renderComponents.push(ElementExtensionProperties)
-      renderComponents.push(ElementMyBatisTask)
+      type=="runflow:myBatisTask"&&renderComponents.push(ElementMyBatisTask)
+      type=="runflow:myBatisTask"&& renderComponents.push(ElementExtensionProperties)
    //  isExecutable(element) && renderComponents.push(ElementExecutionListeners)
       // isAsynchronous(element) && renderComponents.push(ElementAsyncContinuations)
       // isStartInitializable(element) && renderComponents.push(ElementStartInitiator)

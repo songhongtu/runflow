@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:runflow="http://runflow.org/schema" id="Definitions_Process_1677054230383" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1677054230383" name="业务流程_1677054230383" isExecutable="true">
+    <bpmn:startEvent id="Event_02gnrio">
+      <bpmn:outgoing>Flow_1hengb9</bpmn:outgoing>
+    </bpmn:startEvent>
+    <runflow:myBatisTask id="Activity_1xmfi5e">
+      <bpmn:incoming>Flow_1hengb9</bpmn:incoming>
+      <bpmn:outgoing>Flow_0fb822e</bpmn:outgoing>
+    </runflow:myBatisTask>
+    <bpmn:sequenceFlow id="Flow_1hengb9" sourceRef="Event_02gnrio" targetRef="Activity_1xmfi5e" />
+    <bpmn:endEvent id="Event_1qs8254">
+      <bpmn:incoming>Flow_0fb822e</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0fb822e" sourceRef="Activity_1xmfi5e" targetRef="Event_1qs8254" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1677054230383">
+      <bpmndi:BPMNEdge id="Flow_1hengb9_di" bpmnElement="Flow_1hengb9">
+        <di:waypoint x="288" y="230" />
+        <di:waypoint x="388" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0fb822e_di" bpmnElement="Flow_0fb822e">
+        <di:waypoint x="508" y="230" />
+        <di:waypoint x="608" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_02gnrio_di" bpmnElement="Event_02gnrio">
+        <dc:Bounds x="252" y="212" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1xmfi5e_di" bpmnElement="Activity_1xmfi5e">
+        <dc:Bounds x="388" y="170" width="120" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1qs8254_di" bpmnElement="Event_1qs8254">
+        <dc:Bounds x="608" y="212" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

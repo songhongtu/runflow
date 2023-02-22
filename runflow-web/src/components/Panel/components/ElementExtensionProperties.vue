@@ -1,7 +1,7 @@
 <template>
   <n-collapse-item name="element-extension-properties">
     <template #header>
-      <collapse-title :title="$t('panel.extensionProperties')">
+      <collapse-title title="参数">
         <lucide-icon name="FileCog" />
       </collapse-title>
     </template>
