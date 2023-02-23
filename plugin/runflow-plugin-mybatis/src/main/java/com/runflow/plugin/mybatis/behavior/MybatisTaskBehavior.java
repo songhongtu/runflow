@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.runflow.engine.ExecutionEntityImpl;
 import com.runflow.engine.behavior.TaskActivityBehavior;
 import com.runflow.engine.behavior.UserTaskActivityBehavior;
+import com.runflow.engine.utils.BpmnUtils;
 import com.runflow.engine.utils.CollectionUtil;
 import com.runflow.engine.utils.Conv;
 import com.runflow.plugin.mybatis.constant.MyBatisTaskConstant;
@@ -43,21 +44,9 @@ public class MybatisTaskBehavior extends TaskActivityBehavior {
             int pageSize = Conv.NI(mybatisTask.getPageSize(), MyBatisTaskConstant.DEFAULT_PAGESIZE);
             PageHelper.startPage(pageNum, pageSize);
         }
-        List<ExtensionElement> extensionElementList = this.mybatisTask.getExtensionElements().get("properties");
-        Map<String, String> map = new HashMap<>();
-        if (CollectionUtil.isNotEmpty(extensionElementList)) {
-            for (ExtensionElement extensionElement : extensionElementList) {
-                Map<String, List<ExtensionElement>> childElements = extensionElement.getChildElements();
-                List<ExtensionElement> properties = childElements.get("property");
-                for (ExtensionElement e : properties) {
-                    Map<String, List<ExtensionAttribute>> attributes = e.getAttributes();
-                    map.put(attributes.get("name").get(0).getValue(), attributes.get("value").get(0).getValue());
-                }
-            }
+        Map<String, List<ExtensionElement>> extensionElements = this.mybatisTask.getExtensionElements();
 
-        }
-
-
+        Map<String, String> map = BpmnUtils.getExtensionElementPropertity(extensionElements);
 
         SqlSession sqlSession = SpringContextUtil.getApplicationContext().getBean(SqlSession.class);
         Object result = null;

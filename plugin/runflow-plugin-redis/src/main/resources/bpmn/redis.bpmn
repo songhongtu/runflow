@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:runflow="http://runflow.org/schema" xmlns:activiti="http://activiti.org/bpmn" id="Definitions_Process_1677138255418" targetNamespace="http://bpmn.io/schema/bpmn">
   <bpmn:process id="Process_1677138255418" name="业务流程_1677138255418" isExecutable="true">
+
+       <bpmn:extensionElements>
+            <activiti:properties>
+              <activiti:property name="1" value="2" />
+              <activiti:property name="3" value="4" />
+            </activiti:properties>
+          </bpmn:extensionElements>
+
+
+
     <bpmn:startEvent id="Event_1wcdjsf">
       <bpmn:outgoing>Flow_159vckt</bpmn:outgoing>
     </bpmn:startEvent>

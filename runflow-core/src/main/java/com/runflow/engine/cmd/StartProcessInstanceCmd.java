@@ -7,6 +7,7 @@ import com.runflow.engine.context.Context;
 import com.runflow.engine.impl.Command;
 import com.runflow.engine.impl.CommandContext;
 import com.runflow.engine.impl.agenda.ContinueProcessOperation;
+import com.runflow.engine.utils.BpmnUtils;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.Process;
 import org.slf4j.Logger;
@@ -29,8 +30,8 @@ public class StartProcessInstanceCmd implements Command<ExecutionEntityImpl> {
         Context.getProcessEngineConfiguration().scan();
         DefaultDeploymentCache<ProcessDefinitionCacheEntry> processDefinitionCache = commandContext.getProcessEngineConfiguration().getProcessDefinitionCache();
         ProcessDefinitionCacheEntry leave = processDefinitionCache.get(key);
-        if(leave==null){
-            throw new RuntimeException(key+"找不到该key");
+        if (leave == null) {
+            throw new RuntimeException(key + "找不到该key");
         }
         Process process = leave.getProcess();
         Map<String, FlowElement> flowElementMap = process.getFlowElementMap();
@@ -50,18 +51,21 @@ public class StartProcessInstanceCmd implements Command<ExecutionEntityImpl> {
         ExecutionEntityImpl execution = processInstance.createChildExecution(processInstance);
         processInstance.setScope(true);
         execution.setCurrentFlowElement(initialFlowElement);
-        if (variables != null) {
-            for (Map.Entry<String, Object> entry : variables.entrySet()) {
-                String key = entry.getKey();
-                FlowElement flowElement = flowElementMap.get(key);
-                if (flowElement != null) {
-                    throw new RuntimeException("当前初始化参数" + key + "与" + flowElement.getName() + "冲突");
-                } else {
-                    processInstance.variableInstances.put(key, entry.getValue());
-                }
+        Map<String, String> extensionElementPropertity = BpmnUtils.getExtensionElementPropertity(process.getExtensionElements());
 
+
+        if (variables == null) {
+            variables = new HashMap<>();
+        }
+        variables.putAll(extensionElementPropertity);
+        for (Map.Entry<String, Object> entry : variables.entrySet()) {
+            String key = entry.getKey();
+            FlowElement flowElement = flowElementMap.get(key);
+            if (flowElement != null) {
+                throw new RuntimeException("当前初始化参数" + key + "与" + flowElement.getName() + "冲突");
+            } else {
+                processInstance.variableInstances.put(key, entry.getValue());
             }
-
 
         }
         commandContext.getAllRunTimeExecution().putSingle(processInstance);
