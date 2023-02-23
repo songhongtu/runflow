@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
+import javax.el.ELResolver;
 import java.util.List;
 
 public class SpringProcessEngineFactoryBean implements FactoryBean<SpringProcessEngineConfiguration>, ApplicationContextAware {
@@ -21,6 +22,9 @@ public class SpringProcessEngineFactoryBean implements FactoryBean<SpringProcess
 
     private BpmnXMLConverter bpmnXMLConverter;
 
+
+    private List<ELResolver> resolverList;
+
     @Override
     public SpringProcessEngineConfiguration getObject() throws Exception {
         SpringProcessEngineConfiguration springProcessEngineConfiguration = new SpringProcessEngineConfiguration();
@@ -28,9 +32,7 @@ public class SpringProcessEngineFactoryBean implements FactoryBean<SpringProcess
         springProcessEngineConfiguration.setResourceLoader(resourceLoader);
         springProcessEngineConfiguration.setLocation(location);
         springProcessEngineConfiguration.setCustomDefaultBpmnParseHandlers(activityBpmnParseHandlerList);
-
-
-        springProcessEngineConfiguration.getResolverList().add(new ApplicationContextElResolver(applicationContext));
+        springProcessEngineConfiguration.getResolverList().addAll(resolverList);
         springProcessEngineConfiguration.init();
         return springProcessEngineConfiguration;
     }
@@ -81,5 +83,13 @@ public class SpringProcessEngineFactoryBean implements FactoryBean<SpringProcess
 
     public void setBpmnXMLConverter(BpmnXMLConverter bpmnXMLConverter) {
         this.bpmnXMLConverter = bpmnXMLConverter;
+    }
+
+    public List<ELResolver> getResolverList() {
+        return resolverList;
+    }
+
+    public void setResolverList(List<ELResolver> resolverList) {
+        this.resolverList = resolverList;
     }
 }

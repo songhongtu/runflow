@@ -38,7 +38,7 @@ class RewritePaletteProvider extends PaletteProvider {
     }
 
     function createRedisTask(event) {
-      const sqlTask = elementFactory.createShape({ type: 'runflow:Redis' })
+      const sqlTask = elementFactory.createShape({ type: 'runflow:redisTask' })
       create.start(event, sqlTask)
     }
 

@@ -1,9 +1,11 @@
 package com.runflow.spring.boot;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.lang.Nullable;
 
 import javax.el.ELContext;
 import javax.el.ELResolver;
+import javax.el.PropertyNotWritableException;
 import java.beans.FeatureDescriptor;
 import java.util.Iterator;
 
@@ -19,7 +21,6 @@ public class ApplicationContextElResolver extends ELResolver {
         if (base == null) {
             // according to javadoc, can only be a String
             String key = (String) property;
-
             if (applicationContext.containsBean(key)) {
                 context.setPropertyResolved(true);
                 return applicationContext.getBean(key);
@@ -30,14 +31,24 @@ public class ApplicationContextElResolver extends ELResolver {
     }
 
     public boolean isReadOnly(ELContext context, Object base, Object property) {
-        return true;
+        if (base == null) {
+            String beanName = property.toString();
+            if (applicationContext.containsBean(beanName)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void setValue(ELContext context, Object base, Object property, Object value) {
         if (base == null) {
-            String key = (String) property;
-            if (applicationContext.containsBean(key)) {
-                throw new RuntimeException("Cannot set value of '" + property + "', it resolves to a bean defined in the Spring application-context.");
+            String beanName = property.toString();
+            if (applicationContext.containsBean(beanName)) {
+                if (value != applicationContext.getBean(beanName)) {
+                    throw new PropertyNotWritableException("Variable '" + beanName + "' refers to a Spring bean which by definition is not writable");
+                }
+                context.setPropertyResolved(true);
             }
         }
     }
@@ -50,7 +61,14 @@ public class ApplicationContextElResolver extends ELResolver {
         return null;
     }
 
-    public Class<?> getType(ELContext context, Object arg1, Object arg2) {
-        return Object.class;
+    public Class<?> getType(ELContext elContext, Object base, Object property) {
+        if (base == null) {
+            String beanName = property.toString();
+            if (applicationContext.containsBean(beanName)) {
+                elContext.setPropertyResolved(true);
+                return applicationContext.getType(beanName);
+            }
+        }
+        return null;
     }
 }

@@ -16,5 +16,5 @@ Vite Vue Bpmn流程编辑器，基于[Bpmn.js](https://github.com/bpmn-io/bpmn-j
 
 React 项目也可以参考自定义插件和属性更新方式。
 
-[项目参考](https://gitee.com/MiyueSC/vite-vue-bpmn-process
+[项目参考   Vite Vue Bpmn ](https://gitee.com/MiyueSC/vite-vue-bpmn-process
 )

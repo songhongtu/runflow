@@ -5,7 +5,7 @@
 
     <groupId>com.runflow</groupId>
     <artifactId>runflow</artifactId>
-    <version>0.0.1-Beta</version>
+    <version>0.0.2-Beta</version>
     <packaging>pom</packaging>
     <modules>
         <module>runflow-core</module>
@@ -13,11 +13,12 @@
         <module>runflow-spring-boot-starters</module>
         <module>runflow-springboot-demo</module>
         <module>plugin/runflow-plugin-mybatis</module>
+        <module>plugin/runflow-plugin-redis</module>
     </modules>
 
 
     <properties>
-        <runflow.version>0.0.1-Beta</runflow.version>
+        <runflow.version>0.0.2-Beta</runflow.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>

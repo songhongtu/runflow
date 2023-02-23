@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:runflow="http://runflow.org/schema" xmlns:activiti="http://activiti.org/bpmn" id="Definitions_Process_1677138255418" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1677138255418" name="业务流程_1677138255418" isExecutable="true">
+    <bpmn:startEvent id="Event_1wcdjsf">
+      <bpmn:outgoing>Flow_159vckt</bpmn:outgoing>
+    </bpmn:startEvent>
+    <runflow:redisTask id="Activity_01spf66" name="set" activiti:type="STRING" activiti:redisExpression="set(&#39;123&#39;,&#39;999222&#39;)">
+      <bpmn:incoming>Flow_159vckt</bpmn:incoming>
+      <bpmn:outgoing>Flow_0bi1b4a</bpmn:outgoing>
+    </runflow:redisTask>
+    <bpmn:sequenceFlow id="Flow_159vckt" sourceRef="Event_1wcdjsf" targetRef="Activity_01spf66" />
+    <runflow:redisTask id="Activity_10b1z30" name="get" activiti:type="STRING" activiti:redisExpression="get(&#39;123&#39;)">
+      <bpmn:incoming>Flow_0bi1b4a</bpmn:incoming>
+      <bpmn:outgoing>Flow_1dpfj9a</bpmn:outgoing>
+    </runflow:redisTask>
+    <bpmn:sequenceFlow id="Flow_0bi1b4a" sourceRef="Activity_01spf66" targetRef="Activity_10b1z30" />
+    <bpmn:userTask id="Activity_0s2gszf" name="输出" activiti:skipExpression="${redisController.tt(Activity_10b1z30)}">
+      <bpmn:incoming>Flow_1dpfj9a</bpmn:incoming>
+      <bpmn:outgoing>Flow_1gjs1ci</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1dpfj9a" sourceRef="Activity_10b1z30" targetRef="Activity_0s2gszf" />
+    <bpmn:endEvent id="Event_0dkb2gb">
+      <bpmn:incoming>Flow_1gjs1ci</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1gjs1ci" sourceRef="Activity_0s2gszf" targetRef="Event_0dkb2gb" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1677138255418">
+      <bpmndi:BPMNEdge id="Flow_159vckt_di" bpmnElement="Flow_159vckt">
+        <di:waypoint x="278" y="170" />
+        <di:waypoint x="378" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0bi1b4a_di" bpmnElement="Flow_0bi1b4a">
+        <di:waypoint x="498" y="170" />
+        <di:waypoint x="598" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1dpfj9a_di" bpmnElement="Flow_1dpfj9a">
+        <di:waypoint x="718" y="170" />
+        <di:waypoint x="818" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gjs1ci_di" bpmnElement="Flow_1gjs1ci">
+        <di:waypoint x="938" y="170" />
+        <di:waypoint x="1038" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_1wcdjsf_di" bpmnElement="Event_1wcdjsf">
+        <dc:Bounds x="242" y="152" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_01spf66_di" bpmnElement="Activity_01spf66">
+        <dc:Bounds x="378" y="110" width="120" height="120" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_10b1z30_di" bpmnElement="Activity_10b1z30">
+        <dc:Bounds x="598" y="110" width="120" height="120" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0s2gszf_di" bpmnElement="Activity_0s2gszf">
+        <dc:Bounds x="818" y="110" width="120" height="120" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0dkb2gb_di" bpmnElement="Event_0dkb2gb">
+        <dc:Bounds x="1038" y="152" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -5,10 +5,11 @@ import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.FormProperty;
 import org.activiti.bpmn.model.Task;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomTaskFormPropertyTask extends Task {
+public class CustomTaskFormPropertyTask extends Task implements Serializable {
 
     protected List<FormProperty> formProperties = new ArrayList<FormProperty>();
 

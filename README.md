@@ -92,7 +92,7 @@ mvn -Dmaven.test.failure.ignore=true clean install
 <dependency>
     <groupId>com.runflow</groupId>
     <artifactId>runflow-core</artifactId>
-    <version>0.0.1-Beta</version>
+    <version>0.0.2-Beta</version>
 </dependency>
 ~~~
 
@@ -133,7 +133,7 @@ RunTimeServiceImpl runTimeService;
 <dependency>
     <groupId>com.runflow</groupId>
     <artifactId>runflow-spring-boot-starters</artifactId>
-    <version>0.0.1-Beta</version>
+    <version>0.0.2-Beta</version>
 </dependency>
 ~~~
 

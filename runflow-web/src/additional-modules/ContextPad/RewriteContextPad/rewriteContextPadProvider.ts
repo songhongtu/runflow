@@ -173,7 +173,7 @@ class RewriteContextPadProvider extends ContextPadProvider {
       }
     }
 
-    actions['model-redis'] =appendAction("runflow:Redis","miyue-redis-task","redis","model")
+    actions['model-redis'] =appendAction("runflow:redisTask","miyue-redis-task","redis","model")
     actions['model-mybatis'] =appendAction("runflow:myBatisTask","miyue-mybatis-task","mybatis","model")
     // 添加一个新分组的自定义按钮
    // actions['enhancement-op'] =appendAction("miyue:SqlTask","miyue-sql-task","mysql1","enhancement")

@@ -47,7 +47,7 @@
       ]
     },
     {
-      "name": "Redis",
+      "name": "redisTask",
       "superClass": ["bpmn:Task"],
       "properties": [
         {

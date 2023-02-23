@@ -93,7 +93,7 @@ class EnhancementRenderer extends BpmnRenderer {
 
 
 
-      this.handlers['runflow:Redis'] = (parentGfx, element, attr) => {
+      this.handlers['runflow:redisTask'] = (parentGfx, element, attr) => {
           const attrs = {
           }
           let rect=  this. drawRect(parentGfx, element.width, element.height, 10, attrs)

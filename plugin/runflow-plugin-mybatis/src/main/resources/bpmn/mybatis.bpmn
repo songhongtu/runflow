@@ -1,37 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:runflow="http://runflow.org/schema" id="Definitions_Process_1677054230383" targetNamespace="http://bpmn.io/schema/bpmn">
-  <bpmn:process id="Process_1677054230383" name="业务流程_1677054230383" isExecutable="true">
-    <bpmn:startEvent id="Event_02gnrio">
-      <bpmn:outgoing>Flow_1hengb9</bpmn:outgoing>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:runflow="http://runflow.org/schema" xmlns:activiti="http://activiti.org/bpmn" id="Definitions_Process_1677056136325" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1677056136325" name="业务流程_1677056136325" isExecutable="true">
+
+      <bpmn:extensionElements>
+         <activiti:properties>
+           <activiti:property name="1" value="2" />
+           <activiti:property name="3" value="4" />
+         </activiti:properties>
+       </bpmn:extensionElements>
+
+    <bpmn:startEvent id="Event_1h5c9rg">
+      <bpmn:outgoing>Flow_0x6n9tb</bpmn:outgoing>
     </bpmn:startEvent>
-    <runflow:myBatisTask id="Activity_1xmfi5e">
-      <bpmn:incoming>Flow_1hengb9</bpmn:incoming>
-      <bpmn:outgoing>Flow_0fb822e</bpmn:outgoing>
+    <runflow:myBatisTask id="Activity_001db59" name="查询列表" activiti:statementId="com.runflow.plugin.mybatis.dao.area.getUserList" activiti:selectType="SELECTLIST" activiti:isPage="true">
+      <bpmn:extensionElements>
+        <activiti:properties>
+          <activiti:property name="level" value="1" />
+        </activiti:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0x6n9tb</bpmn:incoming>
+      <bpmn:outgoing>Flow_1139awe</bpmn:outgoing>
     </runflow:myBatisTask>
-    <bpmn:sequenceFlow id="Flow_1hengb9" sourceRef="Event_02gnrio" targetRef="Activity_1xmfi5e" />
-    <bpmn:endEvent id="Event_1qs8254">
-      <bpmn:incoming>Flow_0fb822e</bpmn:incoming>
+    <bpmn:sequenceFlow id="Flow_0x6n9tb" sourceRef="Event_1h5c9rg" targetRef="Activity_001db59" />
+    <bpmn:endEvent id="Event_12ysmsl">
+      <bpmn:incoming>Flow_1139awe</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_0fb822e" sourceRef="Activity_1xmfi5e" targetRef="Event_1qs8254" />
+    <bpmn:sequenceFlow id="Flow_1139awe" sourceRef="Activity_001db59" targetRef="Event_12ysmsl" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1677054230383">
-      <bpmndi:BPMNEdge id="Flow_1hengb9_di" bpmnElement="Flow_1hengb9">
-        <di:waypoint x="288" y="230" />
-        <di:waypoint x="388" y="230" />
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1677056136325">
+      <bpmndi:BPMNEdge id="Flow_0x6n9tb_di" bpmnElement="Flow_0x6n9tb">
+        <di:waypoint x="228" y="280" />
+        <di:waypoint x="328" y="280" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0fb822e_di" bpmnElement="Flow_0fb822e">
-        <di:waypoint x="508" y="230" />
-        <di:waypoint x="608" y="230" />
+      <bpmndi:BPMNEdge id="Flow_1139awe_di" bpmnElement="Flow_1139awe">
+        <di:waypoint x="448" y="280" />
+        <di:waypoint x="548" y="280" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Event_02gnrio_di" bpmnElement="Event_02gnrio">
-        <dc:Bounds x="252" y="212" width="36" height="36" />
+      <bpmndi:BPMNShape id="Event_1h5c9rg_di" bpmnElement="Event_1h5c9rg">
+        <dc:Bounds x="192" y="262" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1xmfi5e_di" bpmnElement="Activity_1xmfi5e">
-        <dc:Bounds x="388" y="170" width="120" height="120" />
+      <bpmndi:BPMNShape id="Activity_001db59_di" bpmnElement="Activity_001db59">
+        <dc:Bounds x="328" y="220" width="120" height="120" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1qs8254_di" bpmnElement="Event_1qs8254">
-        <dc:Bounds x="608" y="212" width="36" height="36" />
+      <bpmndi:BPMNShape id="Event_12ysmsl_di" bpmnElement="Event_12ysmsl">
+        <dc:Bounds x="548" y="262" width="36" height="36" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

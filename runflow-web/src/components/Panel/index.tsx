@@ -31,6 +31,7 @@ import ElementStartInitiator from './components/ElementStartInitiator.vue'
 import {isCanbeConditional, isUserTask} from '@/bo-utils/conditionUtil'
 import { customTranslate } from '@/additional-modules/Translate'
 import ElementMyBatisTask from "@/components/Panel/components/ElementMyBatisTask.vue";
+import ElementRedisTask from "@/components/Panel/components/ElementRedisTask.vue";
 
 const Panel = defineComponent({
   name: 'Panel',
@@ -57,7 +58,9 @@ const Panel = defineComponent({
       // isCanbeConditional(element) && renderComponents.push(ElementConditional)
       // isJobExecutable(element) && renderComponents.push(ElementJobExecution)
       type=="runflow:myBatisTask"&&renderComponents.push(ElementMyBatisTask)
-      type=="runflow:myBatisTask"&& renderComponents.push(ElementExtensionProperties)
+      type=="runflow:redisTask"&&renderComponents.push(ElementRedisTask)
+
+       renderComponents.push(ElementExtensionProperties)
    //  isExecutable(element) && renderComponents.push(ElementExecutionListeners)
       // isAsynchronous(element) && renderComponents.push(ElementAsyncContinuations)
       // isStartInitializable(element) && renderComponents.push(ElementStartInitiator)
