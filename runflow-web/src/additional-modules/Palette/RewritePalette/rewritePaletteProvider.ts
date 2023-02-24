@@ -50,6 +50,11 @@ class RewritePaletteProvider extends PaletteProvider {
     }
 
 
+    function createExcelTask(event) {
+      const sqlTask = elementFactory.createShape({ type: 'runflow:excelTask' })
+      create.start(event, sqlTask)
+    }
+
 
     function createSubprocess(event) {
       const subProcess = elementFactory.createShape({
@@ -213,7 +218,15 @@ class RewritePaletteProvider extends PaletteProvider {
         }
       },
 
-
+      'create.excel-task': {
+        group: 'activity',
+        className: 'miyue-excel-task',
+        title: 'mybatis',
+        action: {
+          click: createExcelTask,
+          dragstart: createExcelTask
+        }
+      },
 
     })
 

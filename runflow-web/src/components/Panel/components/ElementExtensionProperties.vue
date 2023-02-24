@@ -1,7 +1,7 @@
 <template>
   <n-collapse-item name="element-extension-properties">
     <template #header>
-      <collapse-title title="参数">
+      <collapse-title :title="getActive.type=='bpmn:Process'?'全局参数':'任务参数'">
         <lucide-icon name="FileCog" />
       </collapse-title>
     </template>
@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts">
-  import { h, defineComponent, toRaw, markRaw } from 'vue'
+import {h, defineComponent, toRaw, markRaw, computed} from 'vue'
   import { mapState } from 'pinia'
   import modelerStore from '@/store/modeler'
   import { Base } from 'diagram-js/lib/model'
@@ -65,7 +65,7 @@
           name: { required: true, message: '属性名称不能为空', trigger: ['blur', 'change'] },
           value: { required: true, message: '属性值不能为空', trigger: ['blur', 'change'] }
         },
-        modelVisible: false
+        modelVisible: false,
       }
     },
     computed: {

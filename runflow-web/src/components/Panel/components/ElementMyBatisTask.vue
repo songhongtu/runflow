@@ -6,6 +6,15 @@
       </collapse-title>
     </template>
     <div class="element-start-initiator">
+
+      <edit-item label="是否异步">
+        <n-switch placeholder="" v-model:value="isAsync"
+                  @change="(v)=>setStringValueByKey(getActive,'isAsync',v)"/>
+      </edit-item>
+
+
+
+
       <edit-item label="statementId">
         <n-input placeholder="" v-model:value="statementId"
                  @change="(v)=>setStringValueByKey(getActive,'statementId',v)"/>
@@ -83,6 +92,8 @@ export default defineComponent({
       getElementStringValueByKeyBoolean(isPage, 'isPage');
       getElementStringValueByKey(pageNum, 'pageNum');
       getElementStringValueByKey(pageSize, 'pageSize');
+      getElementStringValueByKeyBoolean(isAsync, 'isAsync');
+
     }
     onMounted(() => {
       refresh()

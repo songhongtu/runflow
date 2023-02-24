@@ -6,12 +6,13 @@ import org.activiti.bpmn.model.ExtensionElement;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class BpmnUtils {
 
 
     public static Map<String, String> getExtensionElementPropertity(Map<String, List<ExtensionElement>> extensionElements) {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new TreeMap<>();
         List<ExtensionElement> extensionElementList = extensionElements.get("properties");
 
         if (CollectionUtil.isNotEmpty(extensionElementList)) {

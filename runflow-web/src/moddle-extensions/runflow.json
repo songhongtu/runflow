@@ -73,6 +73,38 @@
         }
       ]
     },
+
+    {
+      "name": "excelTask",
+      "superClass": ["bpmn:Task"],
+      "properties": [
+        {
+          "name": "address",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "username",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "port",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "tables",
+          "type": "Table",
+          "isMany": true,
+          "isBody": true
+        }
+      ]
+    },
+
+
+
+
     {
       "name": "SqlTask",
       "superClass": ["bpmn:Task"],

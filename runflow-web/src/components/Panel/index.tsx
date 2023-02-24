@@ -32,6 +32,7 @@ import {isCanbeConditional, isUserTask} from '@/bo-utils/conditionUtil'
 import { customTranslate } from '@/additional-modules/Translate'
 import ElementMyBatisTask from "@/components/Panel/components/ElementMyBatisTask.vue";
 import ElementRedisTask from "@/components/Panel/components/ElementRedisTask.vue";
+import ElementExcelTask from "@/components/Panel/components/ElementExcelTask.vue";
 
 const Panel = defineComponent({
   name: 'Panel',
@@ -55,12 +56,15 @@ const Panel = defineComponent({
       renderComponents.splice(0, renderComponents.length)
       renderComponents.push(ElementGenerations)
       isUserTask(element)&&renderComponents.push(ElementTask)
-      // isCanbeConditional(element) && renderComponents.push(ElementConditional)
+      isCanbeConditional(element) && renderComponents.push(ElementConditional)
       // isJobExecutable(element) && renderComponents.push(ElementJobExecution)
       type=="runflow:myBatisTask"&&renderComponents.push(ElementMyBatisTask)
       type=="runflow:redisTask"&&renderComponents.push(ElementRedisTask)
+      type=="runflow:excelTask"&&renderComponents.push(ElementExcelTask)
 
-       renderComponents.push(ElementExtensionProperties)
+      type=="bpmn:Process"&&renderComponents.push(ElementExtensionProperties)
+      type=="runflow:myBatisTask"&&renderComponents.push(ElementExtensionProperties)
+      type=="runflow:excelTask"&&renderComponents.push(ElementExtensionProperties)
    //  isExecutable(element) && renderComponents.push(ElementExecutionListeners)
       // isAsynchronous(element) && renderComponents.push(ElementAsyncContinuations)
       // isStartInitializable(element) && renderComponents.push(ElementStartInitiator)

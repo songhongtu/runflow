@@ -177,6 +177,7 @@ class RewriteContextPadProvider extends ContextPadProvider {
     actions['model-mybatis'] =appendAction("runflow:myBatisTask","miyue-mybatis-task","mybatis","model")
     // 添加一个新分组的自定义按钮
    // actions['enhancement-op'] =appendAction("miyue:SqlTask","miyue-sql-task","mysql1","enhancement")
+    actions['model-excel'] =appendAction("runflow:excelTask","miyue-excel-task","excel","model")
 
     actions['append.end-event'] =appendAction("bpmn:EndEvent","bpmn-icon-end-event-none","结束","enhancement")
 

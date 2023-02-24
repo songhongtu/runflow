@@ -4,10 +4,12 @@ package com.runflow.engine.utils;
 import com.runflow.engine.ExecutionEntityImpl;
 import com.runflow.engine.context.Context;
 import com.runflow.engine.el.ExpressionManager;
+import com.runflow.engine.impl.ProcessEngineConfigurationImpl;
 import de.odysseus.el.ExpressionFactoryImpl;
 import de.odysseus.el.ObjectValueExpression;
 import de.odysseus.el.util.SimpleContext;
 import org.activiti.bpmn.model.SequenceFlow;
+import org.slf4j.LoggerFactory;
 
 import javax.el.*;
 import java.util.HashMap;
@@ -15,6 +17,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class ConditionUtil {
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ConditionUtil.class);
 
 
     public static boolean hasTrueCondition(String ex, ExecutionEntityImpl execution) {
@@ -28,13 +31,17 @@ public class ConditionUtil {
 
 
     public static Object createExpression(String expression, ExecutionEntityImpl execution) {
-        ExpressionManager expressionManager = Context.getCommandContext().getProcessEngineConfiguration().getExpressionManager();
-        ExpressionFactory expressionFactory = expressionManager.getExpressionFactory();
-        ELContext elContext = expressionManager.getElContext(execution);
-        ValueExpression valueExpression = expressionFactory.createValueExpression(elContext, expression.trim(), Object.class);
-        Object value = valueExpression.getValue(elContext);
-
-        return value;
+        try {
+            ExpressionManager expressionManager = Context.getCommandContext().getProcessEngineConfiguration().getExpressionManager();
+            ExpressionFactory expressionFactory = expressionManager.getExpressionFactory();
+            ELContext elContext = expressionManager.getElContext(execution);
+            ValueExpression valueExpression = expressionFactory.createValueExpression(elContext, expression.trim(), Object.class);
+            Object value = valueExpression.getValue(elContext);
+            return value;
+        } catch (Exception e) {
+            logger.error("el表达式执行失败:{}",expression, e);
+            throw e;
+        }
     }
 
 

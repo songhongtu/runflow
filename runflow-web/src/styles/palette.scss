@@ -46,3 +46,17 @@
   background-image: url("/icons/redis.png") !important;
   background-size: cover !important;
 }
+
+
+.miyue-excel-task{
+  background-image: url("/icons/excel.png");
+  background-size: 1em 1em;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+
+.djs-context-pad .miyue-excel-task:hover {
+  background-image: url("/icons/excel.png") !important;
+  background-size: cover !important;
+}

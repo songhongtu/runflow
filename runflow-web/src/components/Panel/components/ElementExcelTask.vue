@@ -1,30 +1,21 @@
 <template>
   <n-collapse-item name="element-start-initiator">
     <template #header>
-      <collapse-title title="redis任务">
+      <collapse-title title="excel任务">
         <lucide-icon name="PlayCircle"/>
       </collapse-title>
     </template>
     <div class="element-start-initiator">
-
 
       <edit-item label="是否异步">
         <n-switch placeholder="" v-model:value="isAsync"
                   @change="(v)=>setStringValueByKey(getActive,'isAsync',v)"/>
       </edit-item>
 
-
-
-      <edit-item label="类型">
-        <n-select placeholder="" v-model:value="type" :options="typeOption"
-                  @change="(v)=>setStringValueByKey(getActive,'type',v)"/>
-      </edit-item>
-
       <edit-item label="表达式">
-        <n-input placeholder="" v-model:value="redisExpression"
-                 @change="(v)=>setStringValueByKey(getActive,'redisExpression',v)"/>
+        <n-input placeholder="list集合的el表达式" v-model:value="excelExpression"
+                 @change="(v)=>setStringValueByKey(getActive,'excelExpression',v)"/>
       </edit-item>
-
 
     </div>
   </n-collapse-item>
@@ -46,21 +37,12 @@ import {Base} from 'diagram-js/lib/model'
 import EventEmitter from '@/utils/EventEmitter'
 
 export default defineComponent({
-  name: 'ElementRedisTask',
+  name: 'ElementExcelTask',
   setup() {
     const modelerStore = modeler()
     const getActive = computed<Base | null>(() => modelerStore.getActive!)
-    const type = ref<string | undefined>('STRING')
     const isAsync = ref<boolean | false>(false)
-
-    const typeOption = ref<Record<string, string>[]>([
-      {label: 'string', value: 'STRING'},
-      {label: 'list', value: 'LIST'},
-      {label: 'set', value: 'SET'},
-      {label: 'zset', value: 'ZSET'},
-      {label: 'hash', value: 'HASH'},
-    ])
-    const redisExpression = ref<string | undefined>('')
+    const excelExpression = ref<string | undefined>('')
 
     const getElementStringValueByKey = (f, key: string) => {
       let stringValueByKey = getStringValueByKey(getActive.value!, key);
@@ -74,10 +56,8 @@ export default defineComponent({
       return stringValueByKey;
     }
 
-
     const refresh = () => {
-      getElementStringValueByKey(redisExpression, 'redisExpression');
-      getElementStringValueByKey(type, 'type');
+      getElementStringValueByKey(excelExpression, 'excelExpression');
       getElementStringValueByKeyBoolean(isAsync, 'isAsync');
 
 
@@ -90,7 +70,7 @@ export default defineComponent({
     })
     return {
       getActive,
-      type, typeOption, redisExpression,
+      excelExpression,
       setStringValueByKey,isAsync
     }
   }

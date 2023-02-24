@@ -14,6 +14,7 @@
         <module>runflow-springboot-demo</module>
         <module>plugin/runflow-plugin-mybatis</module>
         <module>plugin/runflow-plugin-redis</module>
+        <module>plugin/runflow-plugin-excel</module>
     </modules>
 
 
@@ -25,6 +26,30 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>4.1.2</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>4.1.2</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-schemas -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml-schemas</artifactId>
+                <version>4.1.2</version>
+            </dependency>
+
+
+
+
+
+
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -70,8 +95,16 @@
                 <artifactId>activiti-image-generator</artifactId>
                 <version>6.0.0</version>
             </dependency>
-
-
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>1.2.3</version>
+            </dependency>
+            <dependency> <!--添加Mybatis依赖 -->
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>2.2.2</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>

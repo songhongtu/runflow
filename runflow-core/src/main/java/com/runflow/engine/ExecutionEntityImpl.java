@@ -199,8 +199,8 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
         }
     }
 
-    public void setParent(ExecutionEntity parent) {
-        this.parent = (ExecutionEntityImpl) parent;
+    public void setParent(ExecutionEntityImpl parent) {
+        this.parent =  parent;
 
         if (parent != null) {
             this.parentId = parent.getId();

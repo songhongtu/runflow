@@ -103,6 +103,15 @@ class EnhancementRenderer extends BpmnRenderer {
 
       }
 
+      this.handlers['runflow:excelTask'] = (parentGfx, element, attr) => {
+          const attrs = {
+          }
+          let rect=  this. drawRect(parentGfx, element.width, element.height, 10, attrs)
+          this.renderImage(parentGfx, './icons/excel.png', {})
+          this.renderEmbeddedLabel(parentGfx, element, 'center-middle')
+          return rect;
+
+      }
 
   }
      renderEmbeddedLabel(parentGfx, element, align) {

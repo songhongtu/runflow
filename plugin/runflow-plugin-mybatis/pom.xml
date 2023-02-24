@@ -15,7 +15,6 @@
         <dependency> <!--添加Mybatis依赖 -->
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>2.2.2</version>
         </dependency>
 
         <dependency>
@@ -38,13 +37,6 @@
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>1.2.3</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.mybatis.spring.boot</groupId>
-                    <artifactId>mybatis-spring-boot-starter</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
     </dependencies>

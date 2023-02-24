@@ -43,10 +43,17 @@ public class RedisTaskBehavior extends TaskActivityBehavior implements RedisTask
             String type = Conv.NS(redisTask.getType(), DEFAULT_TYPE);
             String s = "${" + type + "." + redisExpression + "}";
             Object expression = ConditionUtil.createExpression(s, execution);
-            if (expression != null) {
-                ExecutionEntityImpl rootParent = execution.findRootParent(execution);
+            ExecutionEntityImpl rootParent = execution.findRootParent(execution);
+            if(expression!=null){
                 rootParent.variableInstances.put(execution.getActivityId(), expression);
+
+                rootParent.variableInstances.put(execution.getActivityId()+"_STATE", true);
+
+            }else{
+                rootParent.variableInstances.put(execution.getActivityId()+"_STATE", false);
             }
+
+
         }
         leave(execution);
     }

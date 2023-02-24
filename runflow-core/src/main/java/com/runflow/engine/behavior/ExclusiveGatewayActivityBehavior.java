@@ -36,7 +36,7 @@ public class ExclusiveGatewayActivityBehavior extends GatewayActivityBehavior {
             String conditionExpression = sequenceFlow.getConditionExpression();
 
             if (!StringUtils.isEmpty(conditionExpression)) {
-                b = ConditionUtil.hasTrueCondition(conditionExpression, (ExecutionEntityImpl) execution);
+                b = ConditionUtil.hasTrueCondition(conditionExpression, execution);
                 if (b) {
                     outgoingSequenceFlow = sequenceFlow;
                 }
