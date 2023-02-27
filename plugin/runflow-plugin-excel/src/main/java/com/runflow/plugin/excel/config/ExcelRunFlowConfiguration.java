@@ -10,12 +10,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ExcelRunFlowConfiguration {
     @Bean
-    public BpmnParseHandler myBatisBmpnParseHandler() {
+    public BpmnParseHandler excelTashHandler() {
         return new ExcelTaskHandler();
     }
 
     @Bean
-    public ExcelTaskXMLConverter myBatisTaskXMLConverter() {
+    public ExcelTaskXMLConverter excelTaskXMLConverter() {
         return new ExcelTaskXMLConverter();
     }
 

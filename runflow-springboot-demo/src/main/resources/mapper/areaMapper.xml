@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace=绑定一个对应的Dao/Mapper接口-->
+<mapper namespace="com.runflow.plugin.mybatis.dao.area">
+    <!--select查询语句-->
+    <select id="getUserList" resultType="map">
+        select * from tc_area where 1=1
+
+        <if test="areaCode!=null and areaCode !=''">
+            and areaCode = #{areaCode}
+        </if>
+
+
+
+        <if test="level!=null and level !=''">
+            and level = #{level}
+        </if>
+
+        <if test="parentId!=null and parentId !=''">
+            and parentId = #{parentId}
+        </if>
+    </select>
+
+
+    <select id="getUserList1" resultType="map">
+        select * from sp_flow where 1=1  and  1 = #{cc}
+    </select>
+
+
+</mapper>

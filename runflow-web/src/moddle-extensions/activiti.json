@@ -485,6 +485,11 @@
           "name": "value",
           "type": "String",
           "isAttr": true
+        },
+        {
+          "name": "explain",
+          "type": "String",
+          "isAttr": true
         }
       ]
     },

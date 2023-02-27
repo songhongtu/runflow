@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.runflow.plugin.excel.config.ExcelRunFlowConfiguration

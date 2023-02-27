@@ -21,6 +21,22 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <dependency>
+            <artifactId>runflow-plugin-redis</artifactId>
+            <groupId>com.runflow</groupId>
+            <version>${runflow.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>runflow-plugin-mybatis</artifactId>
+            <groupId>com.runflow</groupId>
+            <version>${runflow.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>runflow-plugin-excel</artifactId>
+            <groupId>com.runflow</groupId>
+            <version>${runflow.version}</version>
+        </dependency>
+
     </dependencies>
 
     <properties>

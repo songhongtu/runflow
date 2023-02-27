@@ -32,6 +32,12 @@
         <n-form-item path="value" :label="$t('panel.propertyValue')">
           <n-input v-model:value="newProperty.value" @keydown.enter.prevent />
         </n-form-item>
+
+        <n-form-item path="explain" label="注释">
+          <n-input v-model:value="newProperty.explain" @keydown.enter.prevent />
+        </n-form-item>
+
+
       </n-form>
       <template #action>
         <n-button size="small" type="info" @click="addProperty">{{ $t('panel.confirm') }}</n-button>
@@ -60,7 +66,7 @@ import {h, defineComponent, toRaw, markRaw, computed} from 'vue'
       return {
         extensions: [],
         extensionsRaw: [],
-        newProperty: { name: '', value: '' },
+        newProperty: { name: '', value: '',explain:'' },
         rules: {
           name: { required: true, message: '属性名称不能为空', trigger: ['blur', 'change'] },
           value: { required: true, message: '属性值不能为空', trigger: ['blur', 'change'] }
@@ -79,19 +85,29 @@ import {h, defineComponent, toRaw, markRaw, computed} from 'vue'
             width: 60
           },
           {
-            title: 'Name',
+            title: '名称',
             key: 'name',
             ellipsis: {
               tooltip: true
             }
           },
           {
-            title: 'Value',
+            title: '值',
             key: 'value',
             ellipsis: {
               tooltip: true
             }
           },
+
+          {
+            title: '注释',
+            key: 'explain',
+            ellipsis: {
+              tooltip: true
+            }
+          },
+
+
           {
             title: this.$t('panel.operations'),
             key: 'operation',
@@ -130,7 +146,7 @@ import {h, defineComponent, toRaw, markRaw, computed} from 'vue'
       async reloadExtensionProperties() {
         this.modelVisible = false
         await this.$nextTick()
-        this.newProperty = { name: '', value: '' }
+        this.newProperty = { name: '', value: '' ,explain:''}
         ;(this.extensionsRaw as any[]) = markRaw(getExtensionProperties(this.getActive as Base))
         this.extensions = JSON.parse(JSON.stringify(this.extensionsRaw))
       },

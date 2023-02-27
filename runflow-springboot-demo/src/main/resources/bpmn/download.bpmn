@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:activiti="http://activiti.org/bpmn" xmlns:runflow="http://runflow.org/schema" id="Definitions_Process_1677224815807" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1677224815807" name="业务流程_1677224815807" isExecutable="true">
+    <bpmn:extensionElements>
+      <activiti:properties>
+        <activiti:property name="REDISKEY" value="TC_AREA_ALL" explain="redis全局属性" />
+      </activiti:properties>
+    </bpmn:extensionElements>
+    <bpmn:startEvent id="Event_0bg4n32">
+      <bpmn:outgoing>Flow_08r6yj2</bpmn:outgoing>
+    </bpmn:startEvent>
+    <runflow:redisTask id="Activity_180f6k4" name="获取缓存" activiti:type="STRING" activiti:redisExpression="get(REDISKEY)">
+      <bpmn:incoming>Flow_08r6yj2</bpmn:incoming>
+      <bpmn:outgoing>Flow_1lj1vox</bpmn:outgoing>
+    </runflow:redisTask>
+    <bpmn:sequenceFlow id="Flow_08r6yj2" sourceRef="Event_0bg4n32" targetRef="Activity_180f6k4" />
+    <bpmn:exclusiveGateway id="Gateway_1ofsha5">
+      <bpmn:incoming>Flow_1lj1vox</bpmn:incoming>
+      <bpmn:outgoing>Flow_03mzyxq</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1yq15l0</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1lj1vox" sourceRef="Activity_180f6k4" targetRef="Gateway_1ofsha5" />
+    <runflow:myBatisTask id="Activity_03ng5a5" name="查询" activiti:selectType="SELECTLIST" activiti:statementId="com.runflow.plugin.mybatis.dao.area.getUserList">
+      <bpmn:incoming>Flow_03mzyxq</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ncz381</bpmn:outgoing>
+    </runflow:myBatisTask>
+    <bpmn:sequenceFlow id="Flow_03mzyxq" name="否" sourceRef="Gateway_1ofsha5" targetRef="Activity_03ng5a5">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!Activity_180f6k4_STATE}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <runflow:excelTask id="Activity_134ars8" name="excel导出" activiti:excelExpression="${Activity_180f6k4_STATE?Activity_180f6k4:Activity_03ng5a5}">
+      <bpmn:extensionElements>
+        <activiti:properties>
+          <activiti:property name="地区编码" value="areaCode" explain="" />
+          <activiti:property name="地区名" value="areaName" explain="地区名" />
+          <activiti:property name="地区级别" value="level" explain="地区级别（1:省份province,2:市city,3:区县district,4:街道street" />
+          <activiti:property name="城市编码" value="cityCode" explain="" />
+          <activiti:property name="地区父节点" value="parentId" explain="" />
+        </activiti:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1yq15l0</bpmn:incoming>
+      <bpmn:incoming>Flow_1caqemz</bpmn:incoming>
+      <bpmn:outgoing>Flow_06axnnu</bpmn:outgoing>
+    </runflow:excelTask>
+    <bpmn:sequenceFlow id="Flow_1yq15l0" name="是" sourceRef="Gateway_1ofsha5" targetRef="Activity_134ars8">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${Activity_180f6k4_STATE}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:userTask id="Activity_01h0s7z" name="下载文件" activiti:skipExpression="${downloadController.downloadFile(Activity_134ars8)}">
+      <bpmn:incoming>Flow_06axnnu</bpmn:incoming>
+      <bpmn:outgoing>Flow_1wb6vsu</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_06axnnu" sourceRef="Activity_134ars8" targetRef="Activity_01h0s7z" />
+    <bpmn:endEvent id="Event_15xk5lh" name="结束">
+      <bpmn:incoming>Flow_1wb6vsu</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1wb6vsu" sourceRef="Activity_01h0s7z" targetRef="Event_15xk5lh" />
+    <runflow:redisTask id="Activity_1nli4ph" name="设置缓存" activiti:type="STRING" activiti:redisExpression="set(REDISKEY,Activity_03ng5a5)">
+      <bpmn:incoming>Flow_0ncz381</bpmn:incoming>
+      <bpmn:outgoing>Flow_1caqemz</bpmn:outgoing>
+    </runflow:redisTask>
+    <bpmn:sequenceFlow id="Flow_0ncz381" sourceRef="Activity_03ng5a5" targetRef="Activity_1nli4ph" />
+    <bpmn:sequenceFlow id="Flow_1caqemz" sourceRef="Activity_1nli4ph" targetRef="Activity_134ars8" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1677224815807">
+      <bpmndi:BPMNEdge id="Flow_1caqemz_di" bpmnElement="Flow_1caqemz">
+        <di:waypoint x="770" y="140" />
+        <di:waypoint x="770" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ncz381_di" bpmnElement="Flow_0ncz381">
+        <di:waypoint x="623" y="80" />
+        <di:waypoint x="710" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1wb6vsu_di" bpmnElement="Flow_1wb6vsu">
+        <di:waypoint x="1028" y="230" />
+        <di:waypoint x="1128" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_06axnnu_di" bpmnElement="Flow_06axnnu">
+        <di:waypoint x="830" y="380" />
+        <di:waypoint x="968" y="380" />
+        <di:waypoint x="968" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1yq15l0_di" bpmnElement="Flow_1yq15l0">
+        <di:waypoint x="563" y="255" />
+        <di:waypoint x="563" y="380" />
+        <di:waypoint x="710" y="380" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="547" y="315" width="11" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_03mzyxq_di" bpmnElement="Flow_03mzyxq">
+        <di:waypoint x="563" y="205" />
+        <di:waypoint x="563" y="140" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="547" y="165" width="11" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1lj1vox_di" bpmnElement="Flow_1lj1vox">
+        <di:waypoint x="438" y="230" />
+        <di:waypoint x="538" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_08r6yj2_di" bpmnElement="Flow_08r6yj2">
+        <di:waypoint x="218" y="230" />
+        <di:waypoint x="318" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_0bg4n32_di" bpmnElement="Event_0bg4n32">
+        <dc:Bounds x="182" y="212" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_180f6k4_di" bpmnElement="Activity_180f6k4">
+        <dc:Bounds x="318" y="170" width="120" height="120" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1ofsha5_di" bpmnElement="Gateway_1ofsha5" isMarkerVisible="true">
+        <dc:Bounds x="538" y="205" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_03ng5a5_di" bpmnElement="Activity_03ng5a5">
+        <dc:Bounds x="503" y="20" width="120" height="120" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_134ars8_di" bpmnElement="Activity_134ars8">
+        <dc:Bounds x="710" y="320" width="120" height="120" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_01h0s7z_di" bpmnElement="Activity_01h0s7z">
+        <dc:Bounds x="908" y="170" width="120" height="120" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_15xk5lh_di" bpmnElement="Event_15xk5lh">
+        <dc:Bounds x="1128" y="212" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1135" y="255" width="22" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1nli4ph_di" bpmnElement="Activity_1nli4ph">
+        <dc:Bounds x="710" y="20" width="120" height="120" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

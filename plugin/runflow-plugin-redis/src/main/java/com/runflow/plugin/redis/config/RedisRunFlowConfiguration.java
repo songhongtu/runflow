@@ -10,12 +10,12 @@ import org.springframework.data.redis.core.RedisTemplate;
 @Configuration
 public class RedisRunFlowConfiguration {
     @Bean
-    public BpmnParseHandler myBatisBmpnParseHandler() {
+    public BpmnParseHandler redisTaskHandler() {
         return new RedisTaskHandler();
     }
 
     @Bean
-    public RedisTaskXMLConverter myBatisTaskXMLConverter() {
+    public RedisTaskXMLConverter redisTaskXMLConverter() {
         return new RedisTaskXMLConverter();
     }
 

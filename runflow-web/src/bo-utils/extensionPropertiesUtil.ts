@@ -75,6 +75,7 @@ export function removeExtensionProperty(element: Base, property: ModdleElement) 
 ///// helpers
 function getRelevantBusinessObject(element: Base) {
   const businessObject = getBusinessObject(element)
+  console.log(businessObject)
   if (is(element, 'bpmn:Participant')) {
     return businessObject.get('processRef')
   }
