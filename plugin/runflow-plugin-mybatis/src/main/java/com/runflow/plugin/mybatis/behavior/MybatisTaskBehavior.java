@@ -36,7 +36,7 @@ public class MybatisTaskBehavior extends TaskActivityBehavior {
     @Override
     public void execute(ExecutionEntityImpl execution) {
         String name = execution.getCurrentFlowElement().getName();
-        LOGGER.debug("mybatis任务  名称：{}  id:{}  线程名称:{} ", name, execution.getId(), Thread.currentThread().getName());
+      //  LOGGER.debug("mybatis任务  名称：{}  id:{}  线程名称:{} ", name, execution.getId(), Thread.currentThread().getName());
         MyBatisTaskConstant.SelectTypeEnum selectTypeEnum = MyBatisTaskConstant.SelectTypeEnum.valueOf(Conv.NS(mybatisTask.getSelectType(), MyBatisTaskConstant.SelectTypeEnum.SELECTONE.name()));
         boolean nb = Conv.NB(mybatisTask.isPage()) && selectTypeEnum.name().equals(MyBatisTaskConstant.SelectTypeEnum.SELECTLIST.name());
         if (nb) {

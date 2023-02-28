@@ -17,7 +17,6 @@ public class NoneStartEventActivityBehavior extends FlowNodeActivityBehavior {
 
     @Override
     public void execute(ExecutionEntityImpl execution) {
-        LOGGER.debug("开始节点  名称：{}  id:{}  线程名称:{} ",execution.getCurrentFlowElement().getName(),execution.getId(),Thread.currentThread().getName());
         super.execute(execution);
     }
 }

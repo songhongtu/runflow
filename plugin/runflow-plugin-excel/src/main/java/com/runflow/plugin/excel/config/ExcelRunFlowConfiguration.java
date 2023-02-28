@@ -7,7 +7,6 @@ import com.runflow.plugin.excel.model.ExcelTask;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
 public class ExcelRunFlowConfiguration {
     @Bean
     public BpmnParseHandler excelTashHandler() {

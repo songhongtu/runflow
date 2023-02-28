@@ -30,7 +30,7 @@ public class ParallelGatewayActivityBehavior extends GatewayActivityBehavior {
             List<ExecutionEntityImpl> joinedExecutions = entitySet.stream().filter(c ->  c!=null&&!c.isActive() && c.getCurrentActivityId().equals(execution.getCurrentActivityId())).collect(Collectors.toList());
             int nbrOfExecutionsCurrentlyJoined = joinedExecutions.size();
             if (nbrOfExecutionsCurrentlyJoined == nbrOfExecutionsToJoin) {
-                LOGGER.debug("并行网关  名称：{}  id:{}  线程名称:{} ", execution.getCurrentFlowElement().getName(), execution.getId(), Thread.currentThread().getName());
+            //    LOGGER.debug("并行网关  名称：{}  id:{}  线程名称:{} ", execution.getCurrentFlowElement().getName(), execution.getId(), Thread.currentThread().getName());
                 if (parallelGateway.getIncomingFlows().size() > 1) {
                     Iterator<ExecutionEntityImpl> iterator = joinedExecutions.iterator();
                     while (iterator.hasNext()) {

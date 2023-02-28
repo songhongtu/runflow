@@ -27,7 +27,6 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
     @Override
     public void execute(ExecutionEntityImpl execution) {
         String name = execution.getCurrentFlowElement().getName();
-        LOGGER.debug("用户任务  名称：{}  id:{}  线程名称:{} ", name, execution.getId(), Thread.currentThread().getName());
         String skipExpression = userTask.getSkipExpression();
         Map<String, List<ExtensionElement>> extensionElements = userTask.getExtensionElements();
         if (!StringUtils.isEmpty(skipExpression)) {

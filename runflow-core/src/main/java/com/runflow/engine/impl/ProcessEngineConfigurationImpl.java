@@ -13,8 +13,6 @@ import com.runflow.engine.parse.BpmnParser;
 import com.runflow.engine.parse.handler.*;
 import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.exceptions.XMLException;
-import org.activiti.image.ProcessDiagramGenerator;
-import org.activiti.image.impl.DefaultProcessDiagramGenerator;
 import org.slf4j.LoggerFactory;
 
 import javax.el.ELResolver;
@@ -34,7 +32,6 @@ public class ProcessEngineConfigurationImpl {
     protected CommandContextFactory commandContextFactory;
     protected RunFlowEngineAgendaFactory engineAgendaFactory;
     protected List<CommandInterceptor> commandInterceptors;
-    protected ProcessDiagramGenerator processDiagramGenerator;
     protected ClassLoader classLoader;
     protected BpmnDeployer bpmnDeployer;
     protected RunTimeServiceImpl runTimeService;
@@ -67,9 +64,6 @@ public class ProcessEngineConfigurationImpl {
         initServices();
         initBpmnParser();
         initDeployers();
-        if (processDiagramGenerator == null) {
-            processDiagramGenerator = new DefaultProcessDiagramGenerator();
-        }
 
         initExpression();
         if (executorService == null) {
@@ -255,14 +249,6 @@ public class ProcessEngineConfigurationImpl {
         return bpmnParserHandlers;
     }
 
-    public ProcessDiagramGenerator getProcessDiagramGenerator() {
-        return this.processDiagramGenerator;
-    }
-
-    public ProcessEngineConfigurationImpl setProcessDiagramGenerator(ProcessDiagramGenerator processDiagramGenerator) {
-        this.processDiagramGenerator = processDiagramGenerator;
-        return this;
-    }
 
     public ClassLoader getClassLoader() {
         return classLoader;

@@ -68,7 +68,8 @@ public class ContinueProcessOperation extends AbstractOperation {
 
         // Execute actual behavior
         ActivityBehavior activityBehavior = (ActivityBehavior) flowNode.getBehavior();
-
+        final FlowElement currentFlowElement = execution.getCurrentFlowElement();
+        logger.debug("唯一标识：{}  节点名：{}-({})  id:{}  线程名称:{} ",execution.getSerialNumber(), currentFlowElement.getName()==null?"":currentFlowElement.getName(), currentFlowElement.getClass().getSimpleName(),execution.getId(),Thread.currentThread().getName());
         if (activityBehavior != null) {
             executeActivityBehavior(activityBehavior);
         } else {

@@ -31,7 +31,7 @@ public class ExcelTaskBehavior extends TaskActivityBehavior implements ExcelTask
     public void execute(ExecutionEntityImpl execution) {
 
         String name = execution.getCurrentFlowElement().getName();
-        LOGGER.debug("excel任务  名称：{}  id:{}  线程名称:{} ", name, execution.getId(), Thread.currentThread().getName());
+      //  LOGGER.debug("excel任务  名称：{}  id:{}  线程名称:{} ", name, execution.getId(), Thread.currentThread().getName());
         final Map<String, String> extensionElementPropertity = BpmnUtils.getExtensionElementPropertity(execution.getCurrentFlowElement().getExtensionElements());
         final String excelExpression = excelTask.getExcelExpression();
         if (extensionElementPropertity != null && excelExpression != null) {

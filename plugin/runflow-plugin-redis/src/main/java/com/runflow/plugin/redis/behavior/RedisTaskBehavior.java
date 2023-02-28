@@ -35,7 +35,6 @@ public class RedisTaskBehavior extends TaskActivityBehavior implements RedisTask
 
 
         String name = execution.getCurrentFlowElement().getName();
-        LOGGER.debug("redis任务  名称：{}  id:{}  线程名称:{} ", name, execution.getId(), Thread.currentThread().getName());
         String redisExpression = redisTask.getRedisExpression();
         String el = Conv.NS(redisExpression).trim();
         if (!el.equals("")) {

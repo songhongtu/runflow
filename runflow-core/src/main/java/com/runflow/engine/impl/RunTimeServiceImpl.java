@@ -29,8 +29,5 @@ public class RunTimeServiceImpl extends ServiceImpl implements RunTimeService {
         return commandExecutor.execute(new StartProcessInstanceCmd(key,variables));
     }
 
-    public InputStream generaImages(String key){
-     return   commandExecutor.execute(new GeneraImageCommand(key));
-    }
 
 }
