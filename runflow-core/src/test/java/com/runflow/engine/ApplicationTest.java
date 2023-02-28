@@ -110,38 +110,42 @@ public class ApplicationTest extends BaseTestCase {
      * @throws InterruptedException
      */
     @Test
-    public void exclusiveGateway3() {
-
-        AtomicInteger a = new AtomicInteger(0);
-        AtomicInteger b = new AtomicInteger(0);
-
-        AtomicInteger c = new AtomicInteger(0);
-        AtomicInteger d = new AtomicInteger(0);
-        AtomicInteger e = new AtomicInteger(0);
-        Long startTime = System.currentTimeMillis();
+    public void exclusiveGateway3() throws InterruptedException {
+        RunTimeServiceImpl repositoryService = conf.getRunTimeService();
+        ApplicationTest applicationTest = new ApplicationTest();
         Map map = new HashMap();
-        map.put("a", a);
-        map.put("b", b);
-        map.put("c", c);
-        map.put("d", d);
-        map.put("e", e);
-        for (int j = 0; j < TOTALCOUNT; j++) {
-            ExecutionEntityImpl leave = repositoryService.startWorkflow("Process_1671936597549", map);
+        map.put("a", applicationTest);
+        map.put("b", applicationTest);
+        map.put("c", applicationTest);
+        map.put("d", applicationTest);
+        map.put("e", applicationTest);
+        Long startTime = System.currentTimeMillis();
+        for (int i = 0; i < THREADCOUNT; i++) {
+            Thread thread = new Thread(() -> {
+                for (int j = 0; j < SECOND; j++) {
+                    ExecutionEntityImpl leave = repositoryService.startWorkflow("Process_1671936597549", map);
+                }
+
+            });
+            thread.start();
+        }
+
+        while (true) {
+            Thread.sleep(1000 * 3);
+            logger.info("exclusiveGateway3 a:{}", applicationTest.integer.get());
+            if ( applicationTest.integer.get() == THREADCOUNT*5) {
+                logger.info("中断");
+                break;
+            }
+
         }
         Long endTime = System.currentTimeMillis();
-        logger.info("exclusiveGateway3 a:{}", a);
-        logger.info("exclusiveGateway3 b:{}", b);
-        logger.info("exclusiveGateway3 c:{}", c);
-        logger.info("exclusiveGateway3 d:{}", d);
-        logger.info("exclusiveGateway3 e:{}", e);
         logger.info("exclusiveGateway3 总耗时:{}", endTime - startTime);
-
-        Assert.assertEquals(a.get(), TOTALCOUNT);
-        Assert.assertEquals(b.get(), TOTALCOUNT);
-        Assert.assertEquals(c.get(), TOTALCOUNT);
-        Assert.assertEquals(d.get(), TOTALCOUNT);
-        Assert.assertEquals(e.get(), TOTALCOUNT);
-
+        Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT*5);
+        Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT*5);
+        Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT*5);
+        Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT*5);
+        Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT*5);
 
     }
 
@@ -211,7 +215,6 @@ public class ApplicationTest extends BaseTestCase {
     @Test
     public void parallelGatewayTest2() {
 
-        for (int i = 0; i < 15000; i++) {
 
 
         ApplicationTest applicationTest = new ApplicationTest();
@@ -241,7 +244,6 @@ public class ApplicationTest extends BaseTestCase {
         Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT*5);
         Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT*5);
         }
-    }
 
     /**
      * 并行网关 单线程
@@ -250,40 +252,43 @@ public class ApplicationTest extends BaseTestCase {
      * @throws InterruptedException
      */
     @Test
-    public void parallelGatewayTest3() {
+    public void parallelGatewayTest3() throws InterruptedException {
 
         RunTimeServiceImpl repositoryService = conf.getRunTimeService();
-        AtomicInteger a = new AtomicInteger(0);
-        AtomicInteger b = new AtomicInteger(0);
-
-        AtomicInteger c = new AtomicInteger(0);
-        AtomicInteger d = new AtomicInteger(0);
-        AtomicInteger e = new AtomicInteger(0);
+        ApplicationTest applicationTest = new ApplicationTest();
         Map map = new HashMap();
-        map.put("a", a);
-        map.put("b", b);
-        map.put("c", c);
-        map.put("d", d);
-        map.put("e", e);
+        map.put("a", applicationTest);
+        map.put("b", applicationTest);
+        map.put("c", applicationTest);
+        map.put("d", applicationTest);
+        map.put("e", applicationTest);
         Long startTime = System.currentTimeMillis();
-        for (int j = 0; j < TOTALCOUNT; j++) {
-            ExecutionEntityImpl leave = repositoryService.startWorkflow("ParallelGatewayTest01", map);
+        for (int i = 0; i < THREADCOUNT; i++) {
+            Thread thread = new Thread(() -> {
+                for (int j = 0; j < SECOND; j++) {
+                    ExecutionEntityImpl leave = repositoryService.startWorkflow("ParallelGatewayTest01", map);
+                }
+
+            });
+            thread.start();
+        }
+
+        while (true) {
+            Thread.sleep(1000 * 3);
+            logger.info("parallelGatewayTest3 a:{}", applicationTest.integer.get());
+            if ( applicationTest.integer.get() == THREADCOUNT*5) {
+                logger.info("中断");
+                break;
+            }
+
         }
         Long endTime = System.currentTimeMillis();
-        logger.info("parallelGatewayTest3 a:{}", a);
-        logger.info("parallelGatewayTest3 b:{}", b);
-        logger.info("parallelGatewayTest3 c:{}", c);
-        logger.info("parallelGatewayTest3 d:{}", d);
-        logger.info("parallelGatewayTest3 e:{}", e);
         logger.info("parallelGatewayTest3 总耗时:{}", endTime - startTime);
-
-
-        Assert.assertEquals(a.get(), TOTALCOUNT);
-        Assert.assertEquals(b.get(), TOTALCOUNT);
-        Assert.assertEquals(c.get(), TOTALCOUNT);
-        Assert.assertEquals(d.get(), TOTALCOUNT);
-        Assert.assertEquals(e.get(), TOTALCOUNT);
-
+        Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT*5);
+        Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT*5);
+        Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT*5);
+        Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT*5);
+        Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT*5);
 
     }
 

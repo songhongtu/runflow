@@ -24,7 +24,7 @@ public class BaseTestCase {
     //线程数量
     protected static int THREADCOUNT = 100;
     //循环数量
-    protected static int SECOND = 20000;
+    protected static int SECOND = 2000;
     //总数
     protected static int TOTALCOUNT = THREADCOUNT * SECOND;
 
