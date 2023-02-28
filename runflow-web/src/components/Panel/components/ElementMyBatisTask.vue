@@ -27,11 +27,11 @@
         <n-switch v-model:value="isPage"
                     @change="(v)=>setStringValueByKey(getActive,'isPage',v)"/>
       </edit-item>
-      <edit-item v-if="pageNum" label="当前页">
+      <edit-item v-if="isPage" label="当前页">
         <n-input placeholder="" v-model:value="pageNum"
                  @change="(v)=>setStringValueByKey(getActive,'pageNum',v)"/>
       </edit-item>
-      <edit-item v-if="pageSize" label="分页大小">
+      <edit-item v-if="isPage" label="分页大小">
         <n-input placeholder="" v-model:value="pageSize"
                  @change="(v)=>setStringValueByKey(getActive,'pageSize',v)"/>
       </edit-item>

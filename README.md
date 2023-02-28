@@ -20,6 +20,14 @@ runflow支持BPMN规范，能够把复杂的业务逻辑可视化。开发人员
 ![static/img_6.png](static/img/img_6.png)
 
 
+[excel插件](plugin/runflow-plugin-excel)
+
+
+[redis插件](plugin/runflow-plugin-redis)
+
+
+[mybatis插件](plugin/runflow-plugin-mybatis)
+
 
 ###### **简化版下单逻辑**
 
