@@ -1,7 +1,7 @@
 <template>
   <n-collapse-item name="element-extension-properties">
     <template #header>
-      <collapse-title :title="getActive.type=='bpmn:Process'?'全局参数':'任务参数'">
+      <collapse-title :title="getActive!.type=='bpmn:Process'?'全局参数':'任务参数'">
         <lucide-icon name="FileCog" />
       </collapse-title>
     </template>

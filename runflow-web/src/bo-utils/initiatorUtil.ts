@@ -23,9 +23,9 @@ export function getStringValueByKey(element: Base,key:string): string | undefine
 
 
 
-export function getStringValueByKeyBoolean(element: Base,key:string): boolean | false {
+export function getStringValueByKeyBoolean(element: Base|undefined,key:string): boolean | false {
   const prefix = editor().getProcessEngine
-  const businessObject = getBusinessObject(element)
+  const businessObject = getBusinessObject(element!)
   return businessObject.get(`${prefix}:${key}`)||false
 }
 
@@ -33,10 +33,10 @@ export function getStringValueByKeyBoolean(element: Base,key:string): boolean | 
 
 
 
-export function setStringValueByKey(element: Base,key:string, value: string | undefined) {
+export function setStringValueByKey(element: Base|undefined,key:string, value: string | undefined) {
   const prefix = editor().getProcessEngine
   const modeling = modeler().getModeling
-  const businessObject = getBusinessObject(element)
+  const businessObject = getBusinessObject(element!)
   modeling.updateModdleProperties(element, businessObject, {
     [`${prefix}:${key}`]: value
   })

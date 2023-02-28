@@ -49,7 +49,7 @@ export default defineComponent({
   name: 'ElementRedisTask',
   setup() {
     const modelerStore = modeler()
-    const getActive = computed<Base | null>(() => modelerStore.getActive!)
+    const getActive = computed<Base | undefined>(() => modelerStore.getActive!)
     const type = ref<string | undefined>('STRING')
     const isAsync = ref<boolean | false>(false)
 

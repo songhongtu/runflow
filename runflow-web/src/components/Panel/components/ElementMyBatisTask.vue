@@ -58,7 +58,7 @@ export default defineComponent({
   name: 'ElementMyBatisTask',
   setup() {
     const modelerStore = modeler()
-    const getActive = computed<Base | null>(() => modelerStore.getActive!)
+    const getActive = computed<Base | undefined>(() => modelerStore.getActive!)
     const selectType = ref<string | undefined>('SELECTLIST')
     const statementId = ref<string | undefined>('')
     const selectTypeOption = ref<Record<string, string>[]>([

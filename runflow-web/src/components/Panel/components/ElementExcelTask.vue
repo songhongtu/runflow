@@ -40,7 +40,7 @@ export default defineComponent({
   name: 'ElementExcelTask',
   setup() {
     const modelerStore = modeler()
-    const getActive = computed<Base | null>(() => modelerStore.getActive!)
+    const getActive = computed<Base | undefined>(() => modelerStore.getActive!)
     const isAsync = ref<boolean | false>(false)
     const excelExpression = ref<string | undefined>('')
 
