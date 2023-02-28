@@ -287,19 +287,6 @@ public class ApplicationTest extends BaseTestCase {
 
     }
 
-    /**
-     * 生成图片
-     *
-     * @throws FileNotFoundException
-     * @throws InterruptedException
-     */
-    @Test
-    public void generaImages() throws FileNotFoundException, InterruptedException {
-        String fileName = "diagram.bpmn";
-        InputStream inputStream = conf.getRunTimeService().generaImages("Process_1");
-
-
-    }
 
 
 }
