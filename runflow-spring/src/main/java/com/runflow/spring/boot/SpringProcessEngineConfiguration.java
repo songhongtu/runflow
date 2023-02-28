@@ -65,7 +65,7 @@ public class SpringProcessEngineConfiguration extends ProcessEngineConfiguration
     public void baseScan() throws Exception {
         resourceList = new ArrayList<>();
         discoverLocation();
-        logger.info("文件开始部署：{}", resourceList);
+        logger.debug("文件开始部署：{}", resourceList);
         for (Resource resource : resourceList) {
             deploy(resource.getFilename(), resource.getInputStream());
         }

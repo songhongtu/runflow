@@ -150,7 +150,7 @@ public class ProcessEngineConfigurationImpl {
 
 
     protected void baseScan() throws Exception {
-        logger.info("文件开始部署：{}", pathList);
+        logger.debug("文件开始部署：{}", pathList);
         for (String s : pathList) {
             InputStream resourceAsStream1 = ProcessEngineConfigurationImpl.class.getResourceAsStream(s);
             deploy(s, resourceAsStream1);
