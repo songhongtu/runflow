@@ -233,10 +233,6 @@ public class ApplicationTest extends BaseTestCase {
         long end = System.currentTimeMillis();
         logger.info("parallelGatewayTest2 结果:{}", applicationTest.integer.get());
         logger.info("parallelGatewayTest2 耗时:{}", end - start);
-        if(applicationTest.integer.get()!=500){
-            logger.info("结果不一致:{}",leave);
-            throw new RuntimeException("ERROR");
-        }
 
         Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT*5);
         Assert.assertEquals(applicationTest.integer.get(), THREADCOUNT*5);
