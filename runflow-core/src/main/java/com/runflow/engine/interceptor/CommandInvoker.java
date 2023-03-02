@@ -19,8 +19,8 @@ public class CommandInvoker extends AbstractCommandInterceptor {
 
         // Run loop for agenda
         executeOperations(commandContext);
-        String serialNumber = commandContext.getSerialNumber();
-        if (serialNumber != null && commandContext.getAllRunTimeExecution().get(commandContext.getSerialNumber()) != null) {
+        //只有主线程阻塞，等待执行完成
+        if (commandContext.getMainThread()!=null&&commandContext.getMainThread().equals(Thread.currentThread())&&commandContext.getAllRunTimeExecution().get(commandContext.getSerialNumber())!=null) {
             try {
                 LockSupport.park();
             } catch (Exception e) {

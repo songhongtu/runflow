@@ -1,5 +1,5 @@
-# **mybatis插件**
-**关于例子可以参考runflow-springboot-demo项目的DownloadController.download**
+# **redis插件**
+**关于例子可以参考[runflow-springboot-demo](../../runflow-springboot-demo)项目的DownloadController.download**
 
 该插件依赖于poi，需要引入对应的依赖
 
@@ -10,7 +10,7 @@
 **改插件核心源码 可以看 ExcelTaskBehavior.java(一看就懂!!!)**
 
 ###  bpmn文件
-具体文件参考runflow-springboot-demo项目的download.bpmn
+具体文件参考[runflow-springboot-demo](../../runflow-springboot-demo)项目的download.bpmn
 
 ![img.png](img.png)
 

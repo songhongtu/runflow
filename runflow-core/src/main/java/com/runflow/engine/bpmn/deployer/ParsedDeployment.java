@@ -4,7 +4,6 @@ import com.runflow.engine.bpmn.entity.DeploymentEntity;
 import com.runflow.engine.bpmn.entity.ProcessDefinitionEntity;
 import com.runflow.engine.bpmn.entity.ResourceEntity;
 import com.runflow.engine.parse.BpmnParse;
-import com.runflow.engine.utils.ResourceNameUtil;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.Process;
 import java.util.List;
@@ -56,31 +55,7 @@ public class ParsedDeployment {
         return (model == null ? null : model.getProcessById(processDefinition.getKey()));
     }
 
-    public Map<ProcessDefinitionEntity, BpmnParse> getMapProcessDefinitionsToParses() {
-        return mapProcessDefinitionsToParses;
-    }
 
-    public void setMapProcessDefinitionsToParses(Map<ProcessDefinitionEntity, BpmnParse> mapProcessDefinitionsToParses) {
-        this.mapProcessDefinitionsToParses = mapProcessDefinitionsToParses;
-    }
-
-    public Map<ProcessDefinitionEntity, ResourceEntity> getMapProcessDefinitionsToResources() {
-        return mapProcessDefinitionsToResources;
-    }
-
-    public void setMapProcessDefinitionsToResources(Map<ProcessDefinitionEntity, ResourceEntity> mapProcessDefinitionsToResources) {
-        this.mapProcessDefinitionsToResources = mapProcessDefinitionsToResources;
-    }
-
-    protected boolean isBpmnResource(String resourceName) {
-        for (String suffix : ResourceNameUtil.BPMN_RESOURCE_SUFFIXES) {
-            if (resourceName.endsWith(suffix)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     public BpmnParse getBpmnParse() {
         return bpmnParse;

@@ -44,13 +44,4 @@ public  abstract class AbstractEntityNoRevision implements Entity {
     }
 
 
-    @Override
-    public String getSerialNumber() {
-        return null;
-    }
-
-    @Override
-    public void setSerialNumber(String serialNumber) {
-
-    }
 }

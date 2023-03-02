@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ContinueProcessOperation extends AbstractOperation {
 
@@ -22,6 +23,9 @@ public class ContinueProcessOperation extends AbstractOperation {
 
     protected boolean forceSynchronousOperation;
     protected boolean inCompensation;
+
+
+    private AtomicInteger integer = new AtomicInteger(0);
 
     public ContinueProcessOperation(CommandContext commandContext, ExecutionEntityImpl execution,
                                     boolean forceSynchronousOperation, boolean inCompensation) {
@@ -49,7 +53,7 @@ public class ContinueProcessOperation extends AbstractOperation {
 
 
     protected void continueThroughFlowNode(FlowNode flowNode) {
-
+        final CommandContext commandContext = Context.getCommandContext();
         ExecutorService executorService = Context.getProcessEngineConfiguration().getExecutorService();
         if (flowNode instanceof Activity && ((Activity) flowNode).hasMultiInstanceLoopCharacteristics()) {
             // the multi instance execution will look at async
@@ -58,8 +62,9 @@ public class ContinueProcessOperation extends AbstractOperation {
             executeSynchronous(flowNode);
         } else {
             CommandExecutorImpl commandExecutor = Context.getProcessEngineConfiguration().getCommandExecutor();
-            executorService.execute(() ->
-                commandExecutor.execute(new ExecuteAsyncJobCmd( execution))
+            executorService.execute(() ->{
+                commandExecutor.execute(new ExecuteAsyncJobCmd( execution,commandContext.getMainThread(),commandContext.getSerialNumber()));
+                    }
             );
         }
     }
@@ -69,7 +74,7 @@ public class ContinueProcessOperation extends AbstractOperation {
         // Execute actual behavior
         ActivityBehavior activityBehavior = (ActivityBehavior) flowNode.getBehavior();
         final FlowElement currentFlowElement = execution.getCurrentFlowElement();
-        logger.debug("唯一标识：{}  节点名：{}-({})  id:{}  线程名称:{} ",execution.getSerialNumber(), currentFlowElement.getName()==null?"":currentFlowElement.getName(), currentFlowElement.getClass().getSimpleName(),execution.getId(),Thread.currentThread().getName());
+        logger.debug("[{}]-[{}]  name：{}-({})  id:{}  ",Thread.currentThread().getName(),commandContext.getSerialNumber(), currentFlowElement.getName()==null?"":currentFlowElement.getName(), currentFlowElement.getClass().getSimpleName(),execution.getId());
         if (activityBehavior != null) {
             executeActivityBehavior(activityBehavior);
         } else {

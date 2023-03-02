@@ -1,5 +1,5 @@
 # **mybatis插件**
-**关于例子可以参考runflow-springboot-demo项目的DownloadController.download**
+**关于例子可以参考[runflow-springboot-demo](../../runflow-springboot-demo)项目的DownloadController.download**
 
 该插件依赖于mybatis，需要引入对应的依赖和配置文件.
 
@@ -10,7 +10,8 @@
 **改插件核心源码 可以看 MybatisTaskBehavior.java(一看就懂!!!)**
 
 ###  bpmn文件
-具体文件参考runflow-springboot-demo项目的download.bpmn
+具体文件参考[runflow-springboot-demo](../../runflow-springboot-demo)项目的download.bpmn
+
 
 ![img_1.png](img_1.png)
 

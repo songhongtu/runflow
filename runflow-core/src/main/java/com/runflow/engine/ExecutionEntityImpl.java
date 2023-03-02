@@ -9,7 +9,6 @@ import java.util.*;
 
 public class ExecutionEntityImpl implements ExecutionEntity, Entity {
 
-    protected Thread mainThread;
 
     // current position /////////////////////////////////////////////////////////
 
@@ -299,7 +298,6 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
         childExecution.setRootProcessInstanceId(parentExecutionEntity.getRootProcessInstanceId());
         childExecution.setActive(true);
         childExecution.setSerialNumber(parentExecutionEntity.getSerialNumber());
-        childExecution.setMainThread(parentExecutionEntity.getMainThread());
     }
 
 
@@ -363,14 +361,6 @@ public class ExecutionEntityImpl implements ExecutionEntity, Entity {
         this.serialNumber = serialNumber;
     }
 
-
-    public Thread getMainThread() {
-        return mainThread;
-    }
-
-    public void setMainThread(Thread mainThread) {
-        this.mainThread = mainThread;
-    }
 
     public SimpleContext getCachedElContext() {
         return cachedElContext;

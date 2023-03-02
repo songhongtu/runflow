@@ -65,9 +65,5 @@ public class DefaultDeploymentCache<T> {
     }
 
 
-    public static void main(String[] args) {
-        DefaultDeploymentCache<Object> objectDefaultDeploymentCache = new DefaultDeploymentCache<>(1);
-        objectDefaultDeploymentCache.remove("1");
-    }
 
 }
