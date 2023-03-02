@@ -7,8 +7,4 @@ public  interface Entity {
     void setId(String id);
 
 
-    String getSerialNumber();
-
-    void setSerialNumber(String serialNumber);
-
 }

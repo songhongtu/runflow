@@ -65,6 +65,10 @@ const Panel = defineComponent({
       type=="bpmn:Process"&&renderComponents.push(ElementExtensionProperties)
       type=="runflow:myBatisTask"&&renderComponents.push(ElementExtensionProperties)
       type=="runflow:excelTask"&&renderComponents.push(ElementExtensionProperties)
+
+
+      type=="bpmn:CallActivity"&&renderComponents.push(ElementExtensionProperties)
+
    //  isExecutable(element) && renderComponents.push(ElementExecutionListeners)
       // isAsynchronous(element) && renderComponents.push(ElementAsyncContinuations)
       // isStartInitializable(element) && renderComponents.push(ElementStartInitiator)

@@ -12,9 +12,7 @@ public interface DeploymentEntity extends Deployment, Entity {
 
     Map<String, ResourceEntity> getResources();
 
-    void addDeployedArtifact(Object deployedArtifact);
 
-    <T> List<T> getDeployedArtifacts(Class<T> clazz);
 
     void setName(String name);
 

@@ -26,6 +26,17 @@ public class CommandContext {
     protected LinkedList<Object> resultStack = new LinkedList<>(); // needs to be a stack, as JavaDelegates can do api calls again
 
 
+    protected Thread mainThread;
+
+
+    public Thread getMainThread() {
+        return mainThread;
+    }
+
+    public void setMainThread(Thread mainThread) {
+        this.mainThread = mainThread;
+    }
+
     public String getSerialNumber() {
         return serialNumber;
     }

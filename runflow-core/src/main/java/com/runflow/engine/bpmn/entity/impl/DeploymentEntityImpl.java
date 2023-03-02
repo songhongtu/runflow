@@ -25,10 +25,6 @@ public class DeploymentEntityImpl extends AbstractEntityNoRevision implements De
 
     protected ParsedDeployment parsedDeployment;
 
-    /**
-     * Will only be used during actual deployment to pass deployed artifacts (eg process definitions). Will be null otherwise.
-     */
-    protected Map<Class<?>, List<Object>> deployedArtifacts;
 
 
     public void addResource(ResourceEntity resource) {
@@ -47,40 +43,11 @@ public class DeploymentEntityImpl extends AbstractEntityNoRevision implements De
         return resources;
     }
 
-    public Object getPersistentState() {
-        Map<String, Object> persistentState = new HashMap<>();
-        persistentState.put("category", this.category);
-        persistentState.put("key", this.key);
-        persistentState.put("tenantId", tenantId);
-        return persistentState;
-    }
 
     // Deployed artifacts manipulation ////////////////////////////////////////////
 
-    public void addDeployedArtifact(Object deployedArtifact) {
-        if (deployedArtifacts == null) {
-            deployedArtifacts = new HashMap<>();
-        }
-
-        Class<?> clazz = deployedArtifact.getClass();
-        List<Object> artifacts = deployedArtifacts.get(clazz);
-        if (artifacts == null) {
-            artifacts = new ArrayList<>();
-            deployedArtifacts.put(clazz, artifacts);
-        }
-
-        artifacts.add(deployedArtifact);
-    }
 
     @SuppressWarnings("unchecked")
-    public <T> List<T> getDeployedArtifacts(Class<T> clazz) {
-        for (Class<?> deployedArtifactsClass : deployedArtifacts.keySet()) {
-            if (clazz.isAssignableFrom(deployedArtifactsClass)) {
-                return (List<T>) deployedArtifacts.get(deployedArtifactsClass);
-            }
-        }
-        return new ArrayList<>();
-    }
 
     // getters and setters ////////////////////////////////////////////////////////
 

@@ -28,6 +28,7 @@ public class StartProcessInstanceCmd implements Command<ExecutionEntityImpl> {
     @Override
     public ExecutionEntityImpl execute(CommandContext commandContext) {
         Context.getProcessEngineConfiguration().scan();
+        commandContext.setMainThread(Thread.currentThread());
         DefaultDeploymentCache<ProcessDefinitionCacheEntry> processDefinitionCache = commandContext.getProcessEngineConfiguration().getProcessDefinitionCache();
         ProcessDefinitionCacheEntry leave = processDefinitionCache.get(key);
         if (leave == null) {
@@ -40,11 +41,10 @@ public class StartProcessInstanceCmd implements Command<ExecutionEntityImpl> {
 
         String uuid = UUID.randomUUID().toString();
         ExecutionEntityImpl processInstance = new ExecutionEntityImpl();
-        processInstance.setMainThread(Thread.currentThread());
+        commandContext.setSerialNumber(uuid);
         processInstance.setSerialNumber(uuid);
         processInstance.setId(processInstance.randomID());
 
-//        logger.info("线程名称："+Thread.currentThread().getName()+"："+"创建父节点:{}", processInstance.getId());
 
         processInstance.executions = new ArrayList<>();
         processInstance.variableInstances = new ConcurrentHashMap<>();
@@ -69,13 +69,12 @@ public class StartProcessInstanceCmd implements Command<ExecutionEntityImpl> {
 
         }
         commandContext.getAllRunTimeExecution().putSingle(processInstance);
-        startProcessInstance(processInstance, Context.getCommandContext());
+        startProcessInstance(processInstance, commandContext);
         return processInstance;
     }
 
 
     public void startProcessInstance(ExecutionEntityImpl processInstance, CommandContext commandContext) {
-        commandContext.setSerialNumber(processInstance.getSerialNumber());
         ExecutionEntityImpl execution = processInstance.getExecutions().get(0); // There will always be one child execution created
         commandContext.getAgenda().planContinueProcessOperation(execution);
     }

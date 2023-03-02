@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:activiti="http://activiti.org/bpmn" xmlns:flowable="http://flowable.org/bpmn" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.activiti.org/processdef">
+  <process id="Process_1">
+    <startEvent id="Event_07jpl9l" name="父任务开始">
+      <outgoing>Flow_0qo96lx</outgoing>
+    </startEvent>
+    <endEvent id="Event_154gcic" name="父任务结束">
+      <incoming>Flow_0y57799</incoming>
+    </endEvent>
+    <parallelGateway id="Gateway_1ghll6e" name="父任务分离网关">
+      <incoming>Flow_0qo96lx</incoming>
+      <outgoing>Flow_1cjjhky</outgoing>
+      <outgoing>Flow_18uc5w8</outgoing>
+      <outgoing>Flow_18qfatk</outgoing>
+      <outgoing>Flow_0in1y0x</outgoing>
+    </parallelGateway>
+    <sequenceFlow id="Flow_0qo96lx" sourceRef="Event_07jpl9l" targetRef="Gateway_1ghll6e" />
+    <userTask id="Activity_1ex6ut9" name="父任务一">
+      <extensionElements>
+        <activiti:formProperty id="1622206213817_7184" name="子表单" readable="true" writable="true" />
+        <activiti:formProperty id="1622206215915_74415" name="单行文本" readable="true" writable="true" />
+        <activiti:formProperty id="1622206217549_98043" name="单行文本" readable="true" writable="true" />
+        <activiti:formProperty id="1622210618450_95925" name="子表单" readable="true" writable="true" />
+        <activiti:formProperty id="1622210621961_25895" name="多行文本" readable="true" writable="true" />
+        <activiti:formProperty id="1622210627442_91255" name="多行文本" readable="true" writable="true" />
+      </extensionElements>
+      <incoming>Flow_1cjjhky</incoming>
+      <outgoing>Flow_097hn3v</outgoing>
+    </userTask>
+    <sequenceFlow id="Flow_1cjjhky" sourceRef="Gateway_1ghll6e" targetRef="Activity_1ex6ut9" />
+    <parallelGateway id="Gateway_16l30t2" name="父任务聚合网关">
+      <incoming>Flow_097hn3v</incoming>
+      <incoming>Flow_05sldda</incoming>
+      <incoming>Flow_1r4ry2c</incoming>
+      <incoming>Flow_08x7fo1</incoming>
+      <outgoing>Flow_0y57799</outgoing>
+    </parallelGateway>
+    <sequenceFlow id="Flow_097hn3v" sourceRef="Activity_1ex6ut9" targetRef="Gateway_16l30t2" />
+    <sequenceFlow id="Flow_0y57799" sourceRef="Gateway_16l30t2" targetRef="Event_154gcic" />
+    <callActivity id="Activity_19docqu" name="子任务一" activiti:calledElementType="key">
+      <incoming>Flow_18uc5w8</incoming>
+      <outgoing>Flow_05sldda</outgoing>
+    </callActivity>
+    <sequenceFlow id="Flow_18uc5w8" sourceRef="Gateway_1ghll6e" targetRef="Activity_19docqu" />
+    <sequenceFlow id="Flow_05sldda" sourceRef="Activity_19docqu" targetRef="Gateway_16l30t2" />
+    <callActivity id="Activity_19l5pxr" name="子任务二" calledElement="ParallelGatewayTest01" activiti:calledElementType="key">
+      <extensionElements>
+        <activiti:properties>
+          <activiti:property name="a" value="${key1}" explain="" />
+          <activiti:property name="b" value="${key1}" explain="" />
+          <activiti:property name="c" value="${key1}" explain="" />
+          <activiti:property name="d" value="${key1}" explain="" />
+          <activiti:property name="e" value="${key1}" explain="" />
+        </activiti:properties>
+      </extensionElements>
+      <incoming>Flow_18qfatk</incoming>
+      <outgoing>Flow_1r4ry2c</outgoing>
+    </callActivity>
+    <callActivity id="Activity_04bxnoi" name="子任务三" calledElement="" activiti:calledElementType="key" activiti:inheritVariables="false">
+      <incoming>Flow_0in1y0x</incoming>
+      <outgoing>Flow_08x7fo1</outgoing>
+    </callActivity>
+    <sequenceFlow id="Flow_18qfatk" sourceRef="Gateway_1ghll6e" targetRef="Activity_19l5pxr" />
+    <sequenceFlow id="Flow_0in1y0x" sourceRef="Gateway_1ghll6e" targetRef="Activity_04bxnoi" />
+    <sequenceFlow id="Flow_1r4ry2c" sourceRef="Activity_19l5pxr" targetRef="Gateway_16l30t2" />
+    <sequenceFlow id="Flow_08x7fo1" sourceRef="Activity_04bxnoi" targetRef="Gateway_16l30t2" />
+  </process>
+  <bpmndi:BPMNDiagram id="BpmnDiagram_1">
+    <bpmndi:BPMNPlane id="BpmnPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNEdge id="Flow_08x7fo1_di" bpmnElement="Flow_08x7fo1">
+        <omgdi:waypoint x="500" y="620" />
+        <omgdi:waypoint x="850" y="620" />
+        <omgdi:waypoint x="850" y="285" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1r4ry2c_di" bpmnElement="Flow_1r4ry2c">
+        <omgdi:waypoint x="490" y="430" />
+        <omgdi:waypoint x="850" y="430" />
+        <omgdi:waypoint x="850" y="285" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0in1y0x_di" bpmnElement="Flow_0in1y0x">
+        <omgdi:waypoint x="260" y="305" />
+        <omgdi:waypoint x="260" y="630" />
+        <omgdi:waypoint x="400" y="630" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_18qfatk_di" bpmnElement="Flow_18qfatk">
+        <omgdi:waypoint x="260" y="305" />
+        <omgdi:waypoint x="260" y="430" />
+        <omgdi:waypoint x="390" y="430" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05sldda_di" bpmnElement="Flow_05sldda">
+        <omgdi:waypoint x="490" y="280" />
+        <omgdi:waypoint x="658" y="280" />
+        <omgdi:waypoint x="658" y="260" />
+        <omgdi:waypoint x="825" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_18uc5w8_di" bpmnElement="Flow_18uc5w8">
+        <omgdi:waypoint x="285" y="280" />
+        <omgdi:waypoint x="390" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0y57799_di" bpmnElement="Flow_0y57799">
+        <omgdi:waypoint x="875" y="260" />
+        <omgdi:waypoint x="1022" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_097hn3v_di" bpmnElement="Flow_097hn3v">
+        <omgdi:waypoint x="460" y="120" />
+        <omgdi:waypoint x="850" y="120" />
+        <omgdi:waypoint x="850" y="235" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1cjjhky_di" bpmnElement="Flow_1cjjhky">
+        <omgdi:waypoint x="260" y="255" />
+        <omgdi:waypoint x="260" y="120" />
+        <omgdi:waypoint x="360" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qo96lx_di" bpmnElement="Flow_0qo96lx">
+        <omgdi:waypoint x="188" y="280" />
+        <omgdi:waypoint x="235" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_07jpl9l_di" bpmnElement="Event_07jpl9l">
+        <omgdc:Bounds x="152" y="262" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="143" y="305" width="56" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_154gcic_di" bpmnElement="Event_154gcic">
+        <omgdc:Bounds x="1022" y="242" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1013" y="285" width="55" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1ghll6e_di" bpmnElement="Gateway_1ghll6e">
+        <omgdc:Bounds x="235" y="255" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="221" y="315" width="77" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ex6ut9_di" bpmnElement="Activity_1ex6ut9">
+        <omgdc:Bounds x="360" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_16l30t2_di" bpmnElement="Gateway_16l30t2">
+        <omgdc:Bounds x="825" y="235" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_19docqu_di" bpmnElement="Activity_19docqu">
+        <omgdc:Bounds x="390" y="240" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_19l5pxr_di" bpmnElement="Activity_19l5pxr">
+        <omgdc:Bounds x="390" y="390" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1nsrly4" bpmnElement="Activity_04bxnoi">
+        <omgdc:Bounds x="400" y="580" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
