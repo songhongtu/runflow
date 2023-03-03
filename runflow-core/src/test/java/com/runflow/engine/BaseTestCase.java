@@ -40,7 +40,7 @@ public class BaseTestCase {
         conf.addPath("/bpmn/leave.bpmn")
                 .addPath("/bpmn/parallelLeave.bpmn")
                 .addPath("/bpmn/ParallelGatewayTest.bpmn")
-                .addPath("/bpmn/diagram.bpmn")
+                .addPath("/bpmn/callActivity.bpmn")
                 .addPath("/bpmn/t.bpmn").addPath("/bpmn/demo1.bpmn");
     }
 
