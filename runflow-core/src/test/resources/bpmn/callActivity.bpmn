@@ -4,9 +4,6 @@
     <startEvent id="Event_07jpl9l" name="父任务开始">
       <outgoing>Flow_0qo96lx</outgoing>
     </startEvent>
-    <endEvent id="Event_154gcic" name="父任务结束">
-      <incoming>Flow_0y57799</incoming>
-    </endEvent>
     <parallelGateway id="Gateway_1ghll6e" name="父任务分离网关">
       <incoming>Flow_0qo96lx</incoming>
       <outgoing>Flow_1cjjhky</outgoing>
@@ -33,11 +30,19 @@
       <incoming>Flow_05sldda</incoming>
       <incoming>Flow_1r4ry2c</incoming>
       <incoming>Flow_08x7fo1</incoming>
-      <outgoing>Flow_0y57799</outgoing>
+      <outgoing>Flow_0btmema</outgoing>
     </parallelGateway>
     <sequenceFlow id="Flow_097hn3v" sourceRef="Activity_1ex6ut9" targetRef="Gateway_16l30t2" />
-    <sequenceFlow id="Flow_0y57799" sourceRef="Gateway_16l30t2" targetRef="Event_154gcic" />
-    <callActivity id="Activity_19docqu" name="子任务一" activiti:calledElementType="key">
+    <callActivity id="Activity_19docqu" name="子任务一" calledElement="ParallelGatewayTest01" activiti:calledElementType="key">
+      <extensionElements>
+        <activiti:properties>
+          <activiti:property name="a" value="${key1}" explain="" />
+          <activiti:property name="b" value="${key1}" explain="" />
+          <activiti:property name="c" value="${key1}" explain="" />
+          <activiti:property name="d" value="${key1}" explain="" />
+          <activiti:property name="e" value="${key1}" explain="" />
+        </activiti:properties>
+      </extensionElements>
       <incoming>Flow_18uc5w8</incoming>
       <outgoing>Flow_05sldda</outgoing>
     </callActivity>
@@ -56,7 +61,16 @@
       <incoming>Flow_18qfatk</incoming>
       <outgoing>Flow_1r4ry2c</outgoing>
     </callActivity>
-    <callActivity id="Activity_04bxnoi" name="子任务三" calledElement="" activiti:calledElementType="key" activiti:inheritVariables="false">
+    <callActivity id="Activity_04bxnoi" name="子任务三" calledElement="Process_1671936597549" activiti:calledElementType="key" activiti:inheritVariables="false">
+      <extensionElements>
+        <activiti:properties>
+          <activiti:property name="a" value="${key1}" explain="" />
+          <activiti:property name="b" value="${key1}" explain="" />
+          <activiti:property name="c" value="${key1}" explain="" />
+          <activiti:property name="d" value="${key1}" explain="" />
+          <activiti:property name="e" value="${key1}" explain="" />
+        </activiti:properties>
+      </extensionElements>
       <incoming>Flow_0in1y0x</incoming>
       <outgoing>Flow_08x7fo1</outgoing>
     </callActivity>
@@ -64,6 +78,15 @@
     <sequenceFlow id="Flow_0in1y0x" sourceRef="Gateway_1ghll6e" targetRef="Activity_04bxnoi" />
     <sequenceFlow id="Flow_1r4ry2c" sourceRef="Activity_19l5pxr" targetRef="Gateway_16l30t2" />
     <sequenceFlow id="Flow_08x7fo1" sourceRef="Activity_04bxnoi" targetRef="Gateway_16l30t2" />
+    <userTask id="Activity_1v71oph" name="输出" activiti:skipExpression="${callActivity.print(Activity_19docqu,Activity_04bxnoi)}">
+      <incoming>Flow_0btmema</incoming>
+      <outgoing>Flow_1ab6jqu</outgoing>
+    </userTask>
+    <sequenceFlow id="Flow_0btmema" sourceRef="Gateway_16l30t2" targetRef="Activity_1v71oph" />
+    <endEvent id="Event_10w8xxt">
+      <incoming>Flow_1ab6jqu</incoming>
+    </endEvent>
+    <sequenceFlow id="Flow_1ab6jqu" sourceRef="Activity_1v71oph" targetRef="Event_10w8xxt" />
   </process>
   <bpmndi:BPMNDiagram id="BpmnDiagram_1">
     <bpmndi:BPMNPlane id="BpmnPlane_1" bpmnElement="Process_1">
@@ -97,10 +120,6 @@
         <omgdi:waypoint x="285" y="280" />
         <omgdi:waypoint x="390" y="280" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0y57799_di" bpmnElement="Flow_0y57799">
-        <omgdi:waypoint x="875" y="260" />
-        <omgdi:waypoint x="1022" y="260" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_097hn3v_di" bpmnElement="Flow_097hn3v">
         <omgdi:waypoint x="460" y="120" />
         <omgdi:waypoint x="850" y="120" />
@@ -115,16 +134,18 @@
         <omgdi:waypoint x="188" y="280" />
         <omgdi:waypoint x="235" y="280" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0btmema_di" bpmnElement="Flow_0btmema">
+        <omgdi:waypoint x="875" y="260" />
+        <omgdi:waypoint x="975" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ab6jqu_di" bpmnElement="Flow_1ab6jqu">
+        <omgdi:waypoint x="1095" y="260" />
+        <omgdi:waypoint x="1195" y="260" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_07jpl9l_di" bpmnElement="Event_07jpl9l">
         <omgdc:Bounds x="152" y="262" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <omgdc:Bounds x="143" y="305" width="56" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_154gcic_di" bpmnElement="Event_154gcic">
-        <omgdc:Bounds x="1022" y="242" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds x="1013" y="285" width="55" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_1ghll6e_di" bpmnElement="Gateway_1ghll6e">
@@ -150,6 +171,13 @@
       <bpmndi:BPMNShape id="BPMNShape_1nsrly4" bpmnElement="Activity_04bxnoi">
         <omgdc:Bounds x="400" y="580" width="100" height="80" />
         <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1v71oph_di" bpmnElement="Activity_1v71oph">
+        <omgdc:Bounds x="975" y="200" width="120" height="120" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_10w8xxt_di" bpmnElement="Event_10w8xxt">
+        <omgdc:Bounds x="1195" y="242" width="36" height="36" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
